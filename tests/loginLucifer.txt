@@ -1,0 +1,25 @@
+start = 1
+stop = 10
+
+AccInfo = {
+"vardafata@gmail.com|sandigacha",
+"farendasaputra@gmail.com|sandigacha",
+"lusianabarenju@gmail.com|sandigacha",
+"bajinurrehan@gmail.com|sandigacha",
+"yasminagunawan@gmail.com|sandigacha",
+"saputripurwahyu@gmail.com|sandigacha",
+"yulionosiregar@gmail.com|sandigacha",
+}
+
+for i = start, stop do
+    info = {}
+    for part in string.gmatch(AccInfo[i], "[^|]+") do
+        table.insert(info, part)
+    end
+
+    local GrowID = info[1]
+    local Password = info[2]
+
+    addBot(GrowID,Password)
+    sleep(1000)
+end

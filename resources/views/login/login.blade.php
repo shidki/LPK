@@ -10,38 +10,44 @@
     ></script>
     <link rel="stylesheet" href="Login/app.css" />
     <title>Form Pendaftaran Akun</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
   </head>
+
   <body>
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
-          <form action="#" class="sign-in-form">
+          <form action="{{ route('masuk') }}" class="sign-in-form" method="post">
+            @csrf
             <h2 class="title">Masuk</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="email" required placeholder="Masukkan Email" />
+              <input type="email" name="email"  placeholder="Masukkan Alamat Email" />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" required placeholder="Password" />
+              <input type="password" name="password"  placeholder="Masukkan Kata Sandi" />
             </div>
+            <div>Lupa kata sandi? Klik <a href="/resetSandi" style="text-decoration: none; color: red;">Disini</a></div>
             <input type="submit" value="Masuk" class="btn solid" />
           </form>
-          <form action="#" class="sign-up-form">
+          <form action="{{route('daftar')}}" method="post" class="sign-up-form">
+            @csrf
             <h2 class="title">Daftar</h2>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input type="email" required placeholder="Email" />
+              <input type="email" name="emailReg"  placeholder="Masukkan Alamat Email" />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" required placeholder="Password" />
+              <input type="password" name="passwordReg"  placeholder="Masukkan Kata Sandi" />
             </div>
             <div class="input-field">
                 <i class="fas fa-lock"></i>
-                <input type="password" required placeholder="Konfirmasi Password" />
+                <input type="password" name="confirmPasswordReg"  placeholder="Ulangi Kata Sandi" />
               </div>
-            <input type="submit" class="btn" value="Daftar Akun" />
+            <input type="submit" class="btn" value="Daftar" />
           </form>
         </div>
       </div>
@@ -57,7 +63,7 @@
               Daftar Akun
             </button>
           </div>
-          <img src="Login/img/kuil2.jpg" class="image" alt="" />
+          <img src="Login/img/gedung.png" class="image" alt="" />
         </div>
         <div class="panel right-panel">
           <div class="content">
@@ -69,11 +75,23 @@
               Masuk
             </button>
           </div>
-          <img src="Login/img/kuil.jpg" class="image" alt="" />
+          <img src="Login/img/gedung.png" class="image" alt="" />
         </div>
       </div>
     </div>
 
+    @if (session('success_reset'))
+    <script>
+          Swal.fire({
+              title: "Berhasil Mengubah Kata Sandi",
+              text: "{{ session('success_reset') }}", 
+              icon: "success"
+          });
+    </script>
+    @endif
+
     <script src="Login/app.js"></script>
+
+
   </body>
 </html>
