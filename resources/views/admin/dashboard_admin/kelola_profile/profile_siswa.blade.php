@@ -12,17 +12,20 @@
     <title>SB Admin 2 - Tables</title>
 
     <!-- Custom fonts for this template -->
+    <script src="https://kit.fontawesome.com/8183c3e7b3.js" crossorigin="anonymous"></script>
+    <!-- Custom fonts for this template -->
     <link href="admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <!-- Custom styles for this template -->
     <link href="admin/css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
     <!-- Custom styles for this page -->
     <link href="admin/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
 </head>
 
 <body id="page-top">
@@ -43,7 +46,7 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="/halamanAdmin">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
@@ -63,7 +66,6 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Akun</h6>
-                        <a class="collapse-item " href="/akunSiswa">Siswa</a>
                         <a class="collapse-item" href="/akunInstruktur">Instruktur</a>
                         <a class="collapse-item" href="/akunAdmin">Admin</a>
                     </div>
@@ -81,7 +83,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Bidang:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Bidang</a>
+                        <a class="collapse-item" href="/dataBidang">Bidang</a>
                     </div>
                 </div>
             </li>
@@ -95,7 +97,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Presensi:</h6>
-                        <a class="collapse-item" href="Presensi-color.html">Presensi</a>
+                        <a class="collapse-item" href="/presensi">Presensi</a>
                     </div>
                 </div>
             </li>
@@ -109,8 +111,8 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Kelas:</h6>
-                        <a class="collapse-item" href="kelas-color.html">Kelas A</a>
-                        <a class="collapse-item" href="kelas-color.html">Kelas B</a>
+                        <a class="collapse-item" href="/dataKelasA">Kelas A</a>
+                        <a class="collapse-item" href="/dataKelasB">Kelas B</a>
                     </div>
                 </div>
             </li>
@@ -124,7 +126,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Materi:</h6>
-                        <a class="collapse-item" href="kelas-color.html">Kelola Materi</a>
+                        <a class="collapse-item" href="/dataMateri">Kelola Materi</a>
                     </div>
                 </div>
             </li>
@@ -139,47 +141,26 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Profile:</h6>
                         <a class="collapse-item active" href="/dataSiswa">Siswa</a>
-                        <a class="collapse-item" href="kelas-color.html">Instruktur</a>
-                        <a class="collapse-item" href="kelas-color.html">Admin</a>
+                        <a class="collapse-item" href="/dataInstruktur">Instruktur</a>
+                        <a class="collapse-item" href="/dataAdmin">Admin</a>
                     </div>
                 </div>
             </li>
             <hr class="sidebar-divider">
 
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Pages</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.html">Login</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
-                    </div>
-                </div>
-            </li>
-
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
+                <a class="nav-link" href="/logout">
+                    <i class="fa-solid fa-door-open"></i>
+                    <span>Keluar</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
+                <a class="nav-link" href="/halamanDashboard">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Back</span></a>
             </li>
 
             <!-- Divider -->
@@ -218,9 +199,10 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Muhamad Ridwan Ash'shidqi</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    Nama Admin
+                                </span>
+                                
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -274,6 +256,7 @@
                                             <th>No hp</th>
                                             <th>Alamat</th>
                                             <th>Kelas</th>
+                                            <th>Bidang</th>
                                             <th>Tgl Masuk</th>
                                             <th>Tgl Lulus</th>
                                             <th>Status</th>
@@ -288,14 +271,13 @@
                                             <td>{{ $siswas->no_hp }}</td>
                                             <td>{{ $siswas->alamat }}</td>
                                             <td>{{ $siswas->id_kelas }}</td>
+                                            <td>{{ $siswas->id_bidang }}</td>
                                             <td>{{ $siswas->tgl_masuk }}</td>
                                             <td>{{ $siswas->tgl_lulus }}</td>
                                             <td>{{ $siswas->status }}</td>
-                                            <td class="text-center">
-                                                <a href="#" class="btn btn-primary btn-circle btn-sm">
-                                                    <i class="fas fa-pen"></i>
-                                                </a>
-                                                <a href="/delete/siswa/{{ $siswas->id_siswa }}" class="btn btn-danger btn-circle btn-sm">
+                                            <td class="text-center" style="display: flex; flex-direction: column;">
+                                                <button data-id="{{ json_encode(['id' => $siswas->id_siswa,'nama' => $siswas->nama,'email' => $siswas->email, 'no_hp' => $siswas->no_hp,'alamat' => $siswas->alamat, 'id_kelas' => $siswas->id_kelas, 'id_bidang' => $siswas->id_bidang, 'status' => $siswas->status]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
+                                                <a href="/delete/siswa/{{ $siswas->id_siswa }}" class="btn btn-danger btn-circle btn-sm" style="margin-top: 10px">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -334,26 +316,8 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
+    {{-- MODAL TAMBAH SISWA --}}
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -376,7 +340,7 @@
 
                         <div class="form-group">
                             <label for="email">Email Siswa <strong class="text-danger font-weight-bold">*</strong></label>
-                            <input id="email" type="text" class="form-control" placeholder="Email Siswa" required name="email">
+                            <input id="email" type="email" class="form-control" placeholder="Email Siswa" required name="email">
                         </div>
                         <div id="error_email_container" style="display: flex; justify-content: space-between;margin-top: 10px;">
                             <span id="error_email" class="text-danger mt-1" style="text-transform: capitalize"></span>
@@ -423,6 +387,89 @@
                         <div class="form-group">
                             <label for="status">status<strong class="text-danger font-weight-bold">*</strong></label>
                             <select required name="status_siswa" class="form-select form-select-sm" id="status_siswa">
+                                <option value="">Status</option>
+                                <option value="aktif">Aktif</option>
+                                <option value="tidak_aktif">Tidak Aktif</option>
+                                <option value="mangkir">mangkir</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                        <button type="submit" class="btn btn-primary">Tambah</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- MODAL EDIT SISWA --}}
+    <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdrop2Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdrop2Label">Ubah Siswa</h5>
+                </div>
+                <form action="/edit_siswa_admin" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nama">Nama Siswa<strong class="text-danger font-weight-bold">*</strong></label>
+                            <input id="siswas" type="hidden" class="form-control" placeholder="Nama Siswa" name="siswas">
+                            <input id="namaEdit" type="text" class="form-control" placeholder="Nama Siswa" required name="nama_siswaEdit">
+                        </div>
+                        <div id="error_nama_containerEdit" style="display: flex; justify-content: space-between;margin-top: 10px;">
+                            <span id="error_namaEdit" class="text-danger mt-1" style="text-transform: capitalize"></span>
+                            <span id="jml_input_nama_containerEdit">
+                            <span id="jml_input_namaEdit">0</span> 
+                            / 50</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Siswa <strong class="text-danger font-weight-bold">*</strong></label>
+                            <input id="emailEdit" type="email" class="form-control" placeholder="Email Siswa" required name="emailEdit">
+                        </div>
+                        <div id="error_email_containerEdit" style="display: flex; justify-content: space-between;margin-top: 10px;">
+                            <span id="error_emailEdit" class="text-danger mt-1" style="text-transform: capitalize"></span>
+                            <span id="jml_input_email_containerEdit">
+                            <span id="jml_input_emailEdit">0</span> 
+                            / 50</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="nohp">No HP<strong class="text-danger font-weight-bold">*</strong></label>
+                            <input id="nohpEdit" type="number" class="form-control" placeholder="No HP Siswa" required name="nohpEdit">
+                        </div>
+                        <div id="error_nohp_containerEdit" style="display: flex; justify-content: space-between;margin-top: 10px;">
+                            <span id="error_nohpEdit" class="text-danger mt-1" style="text-transform: capitalize"></span>
+                            <span id="jml_input_nohp_containerEdit">
+                            <span id="jml_input_nohEditp">0</span> 
+                            / 14</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="alamat">Alamat<strong class="text-danger font-weight-bold">*</strong></label>
+                            <textarea required id="alamatEdit" name="alamatEdit" class="form-control" id="" cols="10" rows="5"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="bidang_siswa">Bidang Minat<strong class="text-danger font-weight-bold">*</strong></label>
+                            <select  required  name="bidang_siswaEdit" class="form-select form-select-sm" id="bidang_siswaEdit">
+                                <option value="">bidang Siswa</option>
+                                <option value="1">bidang A</option>
+                                <option value="2">bidang B</option>
+                                <option value="3">bidang C</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="kelas">Kelas<strong class="text-danger font-weight-bold">*</strong></label>
+                            <select  required name="kelas_siswaEdit" class="form-select form-select-sm" id="kelas_siswaEdit">
+                                <option value="">Kelas Siswa</option>
+                                <option value="1">Kelas A</option>
+                                <option value="2">Kelas B</option>
+                                <option value="3">Kelas C</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">status<strong class="text-danger font-weight-bold">*</strong></label>
+                            <select required name="status_siswaEdit" class="form-select form-select-sm" id="status_siswaEdit">
                                 <option value="">Status</option>
                                 <option value="aktif">Aktif</option>
                                 <option value="tidak_aktif">Tidak Aktif</option>
@@ -525,7 +572,136 @@
                 // Menambahkan event listener untuk merespons setiap kali ada input
                 inputnohp.addEventListener('input', updateCharacterCount);
             });
+
+            // untuk edit siswa
+            var modalSiswa = document.getElementById('staticBackdrop2');
+            modalSiswa.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var dataId = button.getAttribute('data-id');
+                var parsedDataId = JSON.parse(dataId);
+                
+                var siswas = modalSiswa.querySelector('#siswas');
+                siswas.value = parsedDataId.id;
+                var NamaSiswa = modalSiswa.querySelector('#namaEdit');
+                NamaSiswa.value = parsedDataId.nama;
+                var emailSiswa = modalSiswa.querySelector('#emailEdit');
+                emailSiswa.value = parsedDataId.email;
+                var nohpEdit = modalSiswa.querySelector('#nohpEdit');
+                nohpEdit.value = parsedDataId.no_hp;
+                var alamatEdit = modalSiswa.querySelector('#alamatEdit');
+                alamatEdit.value = parsedDataId.alamat;
+                var bidang_siswaEdit = modalSiswa.querySelector('#bidang_siswaEdit');
+                bidang_siswaEdit.value = parsedDataId.id_bidang;
+                var kelas_siswaEdit = modalSiswa.querySelector('#kelas_siswaEdit');
+                kelas_siswaEdit.value = parsedDataId.id_kelas;
+                var status_siswaEdit = modalSiswa.querySelector('#status_siswaEdit');
+                status_siswaEdit.value = parsedDataId.status;
+
+                updateCounter(NamaSiswa, 'jml_input_namaEdit', 50);
+                updateCounter(emailSiswa, 'jml_input_emailEdit', 50);
+                updateCounter(nohpEdit, 'jml_input_nohEditp', 14);
+            });
+
+            function updateCounter(inputElement, counterId, maxLength) {
+                var counter = document.getElementById(counterId);
+                var length = inputElement.value.length;
+                counter.textContent = length;
+            }
+
+            // Event listener for real-time input counting
+            document.addEventListener('DOMContentLoaded', function () {
+                const fields = [
+                    { id: 'namaEdit', max: 50, counterId: 'jml_input_namaEdit' },
+                    { id: 'emailEdit', max: 50, counterId: 'jml_input_emailEdit' },
+                    { id: 'nohpEdit', max: 14, counterId: 'jml_input_nohEditp' }
+                ];
+
+                fields.forEach(field => {
+                    const input = document.getElementById(field.id);
+                    const counter = document.getElementById(field.counterId);
+                    
+                    input.addEventListener('input', function () {
+                        // Trim the input to max length
+                        if (input.value.length > field.max) {
+                            input.value = input.value.substring(0, field.max);
+                        }
+                        const length = input.value.length;
+                        counter.textContent = length;
+                        
+                        // Optional: Change counter color if it exceeds max length
+                        if (length > field.max) {
+                            counter.style.color = 'red';
+                        } else {
+                            counter.style.color = 'black';
+                        }
+                    });
+
+                    // Initial update of the counter
+                    updateCounter(input, counter.id, field.max);
+                });
+            });
+            
     </script>
+        @if (session('error_add'))
+        <script>
+              Swal.fire({
+                  title: "Gagal Menambah Siswa",
+                  text: "{{ session('error_add') }}", // Menggunakan blade syntax untuk menampilkan pesan
+                  icon: "error"
+              });
+            console.log("Error reset message:", "{{ session('error_add') }}");
+        </script>
+        @endif
+        @if (session('sukses_add'))
+        <script>
+              Swal.fire({
+                  title: "{{ session('sukses_add') }}",
+                  icon: "success"
+              });
+            console.log("Error reset message:", "{{ session('sukses_add') }}");
+        </script>
+        @endif
+
+        {{-- alert edit --}}
+        @if (session('error_edit'))
+        <script>
+              Swal.fire({
+                  title: "Gagal Mengubah Siswa",
+                  text: "{{ session('error_edit') }}", // Menggunakan blade syntax untuk menampilkan pesan
+                  icon: "error"
+              });
+            console.log("Error reset message:", "{{ session('error_edit') }}");
+        </script>
+        @endif
+        @if (session('sukses_edit'))
+        <script>
+              Swal.fire({
+                  title: "{{ session('sukses_edit') }}",
+                  icon: "success"
+              });
+            console.log("Error reset message:", "{{ session('sukses_edit') }}");
+        </script>
+        @endif
+        @if (session('error_delete'))
+        <script>
+              Swal.fire({
+                  title: "Gagal Menghapus Siswa",
+                  text: "{{ session('error_delete') }}", // Menggunakan blade syntax untuk menampilkan pesan
+                  icon: "error"
+              });
+            console.log("Error reset message:", "{{ session('error_delete') }}");
+        </script>
+        @endif
+        @if (session('sukses_delete'))
+        <script>
+              Swal.fire({
+                  title: "{{ session('sukses_delete') }}",
+                  icon: "success"
+              });
+            console.log("Error reset message:", "{{ session('sukses_delete') }}");
+        </script>
+        @endif
+
     <script src="admin/vendor/jquery/jquery.min.js"></script>
     <script src="admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 

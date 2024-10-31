@@ -10,7 +10,7 @@
     <meta name="author" content="">
 
     <title>DPN PERKASA ADMINISTRASI</title>
-
+    <script src="https://kit.fontawesome.com/8183c3e7b3.js" crossorigin="anonymous"></script>
     <!-- Custom fonts for this template-->
     <link href="admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -58,7 +58,6 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Akun</h6>
-                        <a class="collapse-item " href="/akunSiswa">Siswa</a>
                         <a class="collapse-item" href="/akunInstruktur">Instruktur</a>
                         <a class="collapse-item" href="/akunAdmin">Admin</a>
                     </div>
@@ -76,7 +75,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Bidang:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Bidang</a>
+                        <a class="collapse-item" href="/dataBidang">Bidang</a>
                     </div>
                 </div>
             </li>
@@ -90,7 +89,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Presensi:</h6>
-                        <a class="collapse-item" href="Presensi-color.html">Presensi</a>
+                        <a class="collapse-item" href="/presensi">Presensi</a>
                     </div>
                 </div>
             </li>
@@ -104,8 +103,8 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Kelas:</h6>
-                        <a class="collapse-item" href="kelas-color.html">Kelas A</a>
-                        <a class="collapse-item" href="kelas-color.html">Kelas B</a>
+                        <a class="collapse-item" href="/dataKelasA">Kelas A</a>
+                        <a class="collapse-item" href="/dataKelasB">Kelas B</a>
                     </div>
                 </div>
             </li>
@@ -119,7 +118,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Materi:</h6>
-                        <a class="collapse-item" href="kelas-color.html">Kelola Materi</a>
+                        <a class="collapse-item" href="/dataMateri">Kelola Materi</a>
                     </div>
                 </div>
             </li>
@@ -134,47 +133,26 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Profile:</h6>
                         <a class="collapse-item" href="/dataSiswa">Siswa</a>
-                        <a class="collapse-item" href="kelas-color.html">Instruktur</a>
-                        <a class="collapse-item" href="kelas-color.html">Admin</a>
+                        <a class="collapse-item" href="/dataInstruktur">Instruktur</a>
+                        <a class="collapse-item" href="/dataAdmin">Admin</a>
                     </div>
                 </div>
             </li>
             <hr class="sidebar-divider">
 
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Pages</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.html">Login</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
-                    </div>
-                </div>
-            </li>
-
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
+                <a class="nav-link" href="/logout">
+                    <i class="fa-solid fa-door-open"></i>
+                    <span>Keluar</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
+                <a class="nav-link" href="/halamanDashboard">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Back</span></a>
             </li>
 
             <!-- Divider -->
@@ -234,9 +212,10 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Muhamad Ridwan Ash'shidqi</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    Nama Admin
+                                </span>
+                                
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

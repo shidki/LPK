@@ -20,28 +20,29 @@
         <div class="signin-signup">
           <form action="{{ route('masuk') }}" class="sign-in-form" method="post">
             @csrf
-            <h2 class="title">Masuk</h2>
+            <h2 class="title">MASUK</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="email" name="email"  placeholder="Masukkan Alamat Email" />
+              <input type="email" name="email"  placeholder="Masukkan alamat email" />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" name="password"  placeholder="Masukkan Kata Sandi" />
+              <input type="password" name="password"  placeholder="Masukkan kata sandi" />
             </div>
-            <div>Lupa kata sandi? Klik <a href="/resetSandi" style="text-decoration: none; color: red;">Disini</a></div>
+            <div class="error_msg" style="color: red; margin-bottom: 10px;">{{ session('login_error') }}</div>
+            <div>Lupa kata sandi? Klik <a href="/resetSandi" style="text-decoration: none; color: red;">di sini</a></div>
             <input type="submit" value="Masuk" class="btn solid" />
           </form>
           <form action="{{route('daftar')}}" method="post" class="sign-up-form">
             @csrf
-            <h2 class="title">Daftar</h2>
+            <h2 class="title">DAFTAR</h2>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
               <input type="email" name="emailReg"  placeholder="Masukkan Alamat Email" />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" name="passwordReg"  placeholder="Masukkan Kata Sandi" />
+              <input type="password" name="passwordReg"  placeholder="Buat Kata Sandi " />
             </div>
             <div class="input-field">
                 <i class="fas fa-lock"></i>
@@ -55,7 +56,7 @@
       <div class="panels-container">
         <div class="panel left-panel">
           <div class="content">
-            <h3>Belum punya akun ?</h3>
+            <h2 style="margin-bottom: 20px;font-size: 1.8rem">Selamat datang  di LPK Cipta Kerja</h2>
             <p>
               Daftar akun untuk membuka portal sistem akademik pembelajaran
             </p>
@@ -86,6 +87,24 @@
               title: "Berhasil Mengubah Kata Sandi",
               text: "{{ session('success_reset') }}", 
               icon: "success"
+          });
+    </script>
+    @endif
+    @if (session('signup_error'))
+    <script>
+          Swal.fire({
+              title: "Gagal",
+              text: "{{ session('signup_error') }}", 
+              icon: "error"
+          });
+    </script>
+    @endif
+    @if (session('error_login'))
+    <script>
+          Swal.fire({
+              title: "{{ session('error_login') }}",
+              text: "Hubungi Admin Untuk Aktifasi Akun", 
+              icon: "error"
           });
     </script>
     @endif
