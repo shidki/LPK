@@ -65,6 +65,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Akun</h6>
+                        <a class="collapse-item" href="/akunSiswa">Siswa</a>
                         <a class="collapse-item" href="/akunInstruktur">Instruktur</a>
                         <a class="collapse-item" href="/akunAdmin">Admin</a>
                     </div>
@@ -107,6 +108,20 @@
                     <span>Kelola Kelas</span>
                 </a>
                 <div id="collapsekelas" class="collapse" aria-labelledby="headingkelas"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Kelas:</h6>
+                        <a class="collapse-item" href="/dataKelas">Kelas</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseListkelas"
+                    aria-expanded="true" aria-controls="collapseListkelas">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>List Kelas</span>
+                </a>
+                <div id="collapseListkelas" class="collapse" aria-labelledby="headingkelas"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Kelas:</h6>
@@ -174,24 +189,16 @@
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
             <div id="content">
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) -->
                     <form class="form-inline">
                         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                             <i class="fa fa-bars"></i>
                         </button>
                     </form>
-                    <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
-
-
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -214,10 +221,10 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Kelola Akun / Instruktur</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Kelola Profile / Instruktur</h1>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Akun Instruktur</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Profile Instruktur</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -235,7 +242,7 @@
                                             <th>No Hp</th>
                                             <th>Alamat</th>
                                             <th>Tanggal Masuk</th>
-                                            <th class="text-center">#</th>
+                                            <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -313,7 +320,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="nohp">No HP<strong class="text-danger font-weight-bold">*</strong></label>
-                                <input id="nohp" type="number" class="form-control" placeholder="No HP Instruktur" required name="nohp">
+                                <input id="nohp" type="text" class="form-control" placeholder="No HP Instruktur" required name="nohp">
                             </div>
                             <div id="error_nohp_container" style="display: flex; justify-content: space-between;margin-top: 10px;">
                                 <span id="error_nohp" class="text-danger mt-1" style="text-transform: capitalize"></span>
@@ -373,7 +380,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="nohp">No HP<strong class="text-danger font-weight-bold">*</strong></label>
-                                <input id="nohpEdit" type="number" class="form-control" placeholder="No HP Instruktur" required name="nohpEdit">
+                                <input id="nohpEdit" type="text" class="form-control" placeholder="No HP Instruktur" required name="nohpEdit">
                             </div>
                             <div id="error_nohp_containerEdit" style="display: flex; justify-content: space-between;margin-top: 10px;">
                                 <span id="error_nohpEdit" class="text-danger mt-1" style="text-transform: capitalize"></span>

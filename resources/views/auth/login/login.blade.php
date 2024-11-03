@@ -108,6 +108,15 @@
           });
     </script>
     @endif
+    @if (session('sukses_edit'))
+    <script>
+          Swal.fire({
+              title: "Berhasil Mengubah Password",
+              text: "{{ session('sukses_edit') }}", 
+              icon: "success"
+          });
+    </script>
+    @endif
 
     <script src="Login/app.js"></script>
 

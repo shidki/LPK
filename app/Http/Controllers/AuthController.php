@@ -34,7 +34,7 @@ class AuthController extends Controller
             ->where("email",'=',$request->email)
             ->first();
             // dd($getname);
-            if($getname->status_akun == "tidak aktif"){
+            if($getname->status_akun == "tidak_aktif"){
                 return back()->with(["error_login" => "Status Akun Tidak Aktif"]);
             }
             session(['email' => $request->email]);
@@ -115,14 +115,17 @@ class AuthController extends Controller
         }
         
     }
-    public function logout(){
+    public function logout() {
+        $successMessage = session('sukses_edit');
         request()->session()->invalidate();
         request()->session()->regenerateToken();
         session()->forget('email');
         session()->forget('nama');
         session()->forget('role');
-        return redirect(url(''))->with(['massage' => "Berhasil Keluar Akun"]);
+        
+        return redirect("/")->with(['sukses_edit' => $successMessage, 'message' => "Berhasil Keluar Akun"]);
     }
+    
 
     public function HalamanResetSandi(){
         return view("auth.reset_password.resetPassword");

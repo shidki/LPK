@@ -66,6 +66,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Akun</h6>
+                        <a class="collapse-item" href="/akunSiswa">Siswa</a>
                         <a class="collapse-item" href="/akunInstruktur">Instruktur</a>
                         <a class="collapse-item" href="/akunAdmin">Admin</a>
                     </div>
@@ -108,6 +109,20 @@
                     <span>Kelola Kelas</span>
                 </a>
                 <div id="collapsekelas" class="collapse" aria-labelledby="headingkelas"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Kelas:</h6>
+                        <a class="collapse-item" href="/dataKelas">Kelas</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseListkelas"
+                    aria-expanded="true" aria-controls="collapseListkelas">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>List Kelas</span>
+                </a>
+                <div id="collapseListkelas" class="collapse" aria-labelledby="headingkelas"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Kelas:</h6>
@@ -260,7 +275,7 @@
                                             <th>Tgl Masuk</th>
                                             <th>Tgl Lulus</th>
                                             <th>Status</th>
-                                            <th class="text-center">#</th>
+                                            <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -270,8 +285,8 @@
                                             <td>{{ $siswas->email }}</td>
                                             <td>{{ $siswas->no_hp }}</td>
                                             <td>{{ $siswas->alamat }}</td>
-                                            <td>{{ $siswas->id_kelas }}</td>
-                                            <td>{{ $siswas->id_bidang }}</td>
+                                            <td>{{ $siswas->nama_kelas }}</td>
+                                            <td>{{ $siswas->nama_bidang }}</td>
                                             <td>{{ $siswas->tgl_masuk }}</td>
                                             <td>{{ $siswas->tgl_lulus }}</td>
                                             <td>{{ $siswas->status }}</td>
@@ -350,7 +365,7 @@
                         </div>
                         <div class="form-group">
                             <label for="nohp">No HP<strong class="text-danger font-weight-bold">*</strong></label>
-                            <input id="nohp" type="number" class="form-control" placeholder="No HP Siswa" required name="nohp">
+                            <input id="nohp" type="text" class="form-control" placeholder="No HP Siswa" required name="nohp">
                         </div>
                         <div id="error_nohp_container" style="display: flex; justify-content: space-between;margin-top: 10px;">
                             <span id="error_nohp" class="text-danger mt-1" style="text-transform: capitalize"></span>
@@ -365,19 +380,19 @@
                         <div class="form-group">
                             <label for="bidang_siswa">Bidang Minat<strong class="text-danger font-weight-bold">*</strong></label>
                             <select  required name="bidang_siswa" class="form-select form-select-sm" id="bidang_siswa">
-                                <option value="">bidang Siswa</option>
-                                <option value="1">bidang A</option>
-                                <option value="2">bidang B</option>
-                                <option value="3">bidang C</option>
+                                <option value="">pilih bidang</option>
+                                @foreach ($bidang as $bidangs )
+                                    <option value="{{$bidangs->id_bidang }}">{{$bidangs->nama_bidang }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="kelas">Kelas<strong class="text-danger font-weight-bold">*</strong></label>
                             <select  required name="kelas_siswa" class="form-select form-select-sm" id="kelas_siswa">
                                 <option value="">Kelas Siswa</option>
-                                <option value="1">Kelas A</option>
-                                <option value="2">Kelas B</option>
-                                <option value="3">Kelas C</option>
+                                @foreach ($kelas as $kelass )
+                                    <option value="{{$kelass->id_kelas }}">{{$kelass->nama_kelas }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
@@ -437,7 +452,7 @@
                         </div>
                         <div class="form-group">
                             <label for="nohp">No HP<strong class="text-danger font-weight-bold">*</strong></label>
-                            <input id="nohpEdit" type="number" class="form-control" placeholder="No HP Siswa" required name="nohpEdit">
+                            <input id="nohpEdit" type="text" class="form-control" placeholder="No HP Siswa" required name="nohpEdit">
                         </div>
                         <div id="error_nohp_containerEdit" style="display: flex; justify-content: space-between;margin-top: 10px;">
                             <span id="error_nohpEdit" class="text-danger mt-1" style="text-transform: capitalize"></span>
@@ -452,19 +467,19 @@
                         <div class="form-group">
                             <label for="bidang_siswa">Bidang Minat<strong class="text-danger font-weight-bold">*</strong></label>
                             <select  required  name="bidang_siswaEdit" class="form-select form-select-sm" id="bidang_siswaEdit">
-                                <option value="">bidang Siswa</option>
-                                <option value="1">bidang A</option>
-                                <option value="2">bidang B</option>
-                                <option value="3">bidang C</option>
+                                <option value="">pilih bidang</option>
+                                @foreach ($bidang as $bidangs )
+                                    <option value="{{$bidangs->id_bidang }}">{{$bidangs->nama_bidang }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="kelas">Kelas<strong class="text-danger font-weight-bold">*</strong></label>
                             <select  required name="kelas_siswaEdit" class="form-select form-select-sm" id="kelas_siswaEdit">
                                 <option value="">Kelas Siswa</option>
-                                <option value="1">Kelas A</option>
-                                <option value="2">Kelas B</option>
-                                <option value="3">Kelas C</option>
+                                @foreach ($kelas as $kelass )
+                                    <option value="{{$kelass->id_kelas }}">{{$kelass->nama_kelas }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
