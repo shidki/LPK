@@ -86,11 +86,11 @@
                     <h3>
                       {{ $siswa->nama }}, <span class="font-weight-bold text-uppercase" style="text-decoration: underline">{{ $siswa->status}}</span>
                     </h3>
-                    <div class="h5 font-weight-300">
-                      <i class="ni location_pin mr-2"></i>{{ $siswa->id_bidang }}
+                    <div class="h5 font-weight-300" style="text-transform: capitalize;">
+                      <i class="ni location_pin mr-2"></i>{{ $siswa->nama_bidang }}
                     </div>
-                    <div class="h5 mt-4">
-                      <i class="ni business_briefcase-24 mr-2"></i>Kelas {{ $siswa->id_kelas }}
+                    <div class="h5 mt-4" style="text-transform: capitalize;">
+                      <i class="ni business_briefcase-24 mr-2" ></i>Kelas {{ $siswa->nama_kelas }}
                     </div>
                     <div>
                       <i class="ni education_hat mr-2"></i>{{ $siswa->no_hp }}
@@ -136,7 +136,7 @@
                           <div class="col-lg-6">
                             <div class="form-group focused">
                               <label class="form-control-label" for="input-first-name">No hp</label>
-                              <input type="number" id="no_hp" name="no_hp" id="input-first-name" class="form-control form-control-alternative" placeholder="Masukkan No hp" value="{{ $siswa->no_hp }}">
+                              <input type="text" id="no_hp" name="no_hp" id="input-first-name" class="form-control form-control-alternative" placeholder="Masukkan No hp" value="{{ $siswa->no_hp }}">
                               <div id="error_no_hp_container" style="display: flex; justify-content: space-between;margin-top: 10px;">
                                 <span id="error_no_hp"  style="text-transform: capitalize;color: red;"></span>
                                 <span id="jml_input_no_hp_container">
@@ -161,13 +161,13 @@
                           <div class="col-lg-4">
                             <div class="form-group focused">
                               <label class="form-control-label" for="input-city">Kelas</label>
-                              <input type="text" id="input-city" class="form-control form-control-alternative" placeholder="Masukkan Kelas" disabled value="{{ $siswa->id_kelas }}">
+                              <input type="text" id="input-city" class="form-control form-control-alternative" placeholder="Masukkan Kelas" disabled value="{{ $siswa->nama_bidang }}">
                             </div>
                           </div>
                           <div class="col-lg-4">
                             <div class="form-group focused">
                               <label class="form-control-label" for="input-country">Bidang</label>
-                              <input type="text" id="input-country" class="form-control form-control-alternative" placeholder="Masukkan Bidang" disabled value="{{ $siswa->id_bidang }}">
+                              <input type="text" id="input-country" class="form-control form-control-alternative" placeholder="Masukkan Bidang" disabled value="{{ $siswa->nama_bidang }}">
                             </div>
                           </div>
                         </div>

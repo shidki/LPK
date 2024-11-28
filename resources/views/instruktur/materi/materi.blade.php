@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>profile task with team cards - Bootdey.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="instruktur/style.css">
+    <link rel="stylesheet" href="dashboard/style/style.css">
+    <script src="https://kit.fontawesome.com/8183c3e7b3.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css" integrity="sha512-LX0YV/MWBEn2dwXCYgQHrpa9HJkwB+S+bnBpifSOTO1No27TqNMKYoAn6ff2FBh03THAzAiiCwQ+aPX+/Qt/Ow==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <style>
+        .star-checkbox {
+            display: none; /* Sembunyikan checkbox asli */
+        }
+
+        .star-label {
+            font-size: 30px; /* Ukuran bintang */
+            color: grey; /* Warna bintang yang tidak dipilih */
+            cursor: pointer;
+        }
+
+        .star-checkbox:checked + .star-label {
+            color: rgb(255, 0, 0); /* Warna bintang yang dipilih */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navigasi text-center">
+        <div class="header">
+            <img src="dashboard/img/logo.png" alt="" class="logo">
+          <h5>LPK CIPTA KERJA DPN PERKASA JATENG</h5>
+        </div>
+        <div class="btn-logout header">              
+            <a href="/logout" class="text-light" style="text-decoration: none;"><span class="name-profile" style="margin-right: 10px;">Keluar</span><i class="fa-solid fa-right-from-bracket"></i></a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8">
+                <div class="card">
+                    <div class="card-body pb-0">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <div class="text-center border-end">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-fluid avatar-xxl rounded-circle" alt="">
+                                </div>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-md-9">
+                                <div class="ms-3">
+                                    <div>
+                                        <h4 class="card-title mb-2 text-center" style="font-weight: bold;">Selamat datang di DPN Perkasa Dashboard</h4>
+                                    </div>
+                                    <div class="row my-4">
+                                        <div class="col-md-12">
+                                            <div>
+                                                <p class="text-muted mb-2 fw-medium"><i class="mdi mdi-email-outline me-2"></i>{{ $instruktur->email_ins }}
+                                                </p>
+                                                <p class="text-muted fw-medium mb-0"><i class="mdi mdi-phone-in-talk-outline me-2"></i>{{ $instruktur->no_hp_ins }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!-- end col -->
+                                    </div>
+                                    
+                                    <!-- end ul -->
+                                </div>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+
+                <div class="card">
+                    <div class="tab-content p-4">
+
+
+                        <div class="tab-pane active show" id="tasks-tab" role="tabpanel">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Materi </a>\ List Materi</h4>
+                                <button data-bs-toggle="modal"  data-bs-target="#staticBackdrop" type="submit" class="btn btn-primary" style="padding: 0 30px;height: 40px;"><i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="task-list-box" id="landing-task">
+                                        @foreach ($mapel as $mapels )
+                                        <div style="cursor: pointer;" id="task-item-{{ $mapels->id_mapel }}" data-bs-toggle="modal" data-bs-target="#modalView-{{ $mapels->id_mapel }}">
+                                            <div class="card task-box rounded-3">
+                                                <div class="card-body">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-xl-6 col-sm-5">
+                                                            <div class="checklist form-check font-size-15" >
+                                                                {{--<input type="checkbox" class="star-checkbox" id="starCheck{{ $mapels->id_mapel }}">
+                                                                <label for="starCheck{{ $mapels->id_mapel }}" class="star-label">♥</label>--}}
+                                                                <label class="form-check-label ms-1 task-title" for="customCheck1">{{ $mapels->nama_mapel }}</label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- end col -->
+                                                        <div class="col-xl-6 col-sm-7">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-xl-5 col-md-6 col-sm-5">
+                                                                    <div class="avatar-group mt-3 mt-xl-0 task-assigne">
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xl-7 col-md-6 col-sm-7">
+                                                                    <div class="d-flex flex-wrap gap-3 mt-3 mt-xl-0 justify-content-md-end">
+                                                                        <div>
+                                                                            {{--<span class="badge rounded-pill badge-soft-warning font-size-11 task-status">Progress</span>--}}
+                                                                        </div>
+                                                                        <div>
+                                                                            {{--<a @disabled(true) class="mb-0 text-muted fw-medium"><i class="mdi mdi-checkbox-marked-circle-outline me-1"></i>4/8</a>--}}
+                                                                        </div>
+                                                                        <div>
+                                                                            <button style="border: none; background-color: transparent;" class="mb-0 text-muted fw-medium" data-bs-toggle="modal" data-bs-target="#modal-{{ $mapels->id_mapel }}"><i class="mdi mdi-square-edit-outline font-size-16 align-middle"></i></button>
+                                                                        </div>
+                                                                        <div>
+                                                                            <a href="/delete/mapel/{{$mapels->id_mapel}}" onclick="deleteItem(event)" class="delete-item">
+                                                                                <i class="mdi mdi-trash-can-outline align-middle font-size-16 text-danger"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
+
+            <div class="col-xl-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h4 class="card-title mb-4">PROFIL 
+                                @if (session("role") == "siswa")
+                                    SISWA
+                                @elseif (session("role") == "instruktur")
+                                INSTRUKTUR
+                                @else
+                                Admin
+                                @endif
+                            </h4>
+                            <div class="table-responsive">
+                                <table class="table table-bordered mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">Nama</th>
+                                            <td>{{ $instruktur->nama_ins}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Alamat</th>
+                                            <td>{{ $instruktur->alamat_ins }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">No Telp</th>
+                                            <td>{{ $instruktur->no_hp_ins }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Tanggal Masuk</th>
+                                            <td>{{ $instruktur->tgl_masuk_ins }}</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <th scope="row">Aksi</th>
+                                            <td>
+                                                <a href="/edit/profile/{{ $instruktur->id_ins}}" class="btn btn-primary btn-icon-split btn-sm">
+                                                    <span class="icon text-white-50" style="margin-right: 10px;">
+                                                        <i class="fas fa-pen"></i>
+                                                    </span>
+                                                    <span class="text" style="font-weight: bold">Ubah Profil</span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
+        </div>
+    </div>
+    {{-- modal tambah materi --}}
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel" data-bs-toggle="modal"  data-bs-target="#staticBackdrop">Tambah Bab Materi</h5>
+                </div>
+                <form action="/add/mapel" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">        
+                        <div class="form-group">
+                            <label for="mapel">Nama Judul Materi<strong class="text-danger font-weight-bold">*</strong></label>
+                            <input id="mapel" type="text" class="form-control" placeholder="Masukkan Judul Bab" required name="mapel">
+                        </div>
+                        <div id="error_mapel_container" style="display: flex; justify-content: space-between;margin-top: 10px;">
+                            <span id="error_mapel" class="text-danger mt-1" style="text-transform: capitalize"></span>
+                            <span id="jml_input_mapel_container">
+                            <span id="jml_input_mapel">0</span> 
+                            / 25</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="tahunAkademik">Tahun Akademik<strong class="text-danger font-weight-bold">*</strong></label>
+                            <select required class="form-select" name="tahunAkademik" id="tahunAkademik">
+                                <option value="">Tahun Akademik</option>
+                                <?php
+                                    $currentYear = date('Y');
+                                    $startYear = $currentYear - 3; // 3 tahun sebelum tahun sekarang
+                                    $endYear = $currentYear + 1;   // 1 tahun setelah tahun sekarang
+
+                                    for ($year = $startYear; $year <= $endYear; $year++) {
+                                        $nextYear = $year + 1;
+                                        echo "<option value='{$year}'>{$year}/{$nextYear}</option>";
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-top: 30px;">
+                            <label for="materi">File Materi Pembelajaran<strong class="text-danger font-weight-bold">*</strong></label>
+                            <div style="display: flex; justify-content: space-between;margin-top: 10px;" id="btnFileContainer">
+                                <button  type="button" id="btnKurangFile" class="btn btn-primary" style="padding: 0 30px;"><i class="fa fa-minus"></i></button>
+                                <button  type="button" id="btnTambahFile" class="btn btn-primary" style="padding: 0 30px;"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label for="file1"><b>File Materi 1</b><strong class="text-danger font-weight-bold"> *</strong></label>
+                            <input id="materi" type="text" class="form-control" placeholder="Masukkan Nama Judul Materi" required name="judulMateri1">
+                            <input id="file1" accept="application/pdf" style="margin-top: 10px;" type="file" class="form-control" placeholder="Masukkan File Materi" required name="file1">
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                        <button type="submit" class="btn btn-primary">Tambah</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+        {{-- modal edit materi --}}
+        @foreach ($mapel as $mapels )
+            <div class="modal fade" id="modal-{{ $mapels->id_mapel }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-{{ $mapels->id_mapel }}Label" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-{{ $mapels->id_mapel }}Label" data-bs-toggle="modal"  data-bs-target="#modal-{{ $mapels->id_mapel }}">Ubah Bab {{ $mapels->nama_mapel}}</h5>
+                        </div>
+                        <form action="/add/materi" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="modal-body" id="modalEdit">        
+                                <div class="form-group">
+                                    <label for="mapelEdit">Nama Judul Materi<strong class="text-danger font-weight-bold">*</strong></label>
+                                    <input id="mapelEdit" value="{{$mapels->nama_mapel}}" type="text" class="form-control" placeholder="Masukkan Judul Bab" required name="mapelEdit">
+                                </div>
+                                <div id="error_mapelEdit_container" style="display: flex; justify-content: space-between;margin-top: 10px;">
+                                    <span id="error_mapelEdit" class="text-danger mt-1" style="text-transform: capitalize"></span>
+                                    <span id="jml_input_mapelEdit_container">
+                                    <span id="jml_input_mapelEdit">0</span> 
+                                    / 25</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tahunAkademik">Tahun Akademik<strong class="text-danger font-weight-bold">*</strong></label>
+                                    <select required  class="form-select" name="tahunAkademik" id="tahunAkademik">
+                                        <option  value="">Tahun Akademik</option>
+                                        <option @if($mapels->thn_akademik == '2024') selected @endif value="2024">2024/2025</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-top: 30px;">
+                                    <label for="filemateri">Tambah File Materi Pembelajaran Baru<strong class="text-danger font-weight-bold">*</strong></label>
+                                    <div style="display: flex; justify-content: space-between;margin-top: 10px;" id="btnFileContainerEdit">
+                                        <button  type="button" id="btnKurangFileEdit" class="btn btn-primary" style="padding: 0 30px;"><i class="fa fa-minus"></i></button>
+                                        <button  type="button" id="btnTambahFileEdit" class="btn btn-primary" style="padding: 0 30px;"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top: 20px;">
+                                    <label for="file1Edit"><b>File Materi 1</b><strong class="text-danger font-weight-bold"> *</strong></label>
+                                    <input id="materi1Edit" type="text" class="form-control" placeholder="Masukkan Nama Judul Materi" required name="judulMateri1Edit">
+                                    <input id="file1Edit" accept="application/pdf" style="margin-top: 10px;" type="file" class="form-control" placeholder="Masukkan File Materi" required name="file1Edit">
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="text-align: center">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                                <button type="submit" class="btn btn-primary">Tambah</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+        {{-- modal view materi --}}
+        @foreach ($mapel as $mapels )
+            <div class="modal fade" id="modalView-{{ $mapels->id_mapel }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-{{ $mapels->id_mapel }}Label" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-{{ $mapels->id_mapel }}Label" data-bs-toggle="modal"  data-bs-target="#modal-{{ $mapels->id_mapel }}">Materi Bab {{ $mapels->nama_mapel}}</h5>
+                        </div>
+                        <div class="modal-body">
+                            @foreach ($materi as $materis )
+                            @if ($materis->id_mapels == $mapels->id_mapel)
+                            <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                               <a style="padding-bottom: 2px; border-bottom: 1px solid rgb(72, 72, 72); text-decoration: none;width: 80%;" href="{{$materis->dok_materi}}" target="_blank">{{ $materis->judul_materi}}</a>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>
+                                        <button style="border: none; background-color: transparent;" class="mb-0 text-muted fw-medium" data-bs-toggle="modal" data-bs-target="#modalEditMateri-{{ $materis->id_materi }}"><i class="mdi mdi-square-edit-outline font-size-16 align-middle"></i></button>
+                                    </div>
+                                    <div>
+                                        <a href="/delete/materi/{{$materis->id_materi}}" class="delete-item">
+                                            <i class="mdi mdi-trash-can-outline align-middle font-size-16 text-danger"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                            @endforeach
+                        </div>
+                        <div class="modal-footer" style="text-align: center">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    <script>
+        let fileCount = 1; // Memulai dengan file1
+
+        document.getElementById('btnTambahFile').addEventListener('click', function () {
+            fileCount++;
+            
+            // Buat elemen div untuk form-group baru
+            const newFileGroup = document.createElement('div');
+            newFileGroup.classList.add('form-group');
+            newFileGroup.style.marginTop = '20px';
+            newFileGroup.innerHTML = `
+                <label for="file${fileCount}"><b>File Materi ${fileCount}</b><strong class="text-danger font-weight-bold"> *</strong></label>
+                <input id="materi${fileCount}" type="text" class="form-control" placeholder="Masukkan Nama Judul Materi" required name="judulMateri${fileCount}">
+                <input id="file${fileCount}" accept="application/pdf" type="file" style="margin-top: 10px;" class="form-control" placeholder="Masukkan File Materi" required name="file${fileCount}">
+            `;
+            
+            // Tambahkan form-group baru ke dalam container modal-body
+            document.querySelector('.modal-body').appendChild(newFileGroup);
+        });
+
+        document.getElementById('btnKurangFile').addEventListener('click', function () {
+            if (fileCount > 1) { // Jangan hapus file pertama
+                const lastFileGroup = document.getElementById(`file${fileCount}`).parentNode;
+                lastFileGroup.remove();
+                fileCount--;
+            }
+        });
+
+        let fileCountEdit = 1;
+        document.getElementById('btnTambahFileEdit').addEventListener('click', function () {
+            fileCountEdit++;
+            
+            // Buat elemen div untuk form-group baru
+            const newFileGroup = document.createElement('div');
+            newFileGroup.classList.add('form-group');
+            newFileGroup.style.marginTop = '20px';
+            newFileGroup.innerHTML = `
+                <label for="file${fileCountEdit}Edit"><b>File Materi ${fileCountEdit}</b><strong class="text-danger font-weight-bold"> *</strong></label>
+                <input id="materi${fileCountEdit}Edit" type="text" class="form-control" placeholder="Masukkan Nama Judul Materi" required name="judulMateri${fileCountEdit}Edit">
+                <input id="file${fileCountEdit}Edit" accept="application/pdf" type="file" style="margin-top: 10px;" class="form-control" placeholder="Masukkan File Materi" required name="file${fileCountEdit}">
+            `;
+            
+            // Tambahkan form-group baru ke dalam container modal-body
+            document.querySelector('#modalEdit').appendChild(newFileGroup);
+        });
+
+        document.getElementById('btnKurangFileEdit').addEventListener('click', function () {
+            if (fileCountEdit > 1) { // Jangan hapus file pertama
+                const lastFileGroup = document.getElementById(`file${fileCountEdit}Edit`).parentNode;
+                lastFileGroup.remove();
+                fileCountEdit--;
+            }
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+                // Mengambil elemen berdasarkan ID
+                var inputmapel = document.getElementById('mapel');
+                var errormapel = document.getElementById('error_mapel');
+                var jmlInputString = document.getElementById('jml_input_mapel');
+                var jmlInputString_container = document.getElementById('jml_input_mapel_container');
+            
+                // Fungsi untuk memperbarui jumlah karakter dan memeriksa limit
+                function updateCharacterCount() {
+                    var length = inputmapel.value.length;
+                    jmlInputString.textContent = length; // Memperbarui jumlah karakter yang ditampilkan
+            
+                    if (length > 25) {
+                        jmlInputString_container.style.color = "red";
+                        inputmapel.value = inputmapel.value.substring(0, 25); // Memotong nilai input jika lebih dari 25 karakter
+                        errormapel.textContent = "Maksimal 25 huruf"; // Menampilkan pesan error
+                    } else if (length >  25) {
+                        jmlInputString_container.style.color = "red";
+                        errormapel.textContent = "Maksimal 25 huruf";
+                    } else {
+                        jmlInputString_container.style.color = "black";
+                        errormapel.textContent = ""; // Mengosongkan pesan error jika kurang dari 25 karakter
+                    }
+                }
+            
+                // Menambahkan event listener untuk merespons setiap kali ada input
+                inputmapel.addEventListener('input', updateCharacterCount);
+            });
+
+
+            function deleteItem(event) {
+                event.preventDefault(); // Mencegah pengalihan langsung ke URL
+                event.stopPropagation(); // Mencegah event click merambat ke elemen induk
+
+                // Tambahkan konfirmasi penghapusan atau lakukan aksi yang diperlukan di sini
+                if (confirm("Apakah Anda yakin ingin menghapus item ini?")) {
+                    window.location.href = event.currentTarget.getAttribute('href');
+                }
+            }
+
+    </script>
+    @if (session('error_add'))
+    <script>
+          Swal.fire({
+              title: "Gagal Menambah Materi",
+              text: "{{ session('error_add') }}", // Menggunakan blade syntax untuk menampilkan pesan
+              icon: "error"
+          });
+        console.log("Error reset message:", "{{ session('error_add') }}");
+    </script>
+    @endif
+    @if (session('sukses_add'))
+    <script>
+          Swal.fire({
+              title: "{{ session('sukses_add') }}",
+              icon: "success"
+          });
+        console.log("Error reset message:", "{{ session('sukses_add') }}");
+    </script>
+    @endif
+    @if (session('error_delete'))
+    <script>
+          Swal.fire({
+              title: "Gagal Menghapus Materi",
+              text: "{{ session('error_delete') }}", // Menggunakan blade syntax untuk menampilkan pesan
+              icon: "error"
+          });
+        console.log("Error reset message:", "{{ session('error_delete') }}");
+    </script>
+    @endif
+    @if (session('sukses_delete'))
+    <script>
+          Swal.fire({
+              title: "{{ session('sukses_delete') }}",
+              icon: "success"
+          });
+        console.log("Error reset message:", "{{ session('sukses_delete') }}");
+    </script>
+    @endif
+    @if (session('error_edit'))
+    <script>
+          Swal.fire({
+              title: "Gagal Menambah Materi",
+              text: "{{ session('error_edit') }}", // Menggunakan blade syntax untuk menampilkan pesan
+              icon: "error"
+          });
+        console.log("Error reset message:", "{{ session('error_edit') }}");
+    </script>
+    @endif
+    @if (session('sukses_edit'))
+    <script>
+          Swal.fire({
+              title: "{{ session('sukses_edit') }}",
+              icon: "success"
+          });
+        console.log("Error reset message:", "{{ session('sukses_edit') }}");
+    </script>
+    @endif
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+    </script>
+</body>
+
+</html>

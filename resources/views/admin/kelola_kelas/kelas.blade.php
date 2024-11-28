@@ -103,6 +103,20 @@
                 </div>
             </li>
             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKompNilai"
+                    aria-expanded="true" aria-controls="collapseKompNilai">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Kelola Komponen Nilai</span>
+                </a>
+                <div id="collapseKompNilai" class="collapse" aria-labelledby="headingnilai"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Komponen:</h6>
+                        <a class="collapse-item" href="/dataKompNilai">Kelola Komponen Nilai</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsekelas"
                     aria-expanded="true" aria-controls="collapsekelas">
                     <i class="fas fa-fw fa-wrench"></i>
@@ -126,8 +140,9 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Kelas:</h6>
-                        <a class="collapse-item" href="/dataKelasA">Kelas A</a>
-                        <a class="collapse-item" href="/dataKelasB">Kelas B</a>
+                        @foreach ($listkelas as $listkelass )
+                            <a class="collapse-item" href="/dataKelas{{$listkelass->nama_kelas}}">Kelas {{$listkelass->nama_kelas}}</a>
+                        @endforeach
                     </div>
                 </div>
             </li>
@@ -237,6 +252,7 @@
                                             <th>Kelas</th>
                                             <th>Jumlah Siswa</th>
                                             <th>Pengajar</th>
+                                            <th>Jadwal</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -252,6 +268,11 @@
                                             </td>
                                             <td>
                                                 {{$kelass->nama_ins}}
+                                            </td>
+                                            <td>
+                                                <a href="/view/jadwal/{{ $kelass->nama_kelas }}">
+                                                    <i class="fas fa-search"></i>
+                                                </a>
                                             </td>
                                             <td class="text-center">
                                                 <button data-id="{{ json_encode(['kelass' => $kelass->id_kelas,'nama' => $kelass->nama_kelas,'ins' => $kelass->id_ins,'kuota' => $kelass->kuota_siswa]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>

@@ -103,6 +103,20 @@
                 </div>
             </li>
             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKompNilai"
+                    aria-expanded="true" aria-controls="collapseKompNilai">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Kelola Komponen Nilai</span>
+                </a>
+                <div id="collapseKompNilai" class="collapse" aria-labelledby="headingnilai"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Komponen:</h6>
+                        <a class="collapse-item" href="/dataKompNilai">Kelola Komponen Nilai</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsekelas"
                     aria-expanded="true" aria-controls="collapsekelas">
                     <i class="fas fa-fw fa-wrench"></i>
@@ -117,17 +131,18 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsekelas"
-                    aria-expanded="true" aria-controls="collapsekelas">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapselistkelas"
+                    aria-expanded="true" aria-controls="collapselistkelas">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>List Kelas</span>
                 </a>
-                <div id="collapsekelas" class="collapse" aria-labelledby="headingkelas"
+                <div id="collapselistkelas" class="collapse" aria-labelledby="headingkelas"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Kelas:</h6>
-                        <a class="collapse-item" href="/dataKelasA">Kelas A</a>
-                        <a class="collapse-item" href="/dataKelasB">Kelas B</a>
+                        @foreach ($listkelas as $listkelass )
+                            <a class="collapse-item" href="/dataKelas{{$listkelass->nama_kelas}}">Kelas {{$listkelass->nama_kelas}}</a>
+                        @endforeach
                     </div>
                 </div>
             </li>

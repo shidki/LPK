@@ -1,11 +1,17 @@
 <?php
 
+use App\Http\Controllers\absensiController;
 use App\Http\Controllers\akunController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BidangController;
 use App\Http\Controllers\halamanController;
+use App\Http\Controllers\jadwalController;
 use App\Http\Controllers\kelasController;
+use App\Http\Controllers\kompNilaiController;
+use App\Http\Controllers\kuisController;
+use App\Http\Controllers\materiController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\soalController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',[AuthController::class, 'loginCounter'])->name('loginCounter');
@@ -29,6 +35,12 @@ Route::get('/edit_siswa', function(){
 });
 // ============= dashboard menu di awal ===========
 Route::get('/halamanDashboard',[halamanController::class, 'dashboard'])->name('dashboard');
+Route::get('/materiPembelajaran',[halamanController::class, 'materiPembelajaran'])->name('materiPembelajaran');
+Route::get('/kuis',[halamanController::class, 'kuis'])->name('kuis');
+Route::get('/view/absensi',[halamanController::class, 'absensi'])->name('absensi');
+// ============== view soal kuis ===================
+Route::get('/view/soal/{id}',[halamanController::class, 'view_soal'])->name('view_soal');
+
 
 // ============= dashboard sidebar route ===========
 Route::get('/halamanAdmin',[halamanController::class, 'dashboardAdmin'])->name('dashboardAdmin');
@@ -43,6 +55,8 @@ Route::get('/dataSiswa',[halamanController::class, 'dataSiswa'])->name('dataSisw
 Route::get('/dataInstruktur',[halamanController::class, 'dataInstruktur'])->name('dataInstruktur');
 Route::get('/dataAdmin',[halamanController::class, 'dataAdmin'])->name('dataAdmin');
 Route::get('/dataKelas',[halamanController::class, 'dataKelas'])->name('dataKelas');
+
+Route::get('/dataKompNilai',[halamanController::class, 'dataKompNilai'])->name('dataKompNilai');
 
 
 
@@ -98,5 +112,38 @@ Route::post('/add/kelas',[kelasController::class, 'add_kelas'])->name('add_kelas
 Route::post('/edit/kelas',[kelasController::class, 'edit_kelas'])->name('edit_kelas');
 Route::get('/delete/kelas/{id}',[kelasController::class, 'delete_kelas'])->name('delete_kelas');
 
+// ========= KOMPONEN NILAI ROUTE ==============
+Route::post('/add/KompNilai',[kompNilaiController::class, 'add_kompNilai'])->name('add_kompNilai');
+Route::post('/edit/kompNilai',[kompNilaiController::class, 'edit_kompNilai'])->name('edit_kompNilai');
+Route::get('/delete/kompNilai/{id}',[kompNilaiController::class, 'delete_kompNilai'])->name('delete_kompNilai');
+
+// ========= KOMPONEN MATERI ROUTE ==============
+    // ============= MAPEL / BAB ===================
+    Route::post('/add/mapel',[materiController::class, 'add_mapel'])->name('add_mapel');
+    Route::post('/edit/mapel',[materiController::class, 'edit_mapel'])->name('edit_mapel');
+    // ============= MATERI =============
+    Route::get('/delete/mapel/{id}',[materiController::class, 'delete_mapel'])->name('delete_mapel');
+    Route::get('/delete/materi/{id}',[materiController::class, 'delete_materi'])->name('delete_materi');
+
+// ========= KOMPONEN KUIS ROUTE ==============
+Route::post('/add/kuis',[kuisController::class, 'add_kuis'])->name('add_kuis');
+Route::post('/edit/kuis',[kuisController::class, 'edit_kuis'])->name('edit_kuis');
+Route::get('/delete/kuis/{id}',[kuisController::class, 'delete_kuis'])->name('delete_kuis');
+
+// ==========  KELOLA SOAL ============
+Route::post('/add/soal',[soalController::class, 'add_soal'])->name('add_soal');
+Route::get('/delete/soal/{id}',[soalController::class, 'delete_soal'])->name('delete_soal');
+Route::post('/edit/soal',[soalController::class, 'edit_soal'])->name('edit_soal');
+Route::post('/edit/opsi',[soalController::class, 'edit_opsi'])->name('edit_opsi');
+Route::post('/edit/jawabanBenar',[soalController::class, 'edit_jawabanBenar'])->name('edit_jawabanBenar');
 
 
+
+// ==========  KELOLA JADWAL ============
+Route::get('/view/jadwal/{nama}',[jadwalController::class, 'view_jadwal'])->name('view_jadwal');
+
+// ==========  KELOLA ABSENSI ============
+Route::get('/mulaiKelas',[absensiController::class, 'mulaikelas'])->name('mulaikelas');
+Route::get('/view/absen/siswa/{tgl}',[absensiController::class, 'viewListAbsenBerdasarTanggal'])->name('viewListAbsenBerdasarTanggal');
+//Route::get('/edit/absen/siswa/{status}/{id_siswa}/{id_jadwal}', [absensiController::class, 'editAbsen']);
+Route::post('/edit/absen/siswa', [absensiController::class, 'editAbsenAjax']);

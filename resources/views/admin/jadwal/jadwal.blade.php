@@ -12,7 +12,7 @@
     <title>SB Admin 2 - Tables</title>
     <script src="https://kit.fontawesome.com/8183c3e7b3.js" crossorigin="anonymous"></script>
     <!-- Custom fonts for this template -->
-    <link href="admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="{{asset('admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -20,11 +20,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <!-- Custom styles for this template -->
-    <link href="admin/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="{{asset('admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <!-- Custom styles for this page -->
-    <link href="admin/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="{{asset('admin/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
 </head>
 
@@ -47,148 +47,16 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="/halamanAdmin">
+                <a class="nav-link" href="/view/jadwal/{{$kelas}}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Kelola Jadwal</span></a>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item ">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Kelola Akun</span>
-                </a>
-                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Akun</h6>
-                        <a class="collapse-item" href="/akunSiswa">Siswa</a>
-                        <a class="collapse-item " href="/akunInstruktur">Instruktur</a>
-                        <a class="collapse-item active" href="/akunAdmin">Admin</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Kelola Bidang</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Bidang:</h6>
-                        <a class="collapse-item" href="/dataBidang">Bidang</a>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePresensi"
-                    aria-expanded="true" aria-controls="collapsePresensi">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Kelola Presensi</span>
-                </a>
-                <div id="collapsePresensi" class="collapse" aria-labelledby="headingPresensi"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Presensi:</h6>
-                        <a class="collapse-item" href="/presensi">Presensi</a>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKompNilai"
-                    aria-expanded="true" aria-controls="collapseKompNilai">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Kelola Komponen Nilai</span>
-                </a>
-                <div id="collapseKompNilai" class="collapse" aria-labelledby="headingnilai"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Komponen:</h6>
-                        <a class="collapse-item" href="/dataKompNilai">Kelola Komponen Nilai</a>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsekelas"
-                    aria-expanded="true" aria-controls="collapsekelas">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Kelola Kelas</span>
-                </a>
-                <div id="collapsekelas" class="collapse" aria-labelledby="headingkelas"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Kelas:</h6>
-                        <a class="collapse-item" href="/dataKelas">Kelas</a>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseListkelas"
-                    aria-expanded="true" aria-controls="collapseListkelas">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>List Kelas</span>
-                </a>
-                <div id="collapseListkelas" class="collapse" aria-labelledby="headingkelas"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Kelas:</h6>
-                        @foreach ($listkelas as $listkelass )
-                            <a class="collapse-item" href="/dataKelas{{$listkelass->nama_kelas}}">Kelas {{$listkelass->nama_kelas}}</a>
-                        @endforeach
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMateri"
-                    aria-expanded="true" aria-controls="collapseMateri">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Kelola Materi</span>
-                </a>
-                <div id="collapseMateri" class="collapse" aria-labelledby="headingMateri"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Materi:</h6>
-                        <a class="collapse-item" href="/dataMateri">Kelola Materi</a>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProfile"
-                    aria-expanded="true" aria-controls="collapseProfile">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Kelola Profile</span>
-                </a>
-                <div id="collapseProfile" class="collapse" aria-labelledby="headingProfile"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Profile:</h6>
-                        <a class="collapse-item" href="/dataSiswa">Siswa</a>
-                        <a class="collapse-item" href="/dataInstruktur">Instruktur</a>
-                        <a class="collapse-item" href="/dataAdmin">Admin</a>
-                    </div>
-                </div>
-            </li>
-            <hr class="sidebar-divider">
-
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="/logout">
-                    <i class="fa-solid fa-door-open"></i>
-                    <span>Keluar</span></a>
-            </li>
+            
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="/halamanDashboard">
+                <a class="nav-link" href="/dataKelas">
                     <i class="fa-solid fa-arrow-left"></i>
                     <span>Back</span></a>
             </li>
@@ -232,48 +100,34 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Kelola Akun / Admin</h1>
+                    <h1 class="h3 mb-2 text-gray-800"><a href="/dataKelas">Kelola Kelas</a> / Jadwal</h1>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Akun Admin</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Jadwal {{$kelas}}</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <button data-bs-toggle="modal"  data-bs-target="#staticBackdrop" type="submit" class="btn btn-success btn-icon-split mb-3">
+                                    <button  type="submit" class="btn btn-success btn-icon-split mb-3">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-plus"></i>
                                         </span>
-                                        <span class="text">Tambah Akun</span>
+                                        <span class="text">Tambah Jadwal</span>
                                     </button>
                                     <thead>
                                         <tr>
-                                            <th>Email</th>
-                                            <th>Status Akun</th>
-                                            <th class="text-center">Aksi</th>
+                                            <th style="text-align: center;width: 50px">No</th>
+                                            <th style="text-align: center;width: 200px">Tanggal Pelaksanaan</th>
+                                            <th class="text-center" style="text-align: center;width: 200px">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       @foreach ($akun as $akuns )
+                                       @foreach ($jadwal as $jadwals )
                                        <tr>
-                                            <td>{{ $akuns->email }}</td>
-                                            <td>
-                                                <div style="display: flex; justify-content: space-between;">
-                                                    <span style="text-transform: capitalize">
-                                                        @if ($akuns->status_akun == "tidak_aktif")
-                                                            tidak aktif
-                                                        @else
-                                                            {{$akuns->status_akun}}
-                                                        @endif
-                                                    </span> 
-                                                    <button data-id="{{ json_encode(['id' => $akuns->id_akun,'status' => $akuns->status_akun]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop3" type="submit" style="background: transparent; border: none;"><i class="fas fa-pen"></i></button>
-                                                </div>
-                                            </td>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $jadwals['tanggal_format'] }}</td>
                                             <td class="text-center">
-                                                <button data-id="{{ json_encode(['id' => $akuns->id_akun,'email' => $akuns->email,'status' => $akuns->status_akun]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
-                                                <a href="/delete/akun/admin/{{ $akuns->id_akun }}" class="btn btn-danger btn-circle btn-sm">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
+                                                <button data-id="{{ json_encode(['id' => $jadwals['id_jadwal'],'tanggal' => $jadwals['tanggal_pelaksanaan'],'status' => $jadwals['status']]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
                                             </td>
                                         </tr>
                                        @endforeach
@@ -591,22 +445,22 @@
                 </script>
                 @endif
     <!-- Bootstrap core JavaScript-->
-    <script src="admin/vendor/jquery/jquery.min.js"></script>
-    <script src="admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+    <script src="{{ asset('admin/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{ asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    
     <!-- Core plugin JavaScript-->
-    <script src="admin/vendor/jquery-easing/jquery.easing.min.js"></script>
-
+    <script src="{{ asset('admin/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+    
     <!-- Custom scripts for all pages-->
-    <script src="admin/js/sb-admin-2.min.js"></script>
-
+    <script src="{{ asset('admin/js/sb-admin-2.min.js')}}"></script>
+    
     <!-- Page level plugins -->
-    <script src="admin/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="admin/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
+    <script src="{{ asset('admin/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+    
     <!-- Page level custom scripts -->
-    <script src="admin/js/demo/datatables-demo.js"></script>
+    <script src="{{ asset('admin/js/demo/datatables-demo.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </body>
 

@@ -222,7 +222,9 @@ class AuthController extends Controller
         $email = $request->email;
         $no_hp = $request->no_hp;
         $alamat = $request->alamat;
-
+        if (!preg_match('/^(\+?[0-9]{1,3}[0-9]{1,}|[0-9]{1,})$/', $request->no_hp)) {
+            return back()->with(['error_edit' => 'Format nomor HP tidak valid.']);
+        } 
         // cek apakah no hp yang dimasukkan udah ada di database atau belum ( kondisi no hp nya udah dipake siswa lain blom)
 
         $cekNoHp = DB::table("siswas")->select("*")->where("no_hp",'=',$no_hp)->where("email",'!=',$email)->first();

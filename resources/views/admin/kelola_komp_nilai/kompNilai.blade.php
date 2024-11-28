@@ -63,12 +63,12 @@
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Kelola Akun</span>
                 </a>
-                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapseTwo" class="collapse " aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Akun</h6>
-                        <a class="collapse-item" href="/akunSiswa">Siswa</a>
+                        <a class="collapse-item " href="/akunSiswa">Siswa</a>
                         <a class="collapse-item " href="/akunInstruktur">Instruktur</a>
-                        <a class="collapse-item active" href="/akunAdmin">Admin</a>
+                        <a class="collapse-item " href="/akunAdmin">Admin</a>
                     </div>
                 </div>
             </li>
@@ -80,11 +80,11 @@
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Kelola Bidang</span>
                 </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                <div id="collapseUtilities" class="collapse show" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Bidang:</h6>
-                        <a class="collapse-item" href="/dataBidang">Bidang</a>
+                        <a class="collapse-item active" href="/dataBidang">Bidang</a>
                     </div>
                 </div>
             </li>
@@ -131,12 +131,12 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseListkelas"
-                    aria-expanded="true" aria-controls="collapseListkelas">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapselistkelas"
+                    aria-expanded="true" aria-controls="collapselistkelas">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>List Kelas</span>
                 </a>
-                <div id="collapseListkelas" class="collapse" aria-labelledby="headingkelas"
+                <div id="collapselistkelas" class="collapse" aria-labelledby="headingkelas"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Kelas:</h6>
@@ -232,10 +232,10 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Kelola Akun / Admin</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Kelola Komponen Nilai</h1>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Akun Admin</h6>
+                            <h6 class="m-0 font-weight-bold text-primary"></h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -244,34 +244,29 @@
                                         <span class="icon text-white-50">
                                             <i class="fas fa-plus"></i>
                                         </span>
-                                        <span class="text">Tambah Akun</span>
+                                        <span class="text">Tambah Komponen Nilai</span>
                                     </button>
                                     <thead>
                                         <tr>
-                                            <th>Email</th>
-                                            <th>Status Akun</th>
+                                            <th>No</th>
+                                            <th>Komponen Nilai</th>
+                                            <th>Proporsi/Bobot Nilai</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       @foreach ($akun as $akuns )
+                                       @foreach ($kompNilai as $kompNilais )
                                        <tr>
-                                            <td>{{ $akuns->email }}</td>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>
-                                                <div style="display: flex; justify-content: space-between;">
-                                                    <span style="text-transform: capitalize">
-                                                        @if ($akuns->status_akun == "tidak_aktif")
-                                                            tidak aktif
-                                                        @else
-                                                            {{$akuns->status_akun}}
-                                                        @endif
-                                                    </span> 
-                                                    <button data-id="{{ json_encode(['id' => $akuns->id_akun,'status' => $akuns->status_akun]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop3" type="submit" style="background: transparent; border: none;"><i class="fas fa-pen"></i></button>
-                                                </div>
+                                                {{$kompNilais->nama_komp_nilai}}
+                                            </td>
+                                            <td>
+                                                {{$kompNilais->proporsi_nilai*100}}%
                                             </td>
                                             <td class="text-center">
-                                                <button data-id="{{ json_encode(['id' => $akuns->id_akun,'email' => $akuns->email,'status' => $akuns->status_akun]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
-                                                <a href="/delete/akun/admin/{{ $akuns->id_akun }}" class="btn btn-danger btn-circle btn-sm">
+                                                <button data-id="{{ json_encode(['kompNilais' => $kompNilais->id_komp_nilai,'nama' => $kompNilais->nama_komp_nilai,'proporsi' => $kompNilais->proporsi_nilai]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
+                                                <a href="/delete/kompNilai/{{ $kompNilais->id_komp_nilai }}" class="btn btn-danger btn-circle btn-sm">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -287,33 +282,29 @@
             </div>
 
 
-            {{-- modal tambah akun --}}
+            {{-- modal tambah Komponen Nilai --}}
             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel" data-bs-toggle="modal"  data-bs-target="#staticBackdrop">Tambah Akun</h5>
+                            <h5 class="modal-title" id="staticBackdropLabel" data-bs-toggle="modal"  data-bs-target="#staticBackdrop">Tambah Komponen Nilai</h5>
                         </div>
-                        <form action="/add/akun/admin" method="post">
+                        <form action="/add/KompNilai" method="post">
                             @csrf
                             <div class="modal-body">        
                                 <div class="form-group">
-                                    <label for="email">Email<strong class="text-danger font-weight-bold">*</strong></label>
-                                    <input id="email" type="email" class="form-control" placeholder="Masukkan alamat email" required name="email">
+                                    <label for="kompNilai">Nama Komponen Nilai<strong class="text-danger font-weight-bold">*</strong></label>
+                                    <input id="kompNilai" type="text" class="form-control" placeholder="Masukkan nama Komponen Nilai" required name="kompNilai">
                                 </div>
-                                <div id="error_email_container" style="display: flex; justify-content: space-between;margin-top: 10px;">
-                                    <span id="error_email" class="text-danger mt-1" style="text-transform: capitalize"></span>
-                                    <span id="jml_input_email_container">
-                                    <span id="jml_input_email">0</span> 
-                                    / 50</span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Password<strong class="text-danger font-weight-bold">*</strong></label>
-                                    <input id="password" type="password" class="form-control" placeholder="Masukkan Kata Sandi" required name="password">
+                                <div id="error_kompNilai_container" style="display: flex; justify-content: space-between;margin-top: 10px;">
+                                    <span id="error_kompNilai" class="text-danger mt-1" style="text-transform: capitalize"></span>
+                                    <span id="jml_input_kompNilai_container">
+                                    <span id="jml_input_kompNilai">0</span> 
+                                    / 25</span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="konfirmasiPw">Konfirmasi Passowrd<strong class="text-danger font-weight-bold">*</strong></label>
-                                    <input id="konfirmasiPw" name="konfirmasiPw" type="password" class="form-control" placeholder="Masukkan Ulang Kata Sandi" required>
+                                    <label for="proporsi">Proporsi  Nilai ( <span id="valueRange" style="font-weight: bold">0</span> % )<strong class="text-danger font-weight-bold">*</strong></label>
+                                    <input type="range" class="form-range" id="proporsi" name="proporsi" value="0" min="0" max="100" oninput="updateValue(this.value)">  
                                 </div>
                             </div>
                             <div class="modal-footer" style="text-align: center">
@@ -324,34 +315,30 @@
                     </div>
                 </div>
             </div>
-            {{-- modal edit akun --}}
+            {{-- modal edit kompNilai --}}
             <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdrop2Label" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdrop2Label" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2">Ubah Akun</h5>
+                            <h5 class="modal-title" id="staticBackdrop2Label" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2">Ubah Komponen Nilai</h5>
                         </div>
-                        <form action="/edit/akun/admin" method="post">
+                        <form action="/edit/kompNilai" method="post">
                             @csrf
                             <div class="modal-body">  
-                                <input type="hidden" name="akuns" id="akuns">      
+                                <input type="hidden" name="kompNilais" id="kompNilais">      
                                 <div class="form-group">
-                                    <label for="email">Email<strong class="text-danger font-weight-bold">*</strong></label>
-                                    <input id="emailEdit" type="email" class="form-control" placeholder="Masukkan alamat email" readonly name="email">
+                                    <label for="kompNilaiEdit">Nama Komponen Nilai<strong class="text-danger font-weight-bold">*</strong></label>
+                                    <input id="kompNilaiEdit" type="text" class="form-control" placeholder="Masukkan nama Komponen Nilai" required name="kompNilai">
                                 </div>
-                                <div id="error_email_containerEdit" style="display: flex; justify-content: space-between;margin-top: 10px;">
-                                    <span id="error_emailEdit" class="text-danger mt-1" style="text-transform: capitalize"></span>
-                                    <span id="jml_input_email_containerEdit">
-                                    <span id="jml_input_emailEdit">0</span> 
-                                    / 50</span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Kata Sandi<strong class="text-danger font-weight-bold">*</strong></label>
-                                    <input id="password" type="password" class="form-control" placeholder="Masukkan Kata Sandi Baru" required name="password">
+                                <div id="error_kompNilai_containerEdit" style="display: flex; justify-content: space-between;margin-top: 10px;">
+                                    <span id="error_kompNilaiEdit" class="text-danger mt-1" style="text-transform: capitalize"></span>
+                                    <span id="jml_input_kompNilai_containerEdit">
+                                    <span id="jml_input_kompNilaiEdit">0</span> 
+                                    / 25</span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="konfirmasiPw">Konfirmasi Passowrd<strong class="text-danger font-weight-bold">*</strong></label>
-                                    <input id="konfirmasiPw" name="konfirmasiPw" type="password" class="form-control" placeholder="Masukkan Ulang Kata Sandi Baru" required>
+                                    <label for="proporsiEdit">Proporsi  Nilai ( <span id="valueRange2" style="font-weight: bold">0</span> % )<strong class="text-danger font-weight-bold">*</strong></label>
+                                    <input type="range" class="form-range" id="proporsiEdit" name="proporsi" value="0" min="0" max="100" oninput="updateValue2(this.value)">  
                                 </div>
                             </div>
                             <div class="modal-footer" style="text-align: center">
@@ -362,36 +349,6 @@
                     </div>
                 </div>
             </div>
-            {{-- modal edit status --}}
-            <div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdrop2Label" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdrop2Label" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2">Ubah Status Akun</h5>
-                        </div>
-                        <form action="/edit/status/akun/admin" method="post">
-                            @csrf
-                            <div class="modal-body">  
-                                <input type="hidden" name="akuns" id="akunsTatus">      
-                                <div class="form-group">
-                                    <label for="email">Status<strong class="text-danger font-weight-bold">*</strong></label>
-                                    <select required name="status" class="form-select" id="status">
-                                        <option value="">Ubah Status Akun</option>
-                                        <option value="aktif">Aktif</option>
-                                        <option value="tidak_aktif">Tidak Aktif</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="modal-footer" style="text-align: center">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-                                <button type="submit" class="btn btn-primary">Ubah</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
@@ -411,62 +368,68 @@
     </a>
 
     <script>
+            function updateValue(value) {
+                document.getElementById('valueRange').textContent = value;
+            }
+            function updateValue2(value) {
+                document.getElementById('valueRange2').textContent = value;
+            }
                 document.addEventListener('DOMContentLoaded', function () {
                 // Mengambil elemen berdasarkan ID
-                var inputemail = document.getElementById('email');
-                var erroremail = document.getElementById('error_email');
-                var jmlInputString = document.getElementById('jml_input_email');
-                var jmlInputString_container = document.getElementById('jml_input_email_container');
+                var inputkompNilai = document.getElementById('kompNilai');
+                var errorkompNilai = document.getElementById('error_kompNilai');
+                var jmlInputString = document.getElementById('jml_input_kompNilai');
+                var jmlInputString_container = document.getElementById('jml_input_kompNilai_container');
             
                 // Fungsi untuk memperbarui jumlah karakter dan memeriksa limit
                 function updateCharacterCount() {
-                    var length = inputemail.value.length;
+                    var length = inputkompNilai.value.length;
                     jmlInputString.textContent = length; // Memperbarui jumlah karakter yang ditampilkan
             
-                    if (length > 50) {
+                    if (length > 25) {
                         jmlInputString_container.style.color = "red";
-                        inputemail.value = inputemail.value.substring(0, 50); // Memotong nilai input jika lebih dari 50 karakter
-                        erroremail.textContent = "Maksimal 50 huruf"; // Menampilkan pesan error
-                    } else if (length >  50) {
+                        inputkompNilai.value = inputkompNilai.value.substring(0, 25); // Memotong nilai input jika lebih dari 25 karakter
+                        errorkompNilai.textContent = "Maksimal 25 huruf"; // Menampilkan pesan error
+                    } else if (length >  25) {
                         jmlInputString_container.style.color = "red";
-                        erroremail.textContent = "Maksimal 50 huruf";
+                        errorkompNilai.textContent = "Maksimal 25 huruf";
                     } else {
                         jmlInputString_container.style.color = "black";
-                        erroremail.textContent = ""; // Mengosongkan pesan error jika kurang dari 50 karakter
+                        errorkompNilai.textContent = ""; // Mengosongkan pesan error jika kurang dari 25 karakter
                     }
                 }
             
                 // Menambahkan event listener untuk merespons setiap kali ada input
-                inputemail.addEventListener('input', updateCharacterCount);
+                inputkompNilai.addEventListener('input', updateCharacterCount);
             });
 
                 document.addEventListener('DOMContentLoaded', function () {
                 // Mengambil elemen berdasarkan ID
-                var inputemail = document.getElementById('emailEdit');
-                var erroremail = document.getElementById('error_emailEdit');
-                var jmlInputString = document.getElementById('jml_input_emailEdit');
-                var jmlInputString_container = document.getElementById('jml_input_email_containerEdit');
+                var inputkompNilai = document.getElementById('kompNilaiEdit');
+                var errorkompNilai = document.getElementById('error_kompNilaiEdit');
+                var jmlInputString = document.getElementById('jml_input_kompNilaiEdit');
+                var jmlInputString_container = document.getElementById('jml_input_kompNilai_containerEdit');
             
                 // Fungsi untuk memperbarui jumlah karakter dan memeriksa limit
                 function updateCharacterCount() {
-                    var length = inputemail.value.length;
+                    var length = inputkompNilai.value.length;
                     jmlInputString.textContent = length; // Memperbarui jumlah karakter yang ditampilkan
             
-                    if (length > 50) {
+                    if (length > 25) {
                         jmlInputString_container.style.color = "red";
-                        inputemail.value = inputemail.value.substring(0, 50); // Memotong nilai input jika lebih dari 50 karakter
-                        erroremail.textContent = "Maksimal 50 huruf"; // Menampilkan pesan error
-                    } else if (length >  50) {
+                        inputkompNilai.value = inputkompNilai.value.substring(0, 25); // Memotong nilai input jika lebih dari 25 karakter
+                        errorkompNilai.textContent = "Maksimal 25 huruf"; // Menampilkan pesan error
+                    } else if (length >  25) {
                         jmlInputString_container.style.color = "red";
-                        erroremail.textContent = "Maksimal 50 huruf";
+                        errorkompNilai.textContent = "Maksimal 25 huruf";
                     } else {
                         jmlInputString_container.style.color = "black";
-                        erroremail.textContent = ""; // Mengosongkan pesan error jika kurang dari 50 karakter
+                        errorkompNilai.textContent = ""; // Mengosongkan pesan error jika kurang dari 25 karakter
                     }
                 }
             
                 // Menambahkan event listener untuk merespons setiap kali ada input
-                inputemail.addEventListener('input', updateCharacterCount);
+                inputkompNilai.addEventListener('input', updateCharacterCount);
             });
 
             var modalInstruktur = document.getElementById('staticBackdrop2');
@@ -475,27 +438,18 @@
                 var dataId = button.getAttribute('data-id');
                 var parsedDataId = JSON.parse(dataId);
                 
-                var email = modalInstruktur.querySelector('#emailEdit');
-                email.value = parsedDataId.email;
-                var email = modalInstruktur.querySelector('#akuns');
-                email.value = parsedDataId.id;
+                var kompNilai = modalInstruktur.querySelector('#kompNilaiEdit');
+                kompNilai.value = parsedDataId.nama;
+                var proporsi = modalInstruktur.querySelector('#proporsiEdit');
+                proporsi.value = parsedDataId.proporsi*100;
+                var valueRange2 = modalInstruktur.querySelector('#valueRange2');
+                valueRange2.textContent = parsedDataId.proporsi*100;
+                var kompNilais = modalInstruktur.querySelector('#kompNilais');
+                kompNilais.value = parsedDataId.kompNilais;
 
-                updateCounter(email, 'jml_input_emailEdit', 50);
-
-            });
-            var modalStatus = document.getElementById('staticBackdrop3');
-            modalStatus.addEventListener('show.bs.modal', function (event) {
-                var button = event.relatedTarget;
-                var dataId = button.getAttribute('data-id');
-                var parsedDataId = JSON.parse(dataId);
-                
-                var status = modalStatus.querySelector('#status');
-                status.value = parsedDataId.status;
-                var akunsTatus = modalStatus.querySelector('#akunsTatus');
-                akunsTatus.value = parsedDataId.id;
+                updateCounter(kompNilai, 'jml_input_kompNilaiEdit',25);
 
             });
-
             function updateCounter(inputElement, counterId, maxLength) {
                 var counter = document.getElementById(counterId);
                 var length = inputElement.value.length;
@@ -505,7 +459,7 @@
             // Event listener for real-time input counting
             document.addEventListener('DOMContentLoaded', function () {
                 const fields = [
-                    { id: 'emailEdit', max: 50, counterId: 'jml_input_emailEdit' },
+                    { id: 'kompNilaiEdit', max: 25, counterId: 'jml_input_kompNilaiEdit' },
                 ];
 
                 fields.forEach(field => {
@@ -536,7 +490,7 @@
                 @if (session('error_add'))
                 <script>
                       Swal.fire({
-                          title: "Gagal Menambah Akun",
+                          title: "Gagal Menambah Komponen Nilai",
                           text: "{{ session('error_add') }}", // Menggunakan blade syntax untuk menampilkan pesan
                           icon: "error"
                       });
@@ -555,7 +509,7 @@
                 @if (session('error_delete'))
                 <script>
                       Swal.fire({
-                          title: "Gagal Menghapus Akun",
+                          title: "Gagal Menghapus Komponen Nilai",
                           text: "{{ session('error_delete') }}", // Menggunakan blade syntax untuk menampilkan pesan
                           icon: "error"
                       });
@@ -574,7 +528,7 @@
                 @if (session('error_edit'))
                 <script>
                       Swal.fire({
-                          title: "Gagal Menambah Admin",
+                          title: "Gagal Menambah Komponen Nilai",
                           text: "{{ session('error_edit') }}", // Menggunakan blade syntax untuk menampilkan pesan
                           icon: "error"
                       });
