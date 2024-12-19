@@ -49,14 +49,13 @@
                         <div class="row align-items-center">
                             <div class="col-md-3">
                                 <div class="text-center border-end">
-                                    <img src="{{asset('https://bootdey.com/img/Content/avatar/avatar1.png')}}" class="img-fluid avatar-xxl rounded-circle" alt="">
+                                    <img src="{{asset('dashboard/img/profil.avif')}}" class="img-fluid avatar-xxl rounded-circle" alt>
                                 </div>
                             </div>
-                            <!-- end col -->
                             <div class="col-md-9">
                                 <div class="ms-3">
                                     <div>
-                                        <h4 class="card-title mb-2 text-center" style="font-weight: bold;">Selamat datang di DPN Perkasa Dashboard</h4>
+                                        <h5 class="card-title mb-2 text-center" style="font-weight: bold;">Selamat Datang di LPK Cipta Kerja</h5>
                                     </div>
                                     <div class="row my-4">
                                         <div class="col-md-12">
@@ -149,7 +148,11 @@
                                         </tr>
                                         <tr>
                                             <th scope="row">Tanggal Masuk</th>
-                                            <td>{{ $siswa->tgl_masuk }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($siswa->tgl_masuk)->translatedFormat('j F Y') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Status</th>
+                                            <td style="text-transform: uppercase">{{ $siswa->status }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

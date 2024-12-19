@@ -242,6 +242,7 @@
                                     </style>
                                     <thead>
                                         <tr>
+                                            <th style="text-align: center;width: 50px">No</th>
                                             <th>Nama</th>
                                             <th>Email</th>
                                             <th>No HP</th>
@@ -253,6 +254,7 @@
                                     <tbody>
                                         @foreach ($admin as $admins )
                                         <tr>
+                                            <td style="text-align: center;width: 50px">{{ $loop->iteration}}</td>
                                             <td>{{ $admins->nama_adm }}</td>
                                             <td>{{ $admins->email_adm }}</td>
                                             <td>{{ $admins->no_hp_adm }}</td>
@@ -278,7 +280,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; DPN PERKASA 2024</span>
+                        <span>Copyright &copy;LPK CIPTA KERJA DPN PERKASA JATENG 2024</span>
                     </div>
                 </div>
             </footer>

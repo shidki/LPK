@@ -240,6 +240,7 @@
                                     </button>
                                     <thead>
                                         <tr>
+                                            <th style="text-align: center;width: 50px">No</th>
                                             <th>Nama</th>
                                             <th>Email</th>
                                             <th>No HP</th>
@@ -251,6 +252,7 @@
                                     <tbody>
                                         @foreach ($instruktur as $instrukturs )
                                         <tr>
+                                            <td style="text-align: center;width: 50px">{{ $loop->iteration}}</td>
                                             <td>{{ $instrukturs->nama_ins }}</td>
                                             <td>{{ $instrukturs->email_ins }}</td>
                                             <td>{{ $instrukturs->no_hp_ins }}</td>
@@ -275,7 +277,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; DPN PERKASA 2024</span>
+                        <span>Copyright &copy;LPK CIPTA KERJA DPN PERKASA JATENG 2024</span>
                     </div>
                 </div>
             </footer>

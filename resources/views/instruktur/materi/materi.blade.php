@@ -532,7 +532,7 @@
     @if (session('error_add'))
     <script>
           Swal.fire({
-              title: "Gagal Menambah Materi",
+              title: "Materi gagal ditambahkan!",
               text: "{{ session('error_add') }}", // Menggunakan blade syntax untuk menampilkan pesan
               icon: "error"
           });
@@ -551,7 +551,7 @@
     @if (session('error_delete'))
     <script>
           Swal.fire({
-              title: "Gagal Menghapus Materi",
+              title: "Materi gagal ditambahkan!",
               text: "{{ session('error_delete') }}", // Menggunakan blade syntax untuk menampilkan pesan
               icon: "error"
           });
@@ -570,7 +570,7 @@
     @if (session('error_edit'))
     <script>
           Swal.fire({
-              title: "Gagal Menambah Materi",
+              title: "Materi gagal ditambahkan!",
               text: "{{ session('error_edit') }}", // Menggunakan blade syntax untuk menampilkan pesan
               icon: "error"
           });

@@ -126,7 +126,7 @@
         <div class="row align-items-center justify-content-xl-between">
           <div class="col-xl-6 m-auto text-center">
             <div class="copyright">
-              <p>Copyright by <a href="">LPK Cipta Kerja</a> Jateng</p>
+              <span>Copyright &copy;LPK CIPTA KERJA DPN PERKASA JATENG 2024</span>
             </div>
           </div>
         </div>

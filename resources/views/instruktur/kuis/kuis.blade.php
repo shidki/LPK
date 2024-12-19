@@ -175,6 +175,7 @@
                                             <th scope="row">No Telp</th>
                                             <td>{{ $instruktur->no_hp_ins }}</td>
                                         </tr>
+                                        
                                         <tr>
                                             <th scope="row">Tanggal Masuk</th>
                                             <td>{{ \Carbon\Carbon::parse($instruktur->tgl_masuk_ins)->translatedFormat('j F Y') }}</td>

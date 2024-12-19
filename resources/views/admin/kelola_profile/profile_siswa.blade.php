@@ -267,6 +267,7 @@
                                 </button>
                                     <thead>
                                         <tr>
+                                            <th style="text-align: center;width: 50px">No</th>
                                             <th>Nama</th>
                                             <th>Email</th>
                                             <th>No HP</th>
@@ -282,6 +283,7 @@
                                     <tbody>
                                         @foreach ($siswa as $siswas )
                                         <tr>
+                                            <td style="text-align: center;width: 50px">{{ $loop->iteration}}</td>
                                             <td>{{ $siswas->nama }}</td>
                                             <td>{{ $siswas->email }}</td>
                                             <td>{{ $siswas->no_hp }}</td>
@@ -327,7 +329,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; DPN PERKASA 2024</span>
+                        <span>Copyright &copy;LPK CIPTA KERJA DPN PERKASA JATENG 2024</span>
                     </div>
                 </div>
             </footer>
@@ -393,7 +395,7 @@
                         <div class="form-group">
                             <label for="bidang_siswa">Bidang Minat<strong class="text-danger font-weight-bold">*</strong></label>
                             <select  required name="bidang_siswa" class="form-select form-select-sm" id="bidang_siswa">
-                                <option value="">pilih bidang</option>
+                                <option value="">Pilih Bidang</option>
                                 @foreach ($bidang as $bidangs )
                                     <option value="{{$bidangs->id_bidang }}">{{$bidangs->nama_bidang }}</option>
                                 @endforeach
@@ -413,12 +415,12 @@
                             <input id="date" type="date" class="form-control" placeholder="Tanggal Masuk Siswa" required name="tglMasuk">
                         </div>
                         <div class="form-group">
-                            <label for="status">status<strong class="text-danger font-weight-bold">*</strong></label>
+                            <label for="status">Status<strong class="text-danger font-weight-bold">*</strong></label>
                             <select required name="status_siswa" class="form-select form-select-sm" id="status_siswa">
                                 <option value="">Status</option>
                                 <option value="aktif">Aktif</option>
                                 <option value="tidak_aktif">Tidak Aktif</option>
-                                <option value="mangkir">mangkir</option>
+                                <option value="mangkir">Mangkir</option>
                             </select>
                         </div>
                     </div>
@@ -480,7 +482,7 @@
                         <div class="form-group">
                             <label for="bidang_siswa">Bidang Minat<strong class="text-danger font-weight-bold">*</strong></label>
                             <select  required  name="bidang_siswaEdit" class="form-select form-select-sm" id="bidang_siswaEdit">
-                                <option value="">pilih bidang</option>
+                                <option value="">Pilih Bidang</option>
                                 @foreach ($bidang as $bidangs )
                                     <option value="{{$bidangs->id_bidang }}">{{$bidangs->nama_bidang }}</option>
                                 @endforeach
@@ -496,12 +498,12 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="status">status<strong class="text-danger font-weight-bold">*</strong></label>
+                            <label for="status">Status<strong class="text-danger font-weight-bold">*</strong></label>
                             <select required name="status_siswaEdit" class="form-select form-select-sm" id="status_siswaEdit" onchange="Lulus()">
                                 <option value="">Status</option>
                                 <option value="aktif">Aktif</option>
                                 <option value="tidak_aktif">Tidak Aktif</option>
-                                <option value="mangkir">mangkir</option>
+                                <option value="mangkir">Mangkir</option>
                                 <option value="lulus">Lulus</option>
                             </select>
                             <script>

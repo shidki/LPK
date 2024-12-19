@@ -63,9 +63,31 @@ class halamanController extends Controller
             return abort(403);
         }
 
+        $siswa = siswa::count();
+        $siswaLulus = siswa::where("status",'=',"lulus")->count();
+        $instruktur = instruktur::count();
+        $bidang = bidang_minat::select('b.*', DB::raw('COUNT(s.id_siswa) as jumlah_siswa'))
+        ->from('bidang_minats as b')
+        ->leftJoin('siswas as s', 's.id_bidang', '=', 'b.id_bidang')
+        ->groupBy('b.id_bidang', 'b.nama_bidang') // Tambahkan 'b.nama_bidang' ke GROUP BY
+        ->get();
+        foreach ($bidang as $item) {
+            if ($item->jumlah_siswa > 0 && $siswa > 0) {
+                // Menghitung persentase siswa di bidang tersebut
+                $item->persentase_siswa = ($item->jumlah_siswa / $siswa) * 100;
+            } else {
+                $item->persentase_siswa = 0;
+            }
+        }
+        if ($siswa > 0) {
+            $persentaseLulus = ($siswaLulus / $siswa) * 100; // Persentase siswa lulus
+        } else {
+            $persentaseLulus = 0; // Menghindari pembagian dengan 0
+        }
+        
         // get kelas untuk nampilin di side bar
         $listkelas = kelas::get();
-        return view('admin.dashboard_admin.dashboard_admin')->with(["listkelas" => $listkelas]);
+        return view('admin.dashboard_admin.dashboard_admin')->with(["listkelas" => $listkelas,"siswa" => $siswa,"instruktur" => $instruktur,"siswaLulus" => $persentaseLulus,"bidang" => $bidang,'jmllulus' => $siswaLulus]);
     }
 
     public function akunSiswa(){
