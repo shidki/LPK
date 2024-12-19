@@ -10,6 +10,7 @@ use App\Http\Controllers\kelasController;
 use App\Http\Controllers\kompNilaiController;
 use App\Http\Controllers\kuisController;
 use App\Http\Controllers\materiController;
+use App\Http\Controllers\nilaiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\soalController;
 use Illuminate\Support\Facades\Route;
@@ -37,7 +38,10 @@ Route::get('/edit_siswa', function(){
 Route::get('/halamanDashboard',[halamanController::class, 'dashboard'])->name('dashboard');
 Route::get('/materiPembelajaran',[halamanController::class, 'materiPembelajaran'])->name('materiPembelajaran');
 Route::get('/kuis',[halamanController::class, 'kuis'])->name('kuis');
+Route::get('/review/kuis',[halamanController::class, 'review_kuis_siswa'])->name('review_kuis_siswa');
 Route::get('/view/absensi',[halamanController::class, 'absensi'])->name('absensi');
+Route::get('/view/penilaian',[halamanController::class, 'halaman_penilaian'])->name('halaman_penilaian');
+Route::get('/view/transkip/{id}',[halamanController::class, 'halaman_transkip_siswa'])->name('halaman_transkip_siswa');
 // ============== view soal kuis ===================
 Route::get('/view/soal/{id}',[halamanController::class, 'view_soal'])->name('view_soal');
 
@@ -57,6 +61,7 @@ Route::get('/dataAdmin',[halamanController::class, 'dataAdmin'])->name('dataAdmi
 Route::get('/dataKelas',[halamanController::class, 'dataKelas'])->name('dataKelas');
 
 Route::get('/dataKompNilai',[halamanController::class, 'dataKompNilai'])->name('dataKompNilai');
+Route::get('/dataMateri',[halamanController::class, 'dataMateri'])->name('dataMateri');
 
 
 
@@ -111,6 +116,7 @@ Route::get('/delete/bidang/{id}',[BidangController::class, 'delete_bidang'])->na
 Route::post('/add/kelas',[kelasController::class, 'add_kelas'])->name('add_kelas');
 Route::post('/edit/kelas',[kelasController::class, 'edit_kelas'])->name('edit_kelas');
 Route::get('/delete/kelas/{id}',[kelasController::class, 'delete_kelas'])->name('delete_kelas');
+Route::get('/detail/kelas/{id}',[kelasController::class, 'detail_kelas'])->name('detail_kelas');
 
 // ========= KOMPONEN NILAI ROUTE ==============
 Route::post('/add/KompNilai',[kompNilaiController::class, 'add_kompNilai'])->name('add_kompNilai');
@@ -147,3 +153,53 @@ Route::get('/mulaiKelas',[absensiController::class, 'mulaikelas'])->name('mulaik
 Route::get('/view/absen/siswa/{tgl}',[absensiController::class, 'viewListAbsenBerdasarTanggal'])->name('viewListAbsenBerdasarTanggal');
 //Route::get('/edit/absen/siswa/{status}/{id_siswa}/{id_jadwal}', [absensiController::class, 'editAbsen']);
 Route::post('/edit/absen/siswa', [absensiController::class, 'editAbsenAjax']);
+
+
+
+// ============ VIEW ABSEN SISWA ===========
+Route::get('/view/absensi/siswa/{id}',[halamanController::class, 'viewAbsenSiswa'])->name('viewAbsenSiswa');
+// ============ VIEW materi SISWA ===========
+Route::get('/view/materi',[halamanController::class, 'viewMateri'])->name('viewMateri');
+Route::get('/ubah_status_materi/{id_mapel}/{id_materi}',[materiController::class, 'ubah_status_materi'])->name('ubah_status_materi');
+
+
+
+// =========== VIEW KUIS SISWA ==============
+Route::get('/view/kuis',[halamanController::class, 'view_kuis_siswa'])->name('view_kuis_siswa');
+Route::get('/kuis/{nama_mapel}/{id_kuis}',[soalController::class, 'viewSoal'])->name('viewSoal');
+Route::post('/submit/kuis/{id_kuis}',[soalController::class, 'submitKuis'])->name('submitKuis');
+Route::get('/review/kuis/{id}',[soalController::class, 'reviewKuis'])->name('reviewKuis');
+
+
+// ============ REVIEW KUIS GURU ================
+Route::get('/list/kuis/{id}',[halamanController::class, 'view_kuis_instruktur'])->name('view_kuis_instruktur');
+Route::get('/review/kuis/{id}/{id_siswa}',[soalController::class, 'reviewKuis_siswa'])->name('reviewKuis_siswa');
+Route::post('/edit/status_jawaban', [soalController::class, 'editStatusJawabanAjax']);
+Route::post('/submit/koreksi/{id_kuis}/{id_siswa}',[soalController::class, 'submitKoreksi'])->name('submitKoreksi');
+Route::get('/cancel/koreksi/{id_kuis}/{id_siswa}',[soalController::class, 'cancelKoreksi'])->name('cancelKoreksi');
+Route::get('/download/laporan/kuis/{id}',[kuisController::class, 'downloadLaporanKuis'])->name('downloadLaporanKuis');
+
+// ============ NILAI GURU ===================
+Route::get('/get/nilai/{id}',[nilaiController::class, 'getNilaiModal'])->name('getNilaiModal');
+Route::post('/edit/nilai',[nilaiController::class, 'edit_nilai_siswa'])->name('edit_nilai_siswa');
+
+
+// ============ VIEW ABSEN SISWA OLEH ADMIN ===========
+Route::get('/halaman/absensi',[halamanController::class, 'halamanAbsensiAdmin'])->name('halamanAbsensiAdmin');
+
+
+Route::get('/halaman/absensi/{id}',[halamanController::class, 'halamanAbsensiAdminKelas'])->name('halamanAbsensiAdminKelas');
+Route::get('/halaman/absensi/{id_kelas}/{tanggal}',[halamanController::class, 'halamanAbsensiAdminKelasTgl'])->name('halamanAbsensiAdminKelasTgl');
+Route::post('/edit/absen/siswaAdmin', [absensiController::class, 'editAbsenSiswaAdminAjax']);
+
+// ============ LAPORAN BULANAN ==================
+Route::get('/laporan/bulanan',[halamanController::class, 'halamanLaporanBulanan'])->name('halamanLaporanBulanan');
+Route::post('/download_laporan_bulanan',[absensiController::class, 'download_laporan_bulanan'])->name('download_laporan_bulanan');
+
+// ================ EDIT JADWAL LIBUR ========
+Route::get('/editstatus/libur/{id}',[jadwalController::class, 'jadwalLibur'])->name('jadwalLibur');
+Route::get('/tambah/jadwal/{id}',[jadwalController::class, 'tambahJadwal'])->name('tambahJadwal');
+
+// =============== TRANSKIP NILAI SISWA ===========
+Route::get('/download/transkip/nilai/{id_siswa}', [nilaiController::class, 'downloadTranskip']);
+Route::get('/view/transkip/nilai/{id_siswa}', [nilaiController::class, 'viewTranskip']);

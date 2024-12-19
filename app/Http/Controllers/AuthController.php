@@ -46,7 +46,8 @@ class AuthController extends Controller
             ->from("users")
             ->where("email",'=',$request->email)
             ->first();
-            if(!$cek_email){
+            //dd($cek_email);
+            if($cek_email == false){
                 return back()->with([
                     'login_error' => 'Email Tidak Tersedia',
                 ])->onlyInput('email'); 

@@ -47,14 +47,13 @@
                         <div class="row align-items-center">
                             <div class="col-md-3">
                                 <div class="text-center border-end">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-fluid avatar-xxl rounded-circle" alt="">
+                                    <img src="{{asset('dashboard/img/profil.avif')}}" class="img-fluid avatar-xxl rounded-circle" alt>
                                 </div>
                             </div>
-                            <!-- end col -->
                             <div class="col-md-9">
                                 <div class="ms-3">
                                     <div>
-                                        <h4 class="card-title mb-2 text-center" style="font-weight: bold;">Selamat datang di DPN Perkasa Dashboard</h4>
+                                        <h5 class="card-title mb-2 text-center" style="font-weight: bold;">Selamat Datang di LPK Cipta Kerja</h5>
                                     </div>
                                     <div class="row my-4">
                                         <div class="col-md-12">
@@ -85,7 +84,7 @@
 
                         <div class="tab-pane active show" id="tasks-tab" role="tabpanel">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Materi </a>\ List Materi</h4>
+                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Materi </a>\ Daftar Materi</h4>
                                 <button data-bs-toggle="modal"  data-bs-target="#staticBackdrop" type="submit" class="btn btn-primary" style="padding: 0 30px;height: 40px;"><i class="fa fa-plus"></i></button>
                             </div>
                             <div class="row">
@@ -152,11 +151,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div>
-                            <h4 class="card-title mb-4">PROFIL 
+                            <h4 class="card-title mb-4">Profil 
                                 @if (session("role") == "siswa")
-                                    SISWA
+                                    Admin
                                 @elseif (session("role") == "instruktur")
-                                INSTRUKTUR
+                                Instruktur
                                 @else
                                 Admin
                                 @endif
@@ -178,10 +177,10 @@
                                         </tr>
                                         <tr>
                                             <th scope="row">Tanggal Masuk</th>
-                                            <td>{{ $instruktur->tgl_masuk_ins }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($instruktur->tgl_masuk_ins)->translatedFormat('j F Y') }}</td>
                                         </tr>
                                         
-                                        <tr>
+                                        {{--<tr>
                                             <th scope="row">Aksi</th>
                                             <td>
                                                 <a href="/edit/profile/{{ $instruktur->id_ins}}" class="btn btn-primary btn-icon-split btn-sm">
@@ -191,7 +190,7 @@
                                                     <span class="text" style="font-weight: bold">Ubah Profil</span>
                                                 </a>
                                             </td>
-                                        </tr>
+                                        </tr>--}}
                                     </tbody>
                                 </table>
                             </div>
@@ -207,13 +206,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel" data-bs-toggle="modal"  data-bs-target="#staticBackdrop">Tambah Bab Materi</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel" data-bs-toggle="modal"  data-bs-target="#staticBackdrop">Tambah Bab</h5>
                 </div>
                 <form action="/add/mapel" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">        
                         <div class="form-group">
-                            <label for="mapel">Nama Judul Materi<strong class="text-danger font-weight-bold">*</strong></label>
+                            <label for="mapel">Nama Judul Bab<strong class="text-danger font-weight-bold">*</strong></label>
                             <input id="mapel" type="text" class="form-control" placeholder="Masukkan Judul Bab" required name="mapel">
                         </div>
                         <div id="error_mapel_container" style="display: flex; justify-content: space-between;margin-top: 10px;">
@@ -228,8 +227,8 @@
                                 <option value="">Tahun Akademik</option>
                                 <?php
                                     $currentYear = date('Y');
-                                    $startYear = $currentYear - 3; // 3 tahun sebelum tahun sekarang
-                                    $endYear = $currentYear + 1;   // 1 tahun setelah tahun sekarang
+                                    $startYear = $currentYear - 1; // 3 tahun sebelum tahun sekarang
+                                    $endYear = $currentYear;   // 1 tahun setelah tahun sekarang
 
                                     for ($year = $startYear; $year <= $endYear; $year++) {
                                         $nextYear = $year + 1;
@@ -268,11 +267,12 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="modal-{{ $mapels->id_mapel }}Label" data-bs-toggle="modal"  data-bs-target="#modal-{{ $mapels->id_mapel }}">Ubah Bab {{ $mapels->nama_mapel}}</h5>
                         </div>
-                        <form action="/add/materi" method="post" enctype="multipart/form-data">
+                        <form action="/edit/mapel" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="modal-body" id="modalEdit">        
-                                <div class="form-group">
-                                    <label for="mapelEdit">Nama Judul Materi<strong class="text-danger font-weight-bold">*</strong></label>
+                                <div class="form-group-{{ $mapels->id_mapel }}">
+                                    <label for="mapelEdit">Nama Judul Bab<strong class="text-danger font-weight-bold">*</strong></label>
+                                    <input type="hidden" name="mapelss" value="{{$mapels->id_mapel}}">
                                     <input id="mapelEdit" value="{{$mapels->nama_mapel}}" type="text" class="form-control" placeholder="Masukkan Judul Bab" required name="mapelEdit">
                                 </div>
                                 <div id="error_mapelEdit_container" style="display: flex; justify-content: space-between;margin-top: 10px;">
@@ -281,24 +281,35 @@
                                     <span id="jml_input_mapelEdit">0</span> 
                                     / 25</span>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group-{{ $mapels->id_mapel }}">
                                     <label for="tahunAkademik">Tahun Akademik<strong class="text-danger font-weight-bold">*</strong></label>
-                                    <select required  class="form-select" name="tahunAkademik" id="tahunAkademik">
-                                        <option  value="">Tahun Akademik</option>
-                                        <option @if($mapels->thn_akademik == '2024') selected @endif value="2024">2024/2025</option>
+                                    <select required  class="form-select" name="tahunAkademikEdit" id="tahunAkademik">
+                                        <option  value="">Tahun Akademik </option>
+                                        <?php
+                                                $currentYear = date('Y');
+                                                $startYear = $currentYear - 1; // Mulai dari 1 tahun sebelum tahun sekarang
+                                                $endYear = $currentYear;       // Hingga tahun sekarang
+
+                                                for ($year = $startYear; $year <= $endYear; $year++) {
+                                                    $nextYear = $year + 1;
+                                                    // Bandingkan dengan $mapels->tahun_akademik
+                                                    $isSelected = ($mapels->thn_akademik == "{$year}") ? "selected" : "";
+                                                    echo "<option value='{$year}' {$isSelected}>{$year}/{$nextYear}</option>";
+                                                }
+                                        ?>
                                     </select>
                                 </div>
-                                <div class="form-group" style="margin-top: 30px;">
+                                <div class="form-group-{{ $mapels->id_mapel }}" style="margin-top: 30px;">
                                     <label for="filemateri">Tambah File Materi Pembelajaran Baru<strong class="text-danger font-weight-bold">*</strong></label>
                                     <div style="display: flex; justify-content: space-between;margin-top: 10px;" id="btnFileContainerEdit">
                                         <button  type="button" id="btnKurangFileEdit" class="btn btn-primary" style="padding: 0 30px;"><i class="fa fa-minus"></i></button>
                                         <button  type="button" id="btnTambahFileEdit" class="btn btn-primary" style="padding: 0 30px;"><i class="fa fa-plus"></i></button>
                                     </div>
                                 </div>
-                                <div class="form-group" style="margin-top: 20px;">
+                                <div class="form-group-{{ $mapels->id_mapel }}" style="margin-top: 20px;">
                                     <label for="file1Edit"><b>File Materi 1</b><strong class="text-danger font-weight-bold"> *</strong></label>
-                                    <input id="materi1Edit" type="text" class="form-control" placeholder="Masukkan Nama Judul Materi" required name="judulMateri1Edit">
-                                    <input id="file1Edit" accept="application/pdf" style="margin-top: 10px;" type="file" class="form-control" placeholder="Masukkan File Materi" required name="file1Edit">
+                                    <input id="materi1Edit" type="text" class="form-control" placeholder="Masukkan Nama Judul Materi"  name="judulMateriEdit1">
+                                    <input id="file1Edit" accept="application/pdf" style="margin-top: 10px;" type="file" class="form-control" placeholder="Masukkan File Materi"  name="fileEdit1">
                                 </div>
                             </div>
                             <div class="modal-footer" style="text-align: center">
@@ -324,9 +335,6 @@
                             <div style="display: flex; justify-content: space-between; margin-top: 15px;">
                                <a style="padding-bottom: 2px; border-bottom: 1px solid rgb(72, 72, 72); text-decoration: none;width: 80%;" href="{{$materis->dok_materi}}" target="_blank">{{ $materis->judul_materi}}</a>
                                 <div style="display: flex; justify-content: space-between;">
-                                    <div>
-                                        <button style="border: none; background-color: transparent;" class="mb-0 text-muted fw-medium" data-bs-toggle="modal" data-bs-target="#modalEditMateri-{{ $materis->id_materi }}"><i class="mdi mdi-square-edit-outline font-size-16 align-middle"></i></button>
-                                    </div>
                                     <div>
                                         <a href="/delete/materi/{{$materis->id_materi}}" class="delete-item">
                                             <i class="mdi mdi-trash-can-outline align-middle font-size-16 text-danger"></i>
@@ -372,31 +380,44 @@
             }
         });
 
-        let fileCountEdit = 1;
-        document.getElementById('btnTambahFileEdit').addEventListener('click', function () {
-            fileCountEdit++;
-            
-            // Buat elemen div untuk form-group baru
-            const newFileGroup = document.createElement('div');
-            newFileGroup.classList.add('form-group');
-            newFileGroup.style.marginTop = '20px';
-            newFileGroup.innerHTML = `
-                <label for="file${fileCountEdit}Edit"><b>File Materi ${fileCountEdit}</b><strong class="text-danger font-weight-bold"> *</strong></label>
-                <input id="materi${fileCountEdit}Edit" type="text" class="form-control" placeholder="Masukkan Nama Judul Materi" required name="judulMateri${fileCountEdit}Edit">
-                <input id="file${fileCountEdit}Edit" accept="application/pdf" type="file" style="margin-top: 10px;" class="form-control" placeholder="Masukkan File Materi" required name="file${fileCountEdit}">
-            `;
-            
-            // Tambahkan form-group baru ke dalam container modal-body
-            document.querySelector('#modalEdit').appendChild(newFileGroup);
-        });
 
-        document.getElementById('btnKurangFileEdit').addEventListener('click', function () {
-            if (fileCountEdit > 1) { // Jangan hapus file pertama
-                const lastFileGroup = document.getElementById(`file${fileCountEdit}Edit`).parentNode;
-                lastFileGroup.remove();
-                fileCountEdit--;
+        document.addEventListener('click', function (event) {
+            // Mengecek apakah tombol tambah file yang diklik di dalam modal tertentu
+            if (event.target && event.target.id === 'btnTambahFileEdit') {
+                const modalId = event.target.closest('.modal').id; // Ambil ID modal yang relevan
+                const mapelId = modalId.split('-')[1]; // Mendapatkan ID mapel dari ID modal
+                
+                // Menghitung jumlah file input di dalam modal tertentu
+                let fileCountEdit = document.querySelectorAll(`#modal-${mapelId} input[type="file"]`).length;
+                fileCountEdit++; // Menambah jumlah file yang akan ditambahkan
+
+                // Buat elemen div untuk form-group baru
+                const newFileGroup = document.createElement('div');
+                newFileGroup.classList.add('form-group', `form-group-${mapelId}`);
+                newFileGroup.style.marginTop = '20px';
+                newFileGroup.innerHTML = `
+                    <label for="file${fileCountEdit}Edit-${mapelId}"><b>File Materi ${fileCountEdit}</b><strong class="text-danger font-weight-bold"> *</strong></label>
+                    <input id="materi${fileCountEdit}Edit-${mapelId}" type="text" class="form-control" placeholder="Masukkan Nama Judul Materi" required name="judulMateriEdit${fileCountEdit}">
+                    <input id="file${fileCountEdit}Edit-${mapelId}" accept="application/pdf" type="file" style="margin-top: 10px;" class="form-control" placeholder="Masukkan File Materi" required name="fileEdit${fileCountEdit}">
+                `;
+                
+                // Tambahkan form-group baru ke dalam container modal-body
+                document.querySelector(`#modal-${mapelId} .modal-body`).appendChild(newFileGroup);
+            }
+
+            // Mengecek apakah tombol kurang file yang diklik di dalam modal tertentu
+            if (event.target && event.target.id === 'btnKurangFileEdit') {
+                const modalId = event.target.closest('.modal').id; // Ambil ID modal yang relevan
+                const mapelId = modalId.split('-')[1]; // Mendapatkan ID mapel dari ID modal
+
+                const fileGroups = document.querySelectorAll(`#modal-${mapelId} .form-group-${mapelId}`);
+                if (fileGroups.length > 1) { // Jangan hapus file pertama
+                    const lastFileGroup = fileGroups[fileGroups.length - 1];
+                    lastFileGroup.remove();
+                }
             }
         });
+
 
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -438,7 +459,6 @@
                     window.location.href = event.currentTarget.getAttribute('href');
                 }
             }
-
     </script>
     @if (session('error_add'))
     <script>

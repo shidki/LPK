@@ -34,16 +34,13 @@
           </div>
         </nav>
         <!-- Header -->
-        <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 600px; background-image: url({{asset('Login/img/gedung.png')}}); background-size: cover; background-position: center top;">
+        <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="height: 200px; background-image: url({{asset('Login/img/gedung.png')}}); background-size: cover; background-position: center top;">
           <!-- Mask -->
           <span class="mask bg-gradient-default opacity-8"></span>
           <!-- Header container -->
           <div class="container-fluid d-flex align-items-center">
             <div class="row">
-              <div class="col-lg-7 col-md-10">
-                <h1 class="display-2 text-white">Halo, {{ $siswa->nama }}</h1>
-                {{-- <a href="#!" class="btn btn-info">Edit profile</a> --}}
-              </div>
+              
             </div>
           </div>
         </div>
@@ -72,22 +69,22 @@
                     <div class="col">
                       <div class="card-profile-stats d-flex justify-content-center mt-md-5">
                         <div>
-                          <span class="heading">22</span>
-                          <span class="description">Jumlah Bab Selesai</span>
+                          <span class="heading">Status</span>
+                          <span class="description" style="text-transform: uppercase">{{ $siswa->status}}</span>
                         </div>
-                        <div>
+                        {{--<div>
                           <span class="heading">89</span>
                           <span class="description">Rata-Rata Nilai</span>
-                        </div>
+                        </div>--}}
                       </div>
                     </div>
                   </div>
-                  <div class="text-center">
+                  {{--<div class="text-center">
                     <h3>
-                      {{ $siswa->nama }}, <span class="font-weight-bold text-uppercase" style="text-decoration: underline">{{ $siswa->status}}</span>
+                      {{ $siswa->nama }}
                     </h3>
                     <div class="h5 font-weight-300" style="text-transform: capitalize;">
-                      <i class="ni location_pin mr-2"></i>{{ $siswa->nama_bidang }}
+                      <i class="ni location_pin mr-2"></i>Bidang {{ $siswa->nama_bidang }}
                     </div>
                     <div class="h5 mt-4" style="text-transform: capitalize;">
                       <i class="ni business_briefcase-24 mr-2" ></i>Kelas {{ $siswa->nama_kelas }}
@@ -97,7 +94,7 @@
                     </div>
                     <hr class="my-4">
                     <p>{{ $siswa->alamat }}</p>
-                  </div>
+                  </div>--}}
                 </div>
               </div>
             </div>
@@ -135,11 +132,11 @@
                         <div class="row">
                           <div class="col-lg-6">
                             <div class="form-group focused">
-                              <label class="form-control-label" for="input-first-name">No hp</label>
+                              <label class="form-control-label" for="input-first-name">No Telp</label>
                               <input type="text" id="no_hp" name="no_hp" id="input-first-name" class="form-control form-control-alternative" placeholder="Masukkan No hp" value="{{ $siswa->no_hp }}">
                               <div id="error_no_hp_container" style="display: flex; justify-content: space-between;margin-top: 10px;">
                                 <span id="error_no_hp"  style="text-transform: capitalize;color: red;"></span>
-                                <span id="jml_input_no_hp_container">
+                                <span style="font-size: 12px;" id="jml_input_no_hp_container">
                                 <span id="jml_input_no_hp">0</span> 
                                 / 14</span>
                               </div>
@@ -161,7 +158,7 @@
                           <div class="col-lg-4">
                             <div class="form-group focused">
                               <label class="form-control-label" for="input-city">Kelas</label>
-                              <input type="text" id="input-city" class="form-control form-control-alternative" placeholder="Masukkan Kelas" disabled value="{{ $siswa->nama_bidang }}">
+                              <input type="text" id="input-city" class="form-control form-control-alternative" placeholder="Masukkan Kelas" disabled value="{{ $siswa->nama_kelas }}">
                             </div>
                           </div>
                           <div class="col-lg-4">

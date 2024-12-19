@@ -47,14 +47,13 @@
                         <div class="row align-items-center">
                             <div class="col-md-3">
                                 <div class="text-center border-end">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-fluid avatar-xxl rounded-circle" alt="">
+                                    <img src="{{asset('dashboard/img/profil.avif')}}" class="img-fluid avatar-xxl rounded-circle" alt>
                                 </div>
                             </div>
-                            <!-- end col -->
                             <div class="col-md-9">
                                 <div class="ms-3">
                                     <div>
-                                        <h4 class="card-title mb-2 text-center" style="font-weight: bold;">Selamat datang di DPN Perkasa Dashboard</h4>
+                                        <h5 class="card-title mb-2 text-center" style="font-weight: bold;">Selamat Datang di LPK Cipta Kerja</h5>
                                     </div>
                                     <div class="row my-4">
                                         <div class="col-md-12">
@@ -152,11 +151,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div>
-                            <h4 class="card-title mb-4">PROFIL 
+                            <h4 class="card-title mb-4">Profil 
                                 @if (session("role") == "siswa")
-                                    SISWA
+                                    Siswa
                                 @elseif (session("role") == "instruktur")
-                                INSTRUKTUR
+                                Instruktur
                                 @else
                                 Admin
                                 @endif
@@ -178,10 +177,10 @@
                                         </tr>
                                         <tr>
                                             <th scope="row">Tanggal Masuk</th>
-                                            <td>{{ $instruktur->tgl_masuk_ins }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($instruktur->tgl_masuk_ins)->translatedFormat('j F Y') }}</td>
                                         </tr>
                                         
-                                        <tr>
+                                        {{--<tr>
                                             <th scope="row">Aksi</th>
                                             <td>
                                                 <a href="/edit/profile/{{ $instruktur->id_ins}}" class="btn btn-primary btn-icon-split btn-sm">
@@ -191,7 +190,7 @@
                                                     <span class="text" style="font-weight: bold">Ubah Profil</span>
                                                 </a>
                                             </td>
-                                        </tr>
+                                        </tr>--}}
                                     </tbody>
                                 </table>
                             </div>

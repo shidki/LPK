@@ -21,7 +21,11 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <!-- Custom styles for this template -->
     <link href="admin/css/sb-admin-2.min.css" rel="stylesheet">
-
+    <style>
+        th{
+            text-align: center;
+        }
+    </style>
     <!-- Custom styles for this page -->
     <link href="admin/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
@@ -36,9 +40,9 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    {{--<i class="fas fa-laugh-wink"></i>--}}
                 </div>
-                <div class="sidebar-brand-text mx-3">DPN PERKASA <sup>ADMINISTRASI</sup></div>
+                <div class="sidebar-brand-text mx-3">CIPTA KERJA <sup>ADMINISTRASI</sup></div>
             </a>
 
             <!-- Divider -->
@@ -48,7 +52,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/halamanAdmin">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Dasbor</span></a>
             </li>
 
             <!-- Divider -->
@@ -97,7 +101,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Presensi:</h6>
-                        <a class="collapse-item" href="/presensi">Presensi</a>
+                        <a class="collapse-item" href="/halaman/absensi">Presensi</a>
                     </div>
                 </div>
             </li>
@@ -129,7 +133,7 @@
                     </div>
                 </div>
             </li>
-            <li class="nav-item">
+            {{--<li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseListkelas"
                     aria-expanded="true" aria-controls="collapseListkelas">
                     <i class="fas fa-fw fa-wrench"></i>
@@ -144,31 +148,18 @@
                         @endforeach
                     </div>
                 </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMateri"
-                    aria-expanded="true" aria-controls="collapseMateri">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Kelola Materi</span>
-                </a>
-                <div id="collapseMateri" class="collapse" aria-labelledby="headingMateri"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Materi:</h6>
-                        <a class="collapse-item" href="/dataMateri">Kelola Materi</a>
-                    </div>
-                </div>
-            </li>
+            </li>--}}
+
             <li class="nav-item active">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProfile"
                     aria-expanded="true" aria-controls="collapseProfile">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Kelola Profile</span>
+                    <span>Kelola Profil</span>
                 </a>
                 <div id="collapseProfile" class="collapse show" aria-labelledby="headingProfile"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Profile:</h6>
+                        <h6 class="collapse-header">Profil:</h6>
                         <a class="collapse-item" href="/dataSiswa">Siswa</a>
                         <a class="collapse-item active" href="/dataInstruktur">Instruktur</a>
                         <a class="collapse-item" href="/dataAdmin">Admin</a>
@@ -189,7 +180,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/halamanDashboard">
                     <i class="fa-solid fa-arrow-left"></i>
-                    <span>Back</span></a>
+                    <span>Kembali</span></a>
             </li>
 
             <!-- Divider -->
@@ -220,9 +211,6 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    Nama Admin
-                                </span>
                                 
                             </a>
                         </li>
@@ -254,7 +242,7 @@
                                         <tr>
                                             <th>Nama</th>
                                             <th>Email</th>
-                                            <th>No Hp</th>
+                                            <th>No HP</th>
                                             <th>Alamat</th>
                                             <th>Tanggal Masuk</th>
                                             <th class="text-center">Aksi</th>
@@ -267,10 +255,10 @@
                                             <td>{{ $instrukturs->email_ins }}</td>
                                             <td>{{ $instrukturs->no_hp_ins }}</td>
                                             <td>{{ $instrukturs->alamat_ins }}</td>
-                                            <td>{{ $instrukturs->tgl_masuk_ins }}</td>
-                                            <td class="text-center" style="display: flex; flex-direction: column;">
+                                            <td>{{ \Carbon\Carbon::parse($instrukturs->tgl_masuk_ins )->translatedFormat('j F Y') }}</td>
+                                            <td class="text-center" style="display: flex;justify-content: center;">
                                                 <button data-id="{{ json_encode(['id' => $instrukturs->id_ins,'nama' => $instrukturs->nama_ins,'email' => $instrukturs->email_ins, 'no_hp' => $instrukturs->no_hp_ins,'alamat' => $instrukturs->alamat_ins]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
-                                                <a href="/delete/instruktur/{{ $instrukturs->id_ins }}" class="btn btn-danger btn-circle btn-sm" style="margin-top: 10px">
+                                                <a href="/delete/instruktur/{{ $instrukturs->id_ins }}" class="btn btn-danger btn-circle btn-sm" style="margin-left: 10px">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -410,7 +398,7 @@
                         </div>
                         <div class="modal-footer" style="text-align: center">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-                            <button type="submit" class="btn btn-primary">Tambah</button>
+                            <button type="submit" class="btn btn-primary">Ubah</button>
                         </div>
                     </form>
                 </div>
@@ -566,12 +554,20 @@
                 });
             });
     </script>
+    <style>
+        .swal-text-capitalize .swal2-html-container {
+            text-transform: capitalize;
+        }
+    </style>
             @if (session('error_add'))
             <script>
                   Swal.fire({
                       title: "Gagal Menambah Instruktur",
                       text: "{{ session('error_add') }}", // Menggunakan blade syntax untuk menampilkan pesan
-                      icon: "error"
+                      icon: "error",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                   });
                 console.log("Error reset message:", "{{ session('error_add') }}");
             </script>
@@ -580,7 +576,10 @@
             <script>
                   Swal.fire({
                       title: "{{ session('sukses_add') }}",
-                      icon: "success"
+                      icon: "success",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                   });
                 console.log("Error reset message:", "{{ session('sukses_add') }}");
             </script>
@@ -590,7 +589,10 @@
                   Swal.fire({
                       title: "Gagal Menghapus Instruktur",
                       text: "{{ session('error_delete') }}", // Menggunakan blade syntax untuk menampilkan pesan
-                      icon: "error"
+                      icon: "error",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                   });
                 console.log("Error reset message:", "{{ session('error_delete') }}");
             </script>
@@ -599,7 +601,10 @@
             <script>
                   Swal.fire({
                       title: "{{ session('sukses_delete') }}",
-                      icon: "success"
+                      icon: "success",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                   });
                 console.log("Error reset message:", "{{ session('sukses_delete') }}");
             </script>
@@ -609,7 +614,10 @@
                   Swal.fire({
                       title: "Gagal Mengubah Instruktur",
                       text: "{{ session('error_edit') }}", // Menggunakan blade syntax untuk menampilkan pesan
-                      icon: "error"
+                      icon: "error",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                   });
                 console.log("Error reset message:", "{{ session('error_edit') }}");
             </script>
@@ -618,7 +626,10 @@
             <script>
                   Swal.fire({
                       title: "{{ session('sukses_edit') }}",
-                      icon: "success"
+                      icon: "success",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                   });
                 console.log("Error reset message:", "{{ session('sukses_edit') }}");
             </script>

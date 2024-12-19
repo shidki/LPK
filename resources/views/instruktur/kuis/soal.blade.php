@@ -43,9 +43,9 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    {{--<i class="fas fa-laugh-wink"></i>--}}
                 </div>
-                <div class="sidebar-brand-text mx-3">DPN PERKASA <sup>ADMINISTRASI</sup></div>
+                <div class="sidebar-brand-text mx-3">CIPTA KERJA <sup>ADMINISTRASI</sup></div>
             </a>
 
             <!-- Divider -->
@@ -84,15 +84,6 @@
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    Nama Admin
-                                </span>
-                                
-                            </a>
-                        </li>
 
                     </ul>
                 </nav>
@@ -131,7 +122,16 @@
 										@foreach($soal as $soals)
 										<tr>
 											<td style="text-align: center;">{{ $loop->iteration }}</td>
-											<td>{{ $soals->pertanyaan }}</td>
+											<td>
+                                                <div style="display: flex; justify-content: space-between;">
+                                                    <div>{{ $soals->pertanyaan }}</div>
+                                                    @if ($soals->type_soal =='pilgan')
+                                                        <button style="margin-right: 10px;border: none; background-color: transparent;" data-id="{{ json_encode(['soals' => $soals->id_soal,'soal' => $soals->pertanyaan]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop3" type="submit" class=""><i class="fas fa-pen"></i></button>
+                                                    @else
+                                                        <button style="margin-right: 10px;border: none; background-color: transparent;" data-id="{{ json_encode(['soals' => $soals->id_soal,'soal' => $soals->pertanyaan, 'jawaban' => $soals->jawaban]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class=""><i class="fas fa-pen"></i></button>
+                                                    @endif
+                                                </div>
+                                            </td>
 											<td>{{ $soals->type_soal }}</td>											
 											<td>
                                                 @if ($soals->type_soal == "pilgan")
@@ -157,7 +157,6 @@
                                                                                 <div style="display: flex; justify-content: space-between;">
                                                                                     <div>{{ $opsis->opsi }}</div>
                                                                                     <button style="margin-right: 10px" data-id="{{ json_encode(['opsis' => $opsis->id_opsi,'opsi' => $opsis->opsi,'soal' => $opsis->id_soal]) }}" data-bs-toggle="modal"  data-bs-target="#editOpsiModal" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
-                                                                                    
                                                                                 </div>
                                                                             </li>
                                                                         @endif
@@ -173,10 +172,11 @@
                                             </div>
 									
 											<td>
+                                                @if ($soals->type_soal =='pilgan')
                                                 <div style="display: flex; justify-content: space-between;">
                                                     <div>{{ $soals->jawaban }}</div>
                                                     <div>
-                                                        @if ($soals->type_soal =='pilgan')
+                                                        
                                                         <button 
                                                             style="margin-right: 10px; background: transparent; border: none;" 
                                                             data-id="{{ json_encode(collect($opsi)->filter(fn($o) => $o->id_soal == $soals->id_soal)
@@ -191,20 +191,20 @@
                                                         >
                                                             <i class="fas fa-pen"></i>
                                                         </button>
-                                                        @else
-                                                            <button style="margin-right: 10px; background: transparent;border: none;" data-id="{{ json_encode(['soals' => $soals->id_soal,'jawaban' => $soals->jawaban]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop3" type="submit"><i class="fas fa-pen"></i></button>
-                                                        @endif
-                                                        
                                                     </div>
                                                 </div>
+                                                @else
+                                                            {{--<button style="margin-right: 10px; background: transparent;border: none;" data-id="{{ json_encode(['soals' => $soals->id_soal,'jawaban' => $soals->jawaban]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop3" type="submit"><i class="fas fa-pen"></i></button>--}}
+                                                <div style="text-align: center"><b>-</b></div>
+                                                @endif
                                             </td>
 											<td >{{ $soals->judul_kuis }}</td>
 											<td class="text-center" style="align-content: center ;" >
-                                                @if ($soals->type_soal =='pilgan')
+                                                {{--@if ($soals->type_soal =='pilgan')
                                                     <button style="margin-right: 10px" data-id="{{ json_encode(['soals' => $soals->id_soal,'soal' => $soals->pertanyaan]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop3" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
                                                 @else
                                                     <button style="margin-right: 10px" data-id="{{ json_encode(['soals' => $soals->id_soal,'soal' => $soals->pertanyaan, 'jawaban' => $soals->jawaban]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
-                                                @endif
+                                                @endif--}}
                                                 <a href="/delete/soal/{{$soals->id_soal}}" class="btn btn-danger btn-circle btn-sm">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
@@ -267,6 +267,7 @@
                                 <option value="">Pilih Tipe Soal</option>
 								<option value="pilgan">Pilihan Ganda</option>
 								<option value="isian">Isian</option>
+								<option value="uraian">Uraian</option>
                             </select>
                         </div>
 						<hr>
@@ -302,9 +303,9 @@
                             </div>
                         </div>
 						<div class="form-group isian opsiNone">
-                            <h5 class="text-center">Jawaban Isian</h5>
+                            {{--<h5 class="text-center">Jawaban Isian</h5>
                             <label for="isian">isian<strong class="text-danger font-weight-bold">*</strong></label>
-							<input id="isian" type="text" class="form-control" placeholder="Masukkan Jawaban" required name="isian">
+							<input id="isian" type="text" class="form-control" placeholder="Masukkan Jawaban" required name="isian">--}}
                         </div>
                     </div>
                     <div class="modal-footer" style="text-align: center">
@@ -321,7 +322,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdrop2Label">UBah Soal</h5>
+                    <h5 class="modal-title" id="staticBackdrop2Label">Ubah Soal</h5>
                 </div>
                 <form action="/edit/soal" method="post">
                     @csrf
@@ -332,15 +333,15 @@
                             <textarea id="soalEdit" class="form-control" placeholder="Masukkan Pertanyaan" required name="soal" cols="30" rows="10"></textarea>
                         </div>
 						<hr>
-						<div class="form-group">
+						{{--<div class="form-group">
                             <h5 class="text-center">Jawaban Isian</h5>
                             <label for="isianEdit">isian<strong class="text-danger font-weight-bold">*</strong></label>
 							<input id="isianEdit" type="text" class="form-control" placeholder="Masukkan Jawaban" required name="isian">
-                        </div>
+                        </div>--}}
                     </div>
                     <div class="modal-footer" style="text-align: center">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-                        <button type="submit" class="btn btn-primary">Tambah</button>
+                        <button type="submit" class="btn btn-primary">Ubah</button>
                     </div>
                 </form>
             </div>
@@ -351,7 +352,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdrop3Label">UBah Soal</h5>
+                    <h5 class="modal-title" id="staticBackdrop3Label">Ubah Soal</h5>
                 </div>
                 <form action="/edit/soal" method="post">
                     @csrf
@@ -365,7 +366,7 @@
                     </div>
                     <div class="modal-footer" style="text-align: center">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-                        <button type="submit" class="btn btn-primary">Tambah</button>
+                        <button type="submit" class="btn btn-primary">Ubah</button>
                     </div>
                 </form>
             </div>
@@ -613,15 +614,15 @@
         document.addEventListener('DOMContentLoaded', function () {
             const tipeSoal = document.getElementById('tipe_soal');
             const opsiPilgan = document.querySelector('.opsiPilgan');
-            const opsiIsian = document.querySelector('.isian');
-            const isianInput = document.getElementById('isian');
+            //const opsiIsian = document.querySelector('.isian');
+            //const isianInput = document.getElementById('isian');
             const opsiPilganInputs = document.querySelectorAll('.opsiPilgan input');
 
             tipeSoal.addEventListener('change', function () {
                 if (this.value === 'pilgan') {
                     // Tampilkan opsi pilihan ganda dan sembunyikan isian
                     opsiPilgan.classList.remove('opsiNone');
-                    opsiIsian.classList.add('opsiNone');
+                    //opsiIsian.classList.add('opsiNone');
 
                     // Tambahkan atribut required untuk opsi pilihan ganda
                     opsiPilganInputs.forEach(input => {
@@ -631,14 +632,14 @@
                     });
 
                     // Hapus atribut required untuk isian
-                    isianInput.removeAttribute('required');
+                    //isianInput.removeAttribute('required');
                 } else if (this.value === 'isian') {
                     // Tampilkan isian dan sembunyikan opsi pilihan ganda
-                    opsiIsian.classList.remove('opsiNone');
+                    //opsiIsian.classList.remove('opsiNone');
                     opsiPilgan.classList.add('opsiNone');
 
                     // Tambahkan atribut required untuk isian
-                    isianInput.setAttribute('required', 'required');
+                    //isianInput.setAttribute('required', 'required');
 
                     // Hapus atribut required untuk opsi pilihan ganda
                     opsiPilganInputs.forEach(input => {
@@ -647,10 +648,10 @@
                 } else {
                     // Sembunyikan semua opsi
                     opsiPilgan.classList.add('opsiNone');
-                    opsiIsian.classList.add('opsiNone');
+                    //opsiIsian.classList.add('opsiNone');
 
                     // Hapus atribut required dari semua input
-                    isianInput.removeAttribute('required');
+                    //isianInput.removeAttribute('required');
                     opsiPilganInputs.forEach(input => {
                         input.removeAttribute('required');
                     });

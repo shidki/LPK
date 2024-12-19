@@ -110,6 +110,7 @@
             $('#btn-reset').on('click', function(e) {
                 e.preventDefault();
                 var email = $('#exampleInputEmail').val();
+                console.log(email);
                 $.ajax({
                     url: '/reset-password',
                     type: 'POST',

@@ -37,9 +37,9 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    {{--<i class="fas fa-laugh-wink"></i>--}}
                 </div>
-                <div class="sidebar-brand-text mx-3">DPN PERKASA <sup>ADMINISTRASI</sup></div>
+                <div class="sidebar-brand-text mx-3">CIPTA KERJA <sup>ADMINISTRASI</sup></div>
             </a>
 
             <!-- Divider -->
@@ -49,7 +49,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/halamanAdmin">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Dasbor</span></a>
             </li>
 
             <!-- Divider -->
@@ -98,7 +98,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Presensi:</h6>
-                        <a class="collapse-item" href="/presensi">Presensi</a>
+                        <a class="collapse-item" href="/halaman/absensi">Presensi</a>
                     </div>
                 </div>
             </li>
@@ -129,7 +129,7 @@
                         <a class="collapse-item" href="/dataKelas">Kelas</a>
                     </div>
                 </div>
-            </li>
+            {{--</li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseListkelas"
                     aria-expanded="true" aria-controls="collapseListkelas">
@@ -145,31 +145,18 @@
                         @endforeach
                     </div>
                 </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMateri"
-                    aria-expanded="true" aria-controls="collapseMateri">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Kelola Materi</span>
-                </a>
-                <div id="collapseMateri" class="collapse" aria-labelledby="headingMateri"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Materi:</h6>
-                        <a class="collapse-item" href="/dataMateri">Kelola Materi</a>
-                    </div>
-                </div>
-            </li>
+            </li>--}}
+
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProfile"
                     aria-expanded="true" aria-controls="collapseProfile">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Kelola Profile</span>
+                    <span>Kelola Profil</span>
                 </a>
                 <div id="collapseProfile" class="collapse" aria-labelledby="headingProfile"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Profile:</h6>
+                        <h6 class="collapse-header">Profil:</h6>
                         <a class="collapse-item" href="/dataSiswa">Siswa</a>
                         <a class="collapse-item" href="/dataInstruktur">Instruktur</a>
                         <a class="collapse-item" href="/dataAdmin">Admin</a>
@@ -190,7 +177,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/halamanDashboard">
                     <i class="fa-solid fa-arrow-left"></i>
-                    <span>Back</span></a>
+                    <span>Kembali</span></a>
             </li>
 
             <!-- Divider -->
@@ -222,9 +209,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    Nama Admin
-                                </span>                         
+                                                       
                             </a>
                         </li>
                     </ul>
@@ -538,7 +523,10 @@
                       Swal.fire({
                           title: "Gagal Menambah Akun",
                           text: "{{ session('error_add') }}", // Menggunakan blade syntax untuk menampilkan pesan
-                          icon: "error"
+                          icon: "error",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('error_add') }}");
                 </script>
@@ -547,7 +535,10 @@
                 <script>
                       Swal.fire({
                           title: "{{ session('sukses_add') }}",
-                          icon: "success"
+                          icon: "success",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('sukses_add') }}");
                 </script>
@@ -557,7 +548,10 @@
                       Swal.fire({
                           title: "Gagal Menghapus Akun",
                           text: "{{ session('error_delete') }}", // Menggunakan blade syntax untuk menampilkan pesan
-                          icon: "error"
+                          icon: "error",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('error_delete') }}");
                 </script>
@@ -566,7 +560,10 @@
                 <script>
                       Swal.fire({
                           title: "{{ session('sukses_delete') }}",
-                          icon: "success"
+                          icon: "success",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('sukses_delete') }}");
                 </script>
@@ -576,7 +573,10 @@
                       Swal.fire({
                           title: "Gagal Menambah Admin",
                           text: "{{ session('error_edit') }}", // Menggunakan blade syntax untuk menampilkan pesan
-                          icon: "error"
+                          icon: "error",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('error_edit') }}");
                 </script>
@@ -585,11 +585,19 @@
                 <script>
                       Swal.fire({
                           title: "{{ session('sukses_edit') }}",
-                          icon: "success"
+                          icon: "success",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('sukses_edit') }}");
                 </script>
                 @endif
+                <style>
+                    .swal-text-capitalize .swal2-html-container {
+                        text-transform: capitalize;
+                    }
+                </style>
     <!-- Bootstrap core JavaScript-->
     <script src="admin/vendor/jquery/jquery.min.js"></script>
     <script src="admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

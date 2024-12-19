@@ -37,9 +37,9 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    {{--<i class="fas fa-laugh-wink"></i>--}}
                 </div>
-                <div class="sidebar-brand-text mx-3">DPN PERKASA <sup>ADMINISTRASI</sup></div>
+                <div class="sidebar-brand-text mx-3">CIPTA KERJA <sup>ADMINISTRASI</sup></div>
             </a>
 
             <!-- Divider -->
@@ -58,7 +58,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/dataKelas">
                     <i class="fa-solid fa-arrow-left"></i>
-                    <span>Back</span></a>
+                    <span>Kembali</span></a>
             </li>
 
             <!-- Divider -->
@@ -90,9 +90,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    Nama Admin
-                                </span>                         
+                                                        
                             </a>
                         </li>
                     </ul>
@@ -103,12 +101,12 @@
                     <h1 class="h3 mb-2 text-gray-800"><a href="/dataKelas">Kelola Kelas</a> / Jadwal</h1>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Jadwal {{$kelas}}</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Jadwal {{$kelas->nama_kelas}}</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <button  type="submit" class="btn btn-success btn-icon-split mb-3">
+                                    <button onclick="window.location.href='/tambah/jadwal/{{$kelas->id_kelas}}'" type="submit" class="btn btn-success btn-icon-split mb-3">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-plus"></i>
                                         </span>
@@ -117,17 +115,27 @@
                                     <thead>
                                         <tr>
                                             <th style="text-align: center;width: 50px">No</th>
-                                            <th style="text-align: center;width: 200px">Tanggal Pelaksanaan</th>
-                                            <th class="text-center" style="text-align: center;width: 200px">Aksi</th>
+                                            <th style="text-align: center;">Tanggal Pelaksanaan</th>
+                                            <th class="text-center" style="text-align: center;width: 50px">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                        @foreach ($jadwal as $jadwals )
                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $jadwals['tanggal_format'] }}</td>
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td class="text-center">{{ $jadwals['tanggal_format'] }}</td>
                                             <td class="text-center">
-                                                <button data-id="{{ json_encode(['id' => $jadwals['id_jadwal'],'tanggal' => $jadwals['tanggal_pelaksanaan'],'status' => $jadwals['status']]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
+                                                <a 
+                                                    @if ($jadwals['status'] == "selesai" || $jadwals['status'] == "mulai"|| $jadwals['status'] == "libur") 
+                                                        href="#" 
+                                                        onclick="return false;" 
+                                                        class="btn btn-danger disabled"
+                                                    @else 
+                                                        class="btn btn-primary"
+                                                        href="/editstatus/libur/{{$jadwals['id_jadwal']}}" 
+                                                    @endif>
+                                                    Libur
+                                                </a>
                                             </td>
                                         </tr>
                                        @endforeach
@@ -387,12 +395,20 @@
                 });
             });
     </script>
+    <style>
+            .swal-text-capitalize .swal2-html-container {
+        text-transform: capitalize;
+    }
+    </style>
                 @if (session('error_add'))
                 <script>
                       Swal.fire({
-                          title: "Gagal Menambah Akun",
+                          title: "Gagal Menambah Jadwal",
                           text: "{{ session('error_add') }}", // Menggunakan blade syntax untuk menampilkan pesan
-                          icon: "error"
+                          icon: "error",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('error_add') }}");
                 </script>
@@ -401,8 +417,12 @@
                 <script>
                       Swal.fire({
                           title: "{{ session('sukses_add') }}",
-                          icon: "success"
+                          icon: "success",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
+                      
                     console.log("Error reset message:", "{{ session('sukses_add') }}");
                 </script>
                 @endif
@@ -411,7 +431,10 @@
                       Swal.fire({
                           title: "Gagal Menghapus Akun",
                           text: "{{ session('error_delete') }}", // Menggunakan blade syntax untuk menampilkan pesan
-                          icon: "error"
+                          icon: "error",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('error_delete') }}");
                 </script>
@@ -420,7 +443,10 @@
                 <script>
                       Swal.fire({
                           title: "{{ session('sukses_delete') }}",
-                          icon: "success"
+                          icon: "success",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('sukses_delete') }}");
                 </script>
@@ -430,7 +456,10 @@
                       Swal.fire({
                           title: "Gagal Menambah Admin",
                           text: "{{ session('error_edit') }}", // Menggunakan blade syntax untuk menampilkan pesan
-                          icon: "error"
+                          icon: "error",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('error_edit') }}");
                 </script>
@@ -439,7 +468,10 @@
                 <script>
                       Swal.fire({
                           title: "{{ session('sukses_edit') }}",
-                          icon: "success"
+                          icon: "success",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('sukses_edit') }}");
                 </script>

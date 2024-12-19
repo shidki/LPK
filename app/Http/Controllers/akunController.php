@@ -16,13 +16,23 @@ class akunController extends Controller
         $email = $request->email;
         $password = bcrypt($request->password);
         $konfirmasiPw = $request->konfirmasiPw;
-        // $role = $request->role;
-
+        $konfirmasiPw = str_replace(' ', '', $konfirmasiPw);
+        
         if(session('role') != "admin"){
             return abort(403);
-
+            
         }
-
+        $email2 = trim($request->email);
+        $email2 = str_replace(' ', '', $email);
+        
+        $password2 = bcrypt(trim($request->password));
+        $password2 = str_replace(' ', '', $password);
+        
+        $konfirmasiPw2 = trim($request->konfirmasiPw);
+        if (strpos($email2, ' ') !== false || strpos($password2, ' ') !== false || strpos($konfirmasiPw2, ' ') !== false) {
+            // Jika ada spasi pada email, password, atau konfirmasi password
+            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi"]);
+        }
         if($konfirmasiPw != $request->password){
             return back()->with(["error_add" => "Password tidak sesuai"]);
         }
@@ -78,7 +88,17 @@ class akunController extends Controller
         if($konfirmasiPw != $request->password){
             return back()->with(["error_add" => "Password tidak sesuai"]);
         }
-
+        $email2 = trim($request->email);
+        $email2 = str_replace(' ', '', $email);
+        
+        $password2 = bcrypt(trim($request->password));
+        $password2 = str_replace(' ', '', $password);
+        
+        $konfirmasiPw2 = trim($request->konfirmasiPw);
+        if (strpos($email2, ' ') !== false || strpos($password2, ' ') !== false || strpos($konfirmasiPw2, ' ') !== false) {
+            // Jika ada spasi pada email, password, atau konfirmasi password
+            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi"]);
+        }
         // cek apakah email sudah digunakan atau belum
         $cekEmail = siswa::select("email")->from('siswas')->where("email",'=',$email)->first();
         $cekEmail1 = users::select("email")->from('users')->where("email",'=',$email)->where('id_akun', '!=', $akuns)->first();
@@ -162,7 +182,17 @@ class akunController extends Controller
             return abort(403);
 
         }
-
+        $email2 = trim($request->email);
+        $email2 = str_replace(' ', '', $email);
+        
+        $password2 = bcrypt(trim($request->password));
+        $password2 = str_replace(' ', '', $password);
+        
+        $konfirmasiPw2 = trim($request->konfirmasiPw);
+        if (strpos($email2, ' ') !== false || strpos($password2, ' ') !== false || strpos($konfirmasiPw2, ' ') !== false) {
+            // Jika ada spasi pada email, password, atau konfirmasi password
+            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi"]);
+        }
         if($konfirmasiPw != $request->password){
             return back()->with(["error_add" => "Password tidak sesuai"]);
         }
@@ -241,8 +271,19 @@ class akunController extends Controller
 
         if(session('role') != "admin"){
             return abort(403);
-
         }
+        $email2 = trim($request->email);
+        $email2 = str_replace(' ', '', $email);
+        
+        $password2 = bcrypt(trim($request->password));
+        $password2 = str_replace(' ', '', $password);
+        
+        $konfirmasiPw2 = trim($request->konfirmasiPw);
+        if (strpos($email2, ' ') !== false || strpos($password2, ' ') !== false || strpos($konfirmasiPw2, ' ') !== false) {
+            // Jika ada spasi pada email, password, atau konfirmasi password
+            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi"]);
+        }
+
         if($konfirmasiPw != $request->password){
             return back()->with(["error_add" => "Password tidak sesuai"]);
         }
@@ -312,7 +353,17 @@ class akunController extends Controller
             return abort(403);
 
         }
-
+        $email2 = trim($request->email);
+        $email2 = str_replace(' ', '', $email);
+        
+        $password2 = bcrypt(trim($request->password));
+        $password2 = str_replace(' ', '', $password);
+        
+        $konfirmasiPw2 = trim($request->konfirmasiPw);
+        if (strpos($email2, ' ') !== false || strpos($password2, ' ') !== false || strpos($konfirmasiPw2, ' ') !== false) {
+            // Jika ada spasi pada email, password, atau konfirmasi password
+            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi"]);
+        }
         if($konfirmasiPw != $request->password){
             return back()->with(["error_add" => "Password tidak sesuai"]);
         }
@@ -397,7 +448,17 @@ class akunController extends Controller
         if($konfirmasiPw != $request->password){
             return back()->with(["error_add" => "Password tidak sesuai"]);
         }
-
+        $email2 = trim($request->email);
+        $email2 = str_replace(' ', '', $email);
+        
+        $password2 = bcrypt(trim($request->password));
+        $password2 = str_replace(' ', '', $password);
+        
+        $konfirmasiPw2 = trim($request->konfirmasiPw);
+        if (strpos($email2, ' ') !== false || strpos($password2, ' ') !== false || strpos($konfirmasiPw2, ' ') !== false) {
+            // Jika ada spasi pada email, password, atau konfirmasi password
+            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi"]);
+        }
         $edit_akun = DB::table("users")
         ->where("id_akun" ,'=',$akuns)
         ->update([

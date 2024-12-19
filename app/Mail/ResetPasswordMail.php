@@ -35,7 +35,7 @@ class ResetPasswordMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'reset_password.templatePesanEmail',
+            view: 'auth.reset_password.templatePesanEmail',
             with: [
                 'verificationCode' => $this->verificationCode,
             ],

@@ -38,9 +38,10 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    {{--<i class="fas fa-laugh-wink"></i>--}}
                 </div>
-                <div class="sidebar-brand-text mx-3">DPN PERKASA <sup>ADMINISTRASI</sup></div>
+                <div class="sidebar-brand-text mx-3">CIPTA KERJA <sup>ADMINISTRASI</sup></div>
+
             </a>
 
             <!-- Divider -->
@@ -59,7 +60,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/halamanDashboard">
                     <i class="fa-solid fa-arrow-left"></i>
-                    <span>Back</span></a>
+                    <span>Kembali</span></a>
             </li>
 
             <!-- Divider -->
@@ -88,14 +89,7 @@
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <div class="topbar-divider d-none d-sm-block"></div>
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    Nama Admin
-                                </span>                         
-                            </a>
-                        </li>
+                        
                     </ul>
                 </nav>
                 <div class="container-fluid">
@@ -107,7 +101,7 @@
                             <h6 class="m-0 font-weight-bold text-primary">
                                 <span></span>
                                 @if ($tanggal_selected != null)
-                                <span>{{ $tanggal_selected }}</span>
+                                <span>{{ $tanggal_selected_format }}</span>
                                 @else
                                 @php
                                     \Carbon\Carbon::setLocale('id'); // Set locale ke bahasa Indonesia
@@ -119,9 +113,34 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <a href="/mulaiKelas" type="submit" class="btn btn-success btn-icon-split mb-3">
-                                        <span class="text">Mulai Kelas</span>
-                                    </a>
+                                    @php
+                                    use Carbon\Carbon;
+                                
+                                    $tanggalHariIni = Carbon::now()->toDateString();
+                                    $tanggal_selected = Carbon::parse($tanggal_selected)->toDateString();
+                                    @endphp
+                                    
+                                    @if ($status == 'aktif' && $tanggal_selected == $tanggalHariIni)
+                                        <a href="/mulaiKelas" type="submit" class="btn btn-success btn-icon-split mb-3">
+                                            <span class="text">Mulai Kelas</span>
+                                        </a>
+                                    @elseif ($status == 'mulai' && $tanggal_selected == $tanggalHariIni)
+                                    <button disabled class="btn btn-success btn-icon-split mb-3">
+                                        <span class="text">Kelas Telah Dimulai</span>
+                                    </button>
+                                    @elseif ($status == 'libur' && $tanggal_selected == $tanggalHariIni)
+                                    <button disabled class="btn btn-success btn-icon-split mb-3">
+                                        <span class="text">Kelas Libur</span>
+                                    </button>
+                                    @else
+                                        <button disabled class="btn btn-success btn-icon-split mb-3">
+                                            @if ($status == 'aktif')
+                                            <span class="text">Kelas Tidak Dijadwalkan untuk Hari Ini</span>
+                                            @elseif ($status == 'libur')
+                                            <span class="text">Kelas Libur</span>
+                                            @endif
+                                        </button>
+                                    @endif
 									<select name="tglJadwal" class="form-select" style="margin-bottom: 20px;" id="tglJadwal" onchange="tanggalJadwal()">
 										<option value="">Pilih jadwal tanggal</option>
 										@foreach ($tglJadwal as $item)
@@ -136,9 +155,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       @if ($status == "mulai")
+                                        @if ($status == "mulai")
                                             @if ($siswa !== null)
                                                 @foreach ($siswa as $siswas )
+                                                @if ($siswas->status !== "lulus")
                                                 <tr>
                                                     <td style="text-align: center">{{ $loop->iteration }}</td>
                                                     <td style="text-align: center">{{ $siswas->nama }}</td>
@@ -174,9 +194,11 @@
                                                         </select>												
                                                     </td>
                                                 </tr>
+                                                @endif
                                                 @endforeach
                                             @else
                                                 @foreach ($siswa2 as $siswas )
+                                                    @if ($siswas->status !== "lulus")
                                                     <tr>
                                                         <td style="text-align: center">{{ $loop->iteration }}</td>
                                                         <td style="text-align: center">{{ $siswas->nama }}</td>
@@ -212,6 +234,123 @@
                                                             </select>												
                                                         </td>
                                                     </tr>
+                                                    @endif
+                                                @endforeach
+									        @endif
+                                        @elseif($status == "selesai")
+                                            @if ($siswa !== null)
+                                                @foreach ($siswa as $siswas )
+                                                   @if ($siswas->status != 'lulus')
+                                                   <tr>
+                                                    <td style="text-align: center">{{ $loop->iteration }}</td>
+                                                    <td style="text-align: center">{{ $siswas->nama }}</td>
+                                                    <td style="text-align: center">
+                                                        <select disabled name="status_absen" class="form-select"  id="status_absen_{{ $siswas->id_siswa }}" onchange="editStatus('{{ $siswas->id_siswa }}', '{{ $id_jadwal }}')">
+                                                            <option style="text-transform: capitalize;" value="{{ $siswas->status_presensi ?? 'Belum Absen' }}" selected>
+                                                                {{ $siswas->status_presensi ?? 'Belum Absen' }}
+                                                            </option>
+                                                            
+                                                            @if ($siswas->status_presensi == 'Sakit')
+                                                                <option style="text-transform: capitalize;" value="Hadir">Hadir</option>
+                                                                <option style="text-transform: capitalize;" value="Alpha">Alpha</option>
+                                                                <option style="text-transform: capitalize;" value="Izin">Izin</option>
+                                                            @elseif ($siswas->status_presensi == 'Hadir')
+                                                                <option style="text-transform: capitalize;" value="Sakit">Sakit</option>
+                                                                <option style="text-transform: capitalize;" value="Alpha">Alpha</option>
+                                                                <option style="text-transform: capitalize;" value="Izin">Izin</option>
+                                                            @elseif ($siswas->status_presensi == 'Alpha')
+                                                                <option style="text-transform: capitalize;" value="Hadir">Hadir</option>
+                                                                <option style="text-transform: capitalize;" value="Sakit">Sakit</option>
+                                                                <option style="text-transform: capitalize;" value="Izin">Izin</option>
+                                                            @elseif ($siswas->status_presensi == 'Izin')
+                                                                <option style="text-transform: capitalize;" value="Hadir">Hadir</option>
+                                                                <option style="text-transform: capitalize;" value="Alpha">Alpha</option>
+                                                                <option style="text-transform: capitalize;" value="Sakit">Sakit</option>
+                                                            @else
+                                                                <!-- Opsi default jika nilai tidak sesuai -->
+                                                                <option style="text-transform: capitalize;" value="Hadir">Hadir</option>
+                                                                <option style="text-transform: capitalize;" value="Alpha">Alpha</option>
+                                                                <option style="text-transform: capitalize;" value="Sakit">Sakit</option>
+                                                                <option style="text-transform: capitalize;" value="Izin">Izin</option>
+                                                            @endif
+                                                        </select>												
+                                                    </td>
+                                                </tr>
+                                                   @endif
+                                                @endforeach
+                                            @else
+                                                @foreach ($siswa2 as $siswas )
+                                                    @if ($siswas->status !== 'lulus')
+                                                    <tr>
+                                                        <td style="text-align: center">{{ $loop->iteration }}</td>
+                                                        <td style="text-align: center">{{ $siswas->nama }}</td>
+                                                        <td style="text-align: center">
+                                                            <select disabled name="status_absen" class="form-select"  id="status_absen_{{ $siswas->id_siswa }}" onchange="editStatus('{{ $siswas->id_siswa }}', '{{ $id_jadwal }}')">
+                                                                <option style="text-transform: capitalize;" value="{{ $siswas->status_presensi ?? 'Belum Absen' }}" selected>
+                                                                    {{ $siswas->status_presensi ?? 'Belum Absen' }}
+                                                                </option>
+                                                                
+                                                                @if ($siswas->status_presensi == 'Sakit')
+                                                                    <option style="text-transform: capitalize;" value="Hadir">Hadir</option>
+                                                                    <option style="text-transform: capitalize;" value="Alpha">Alpha</option>
+                                                                    <option style="text-transform: capitalize;" value="Izin">Izin</option>
+                                                                @elseif ($siswas->status_presensi == 'Hadir')
+                                                                    <option style="text-transform: capitalize;" value="Sakit">Sakit</option>
+                                                                    <option style="text-transform: capitalize;" value="Alpha">Alpha</option>
+                                                                    <option style="text-transform: capitalize;" value="Izin">Izin</option>
+                                                                @elseif ($siswas->status_presensi == 'Alpha')
+                                                                    <option style="text-transform: capitalize;" value="Hadir">Hadir</option>
+                                                                    <option style="text-transform: capitalize;" value="Sakit">Sakit</option>
+                                                                    <option style="text-transform: capitalize;" value="Izin">Izin</option>
+                                                                @elseif ($siswas->status_presensi == 'Izin')
+                                                                    <option style="text-transform: capitalize;" value="Hadir">Hadir</option>
+                                                                    <option style="text-transform: capitalize;" value="Alpha">Alpha</option>
+                                                                    <option style="text-transform: capitalize;" value="Sakit">Sakit</option>
+                                                                @else
+                                                                    <!-- Opsi default jika nilai tidak sesuai -->
+                                                                    <option style="text-transform: capitalize;" value="Hadir">Hadir</option>
+                                                                    <option style="text-transform: capitalize;" value="Alpha">Alpha</option>
+                                                                    <option style="text-transform: capitalize;" value="Sakit">Sakit</option>
+                                                                    <option style="text-transform: capitalize;" value="Izin">Izin</option>
+                                                                @endif
+                                                            </select>												
+                                                        </td>
+                                                    </tr>
+                                                    @endif
+                                                @endforeach
+									        @endif
+                                        @else
+                                        @if ($siswa !== null)
+                                                @foreach ($siswa as $siswas )
+                                                    @if ($siswas !== "lulus")
+                                                    <tr>
+                                                        <td style="text-align: center">{{ $loop->iteration }}</td>
+                                                        <td style="text-align: center">{{ $siswas->nama }}</td>
+                                                        <td style="text-align: center">
+                                                            <select disabled name="status_absen" class="form-select" >
+                                                                <option style="text-transform: capitalize;" value="" selected>
+                                                                    Belum Absen
+                                                                </option>
+                                                            </select>												
+                                                        </td>
+                                                    </tr>
+                                                    @endif
+                                                @endforeach
+                                            @else
+                                                @foreach ($siswa2 as $siswas )
+                                                   @if ($siswas->status !== "lulus")
+                                                   <tr>
+                                                    <td style="text-align: center">{{ $loop->iteration }}</td>
+                                                    <td style="text-align: center">{{ $siswas->nama }}</td>
+                                                    <td style="text-align: center">
+                                                        <select disabled name="status_absen" class="form-select" >
+                                                            <option style="text-transform: capitalize;" value="" selected>
+                                                                Belum Absen
+                                                            </option>
+                                                        </select>												
+                                                    </td>
+                                                </tr>
+                                                   @endif
                                                 @endforeach
 									        @endif
                                         @endif

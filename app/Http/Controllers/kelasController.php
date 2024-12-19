@@ -20,7 +20,12 @@ class kelasController extends Controller
         }
         $kelas = $request->kelas;
         $kuota = $request->kuota;
-        
+        if (trim($kelas) === '') {
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+        }
+        if ($kuota == 0) {
+            return back()->with(["error_add" => "Kuota tidak boleh 0"]);
+        }
         $cekKelas = kelas::where("nama_kelas",'=',$kelas)->first();
         
         if($cekKelas == true){
@@ -72,7 +77,12 @@ class kelasController extends Controller
         $kelas = $request->kelas;
         $kuota = $request->kuota;
         $ins = $request->ins;
-
+        if (trim($kelas) === '') {
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+        }
+        if ($kuota == 0) {
+            return back()->with(["error_add" => "Kuota tidak boleh 0"]);
+        }
         $cekKelas = kelas::where("nama_kelas",'=',$kelas)->where("id_kelas",'!=',$id)->first();
         
         if($cekKelas == true){
@@ -123,5 +133,23 @@ class kelasController extends Controller
         }else{
             return back()->with(['error_delete' => "Berhasil menghapus kelas"]);
         }
+    }
+
+    public function detail_kelas($id){
+
+        
+        // menampilkan data kelas berupa siswa dan guru
+        $kelas = kelas::select("k.*",'s.nama','s.status')
+        ->from('kelas as k')
+        ->join("siswas as s",'s.id_kelas','=','k.id_kelas')
+        ->where("k.id_kelas",'=',$id)
+        ->get();
+        $kelasNins = kelas::select('i.nama_ins','k.nama_kelas')
+        ->from('kelas as k')
+        ->leftJoin("instrukturs as i",'i.id_ins','=','k.id_ins')
+        ->where("k.id_kelas",'=',$id)
+        ->first();
+
+        return view('admin.kelola_kelas.detail')->with(["kelas" => $kelas,'kelasNins' => $kelasNins]);
     }
 }

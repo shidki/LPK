@@ -56,9 +56,12 @@
       <div class="panels-container">
         <div class="panel left-panel">
           <div class="content">
-            <h2 style="margin-bottom: 20px;font-size: 1.8rem">Selamat datang  di LPK Cipta Kerja</h2>
+            <h2 style="font-size: 1.8rem">Selamat Datang  di LPK Cipta Kerja</h2>
+            <h4 style="margin-bottom: 20px;">
+              Bersama LPK Cipta Kerja, Raih Kesuksesan di Jepang!
+            </h4>
             <p>
-              Daftar akun untuk membuka portal sistem akademik pembelajaran
+              Daftar akun untuk membuka portal akademik
             </p>
             <button class="btn transparent" id="sign-up-btn">
               Daftar Akun

@@ -37,9 +37,9 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    {{--<i class="fas fa-laugh-wink"></i>--}}
                 </div>
-                <div class="sidebar-brand-text mx-3">DPN PERKASA <sup>ADMINISTRASI</sup></div>
+                <div class="sidebar-brand-text mx-3">CIPTA KERJA <sup>ADMINISTRASI</sup></div>
             </a>
 
             <!-- Divider -->
@@ -49,7 +49,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/halamanAdmin">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Dasbor</span></a>
             </li>
 
             <!-- Divider -->
@@ -80,11 +80,11 @@
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Kelola Bidang</span>
                 </a>
-                <div id="collapseUtilities" class="collapse show" aria-labelledby="headingUtilities"
+                <div id="collapseUtilities" class="collapse " aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Bidang:</h6>
-                        <a class="collapse-item active" href="/dataBidang">Bidang</a>
+                        <a class="collapse-item " href="/dataBidang">Bidang</a>
                     </div>
                 </div>
             </li>
@@ -98,7 +98,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Presensi:</h6>
-                        <a class="collapse-item" href="/presensi">Presensi</a>
+                        <a class="collapse-item" href="/halaman/absensi">Presensi</a>
                     </div>
                 </div>
             </li>
@@ -108,11 +108,11 @@
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Kelola Komponen Nilai</span>
                 </a>
-                <div id="collapseKompNilai" class="collapse" aria-labelledby="headingnilai"
+                <div id="collapseKompNilai" class="collapse show" aria-labelledby="headingnilai"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Komponen:</h6>
-                        <a class="collapse-item" href="/dataKompNilai">Kelola Komponen Nilai</a>
+                        <a class="collapse-item active" href="/dataKompNilai">Kelola Komponen Nilai</a>
                     </div>
                 </div>
             </li>
@@ -130,7 +130,7 @@
                     </div>
                 </div>
             </li>
-            <li class="nav-item">
+            {{--<li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapselistkelas"
                     aria-expanded="true" aria-controls="collapselistkelas">
                     <i class="fas fa-fw fa-wrench"></i>
@@ -145,31 +145,18 @@
                         @endforeach
                     </div>
                 </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMateri"
-                    aria-expanded="true" aria-controls="collapseMateri">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Kelola Materi</span>
-                </a>
-                <div id="collapseMateri" class="collapse" aria-labelledby="headingMateri"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Materi:</h6>
-                        <a class="collapse-item" href="/dataMateri">Kelola Materi</a>
-                    </div>
-                </div>
-            </li>
+            </li>--}}
+
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProfile"
                     aria-expanded="true" aria-controls="collapseProfile">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Kelola Profile</span>
+                    <span>Kelola Profil</span>
                 </a>
                 <div id="collapseProfile" class="collapse" aria-labelledby="headingProfile"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Profile:</h6>
+                        <h6 class="collapse-header">Profil:</h6>
                         <a class="collapse-item" href="/dataSiswa">Siswa</a>
                         <a class="collapse-item" href="/dataInstruktur">Instruktur</a>
                         <a class="collapse-item" href="/dataAdmin">Admin</a>
@@ -190,7 +177,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/halamanDashboard">
                     <i class="fa-solid fa-arrow-left"></i>
-                    <span>Back</span></a>
+                    <span>Kembali</span></a>
             </li>
 
             <!-- Divider -->
@@ -222,9 +209,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    Nama Admin
-                                </span>                         
+                                                        
                             </a>
                         </li>
                     </ul>
@@ -239,7 +224,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered" id="" width="100%" cellspacing="0">
                                     <button data-bs-toggle="modal"  data-bs-target="#staticBackdrop" type="submit" class="btn btn-success btn-icon-split mb-3">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-plus"></i>
@@ -262,7 +247,7 @@
                                                 {{$kompNilais->nama_komp_nilai}}
                                             </td>
                                             <td>
-                                                {{$kompNilais->proporsi_nilai*100}}%
+                                                {{$kompNilais->proporsi_nilai}}%
                                             </td>
                                             <td class="text-center">
                                                 <button data-id="{{ json_encode(['kompNilais' => $kompNilais->id_komp_nilai,'nama' => $kompNilais->nama_komp_nilai,'proporsi' => $kompNilais->proporsi_nilai]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
@@ -343,7 +328,7 @@
                             </div>
                             <div class="modal-footer" style="text-align: center">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-                                <button type="submit" class="btn btn-primary">ubah</button>
+                                <button type="submit" class="btn btn-primary">Ubah</button>
                             </div>
                         </form>
                     </div>
@@ -441,9 +426,9 @@
                 var kompNilai = modalInstruktur.querySelector('#kompNilaiEdit');
                 kompNilai.value = parsedDataId.nama;
                 var proporsi = modalInstruktur.querySelector('#proporsiEdit');
-                proporsi.value = parsedDataId.proporsi*100;
+                proporsi.value = parsedDataId.proporsi;
                 var valueRange2 = modalInstruktur.querySelector('#valueRange2');
-                valueRange2.textContent = parsedDataId.proporsi*100;
+                valueRange2.textContent = parsedDataId.proporsi;
                 var kompNilais = modalInstruktur.querySelector('#kompNilais');
                 kompNilais.value = parsedDataId.kompNilais;
 
@@ -492,7 +477,10 @@
                       Swal.fire({
                           title: "Gagal Menambah Komponen Nilai",
                           text: "{{ session('error_add') }}", // Menggunakan blade syntax untuk menampilkan pesan
-                          icon: "error"
+                          icon: "error",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('error_add') }}");
                 </script>
@@ -501,7 +489,10 @@
                 <script>
                       Swal.fire({
                           title: "{{ session('sukses_add') }}",
-                          icon: "success"
+                          icon: "success",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('sukses_add') }}");
                 </script>
@@ -511,7 +502,10 @@
                       Swal.fire({
                           title: "Gagal Menghapus Komponen Nilai",
                           text: "{{ session('error_delete') }}", // Menggunakan blade syntax untuk menampilkan pesan
-                          icon: "error"
+                          icon: "error",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('error_delete') }}");
                 </script>
@@ -520,7 +514,10 @@
                 <script>
                       Swal.fire({
                           title: "{{ session('sukses_delete') }}",
-                          icon: "success"
+                          icon: "success",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('sukses_delete') }}");
                 </script>
@@ -530,7 +527,10 @@
                       Swal.fire({
                           title: "Gagal Menambah Komponen Nilai",
                           text: "{{ session('error_edit') }}", // Menggunakan blade syntax untuk menampilkan pesan
-                          icon: "error"
+                          icon: "error",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('error_edit') }}");
                 </script>
@@ -539,10 +539,18 @@
                 <script>
                       Swal.fire({
                           title: "{{ session('sukses_edit') }}",
-                          icon: "success"
+                          icon: "success",
+                          customClass: {
+                            popup: 'swal-text-capitalize' // Tambahkan class custom
+                        }
                       });
                     console.log("Error reset message:", "{{ session('sukses_edit') }}");
                 </script>
+                <style>
+                    .swal-text-capitalize .swal2-html-container {
+                        text-transform: capitalize;
+                    }
+                </style>
                 @endif
     <!-- Bootstrap core JavaScript-->
     <script src="admin/vendor/jquery/jquery.min.js"></script>

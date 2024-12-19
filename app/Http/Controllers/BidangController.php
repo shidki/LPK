@@ -11,6 +11,9 @@ class BidangController extends Controller
     //
     public function add_bidang(Request $request){
         $bidang = $request->bidang;
+        if (trim($bidang) === '') {
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+        }
         // cek apakah bidang sudah ada apa belum
         $cekBidang = bidang_minat::where("nama_bidang",'=',$bidang)->first();
         if($cekBidang == true){
@@ -46,6 +49,9 @@ class BidangController extends Controller
 
         $id = $request->bidangs;
         $bidang = $request->bidang;
+        if (trim($bidang) === '') {
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+        }
         // cek apakah bidang sudah ada apa belum
         $cekBidang = bidang_minat::where("nama_bidang",'=',$bidang)->where("id_bidang",'!=',$id)->first();
         if($cekBidang == true){

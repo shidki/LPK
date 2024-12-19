@@ -21,6 +21,9 @@ class ProfileController extends Controller
         $bidang = $request->bidang_siswa;
         $tglMasuk = $request->tglMasuk;
         $status = $request->status_siswa;
+        if (trim($nama) === '' || trim($email) === ''|| trim($nohp) === ''|| trim($alamat) === '') {
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+        }
         if (!preg_match('/^(\+?[0-9]{1,3}[0-9]{1,}|[0-9]{1,})$/', $request->nohp)) {
             return back()->with(['error_add' => 'Format nomor HP tidak valid.']);
         }
@@ -48,8 +51,9 @@ class ProfileController extends Controller
         // ==== menentukan id siswa ====
         $cekCountSiswa = siswa::count();
 
+        //dd($cekCountSiswa);
         $insertData = DB::table("siswas")->insert([
-            "id_siswa" => "Siswa".$cekCountSiswa + 1,
+            "id_siswa" => "Siswa".$cekCountSiswa + 2,
             "nama" => $nama,
             "email" => $email,
             "no_hp" => $nohp,
@@ -102,12 +106,15 @@ class ProfileController extends Controller
         $id = $request->siswas;
         $nama = $request->nama_siswaEdit;
         $email = $request->emailEdit;
+        $tglLulus = $request->tglLulus;
         $no_hp = $request->nohpEdit;
         $alamat = $request->alamatEdit;
         $id_bidang = $request->bidang_siswaEdit;
         $id_kelas = $request->kelas_siswaEdit;
         $status = $request->status_siswaEdit;
-
+        if (trim($nama) === '' || trim($email) === ''|| trim($no_hp) === ''|| trim($alamat) === '') {
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+        }
         if (!preg_match('/^(\+?[0-9]{1,3}[0-9]{1,}|[0-9]{1,})$/', $request->nohpEdit)) {
             return back()->with(['error_add' => 'Format nomor HP tidak valid.']);
         } 
@@ -137,33 +144,65 @@ class ProfileController extends Controller
         }
 
         // edit data siswa
-        $updateSiswa = DB::table("siswas")->where("id_siswa",'=',$id)->update([
-            "nama" => $nama,
-            "email" => $email,
-            "no_hp" => $no_hp,
-            "alamat" => $alamat,
-            "id_bidang" => $id_bidang,
-            "id_kelas" => $id_kelas,
-            "status" => $status,
-        ]);
-
-        if($updateSiswa == true){
-            // jika data email yang dimasukkan adlah email baru maka akan di edit, jika sama , brarti tidak di edit
-
-  
-            if($getEmailSiswa->email != $email){
-                // kondis  jika email yang dimasukkan berubah atau email baru
-                $updateEmail = DB::table("users")->where("email",'=',$getEmailSiswa->email)->update([
-                    "email" => $email
-                ]);
-
-                if($updateEmail == true){
-                    return back()->with(["sukses_edit" => "Berhasil mengubah data siswa"]);
+        if($tglLulus == null){
+            $updateSiswa = DB::table("siswas")->where("id_siswa",'=',$id)->update([
+                "nama" => $nama,
+                "email" => $email,
+                "no_hp" => $no_hp,
+                "alamat" => $alamat,
+                "id_bidang" => $id_bidang,
+                "id_kelas" => $id_kelas,
+                "status" => $status,
+            ]);
+    
+            if($updateSiswa == true){
+                // jika data email yang dimasukkan adlah email baru maka akan di edit, jika sama , brarti tidak di edit
+    
+      
+                if($getEmailSiswa->email != $email){
+                    // kondis  jika email yang dimasukkan berubah atau email baru
+                    $updateEmail = DB::table("users")->where("email",'=',$getEmailSiswa->email)->update([
+                        "email" => $email
+                    ]);
+    
+                    if($updateEmail == true){
+                        return back()->with(["sukses_edit" => "Berhasil mengubah data siswa"]);
+                    }
                 }
+                return back()->with(["sukses_edit" => "Berhasil mengubah data siswa"]);
+            }else{
+                return back()->with(["error_edit" => "Gagal mengubah data siswa"]);
             }
-            return back()->with(["sukses_edit" => "Berhasil mengubah data siswa"]);
         }else{
-            return back()->with(["error_edit" => "Gagal mengubah data siswa"]);
+            $updateSiswa = DB::table("siswas")->where("id_siswa",'=',$id)->update([
+                "nama" => $nama,
+                "email" => $email,
+                "no_hp" => $no_hp,
+                "alamat" => $alamat,
+                "tgl_lulus" => $tglLulus,
+                "id_bidang" => $id_bidang,
+                "id_kelas" => $id_kelas,
+                "status" => $status,
+            ]);
+    
+            if($updateSiswa == true){
+                // jika data email yang dimasukkan adlah email baru maka akan di edit, jika sama , brarti tidak di edit
+    
+      
+                if($getEmailSiswa->email != $email){
+                    // kondis  jika email yang dimasukkan berubah atau email baru
+                    $updateEmail = DB::table("users")->where("email",'=',$getEmailSiswa->email)->update([
+                        "email" => $email
+                    ]);
+    
+                    if($updateEmail == true){
+                        return back()->with(["sukses_edit" => "Berhasil mengubah data siswa"]);
+                    }
+                }
+                return back()->with(["sukses_edit" => "Berhasil mengubah data siswa"]);
+            }else{
+                return back()->with(["error_edit" => "Gagal mengubah data siswa"]);
+            }            
         }
     }
 
@@ -174,6 +213,9 @@ class ProfileController extends Controller
         $nohp = $request->nohp;
         $alamat = $request->alamat;
         $tglMasuk = $request->tglMasuk;
+        if (trim($nama) === '' || trim($email) === ''|| trim($nohp) === ''|| trim($alamat) === '') {
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+        }
         if (!preg_match('/^(\+?[0-9]{1,3}[0-9]{1,}|[0-9]{1,})$/', $request->nohp)) {
             return back()->with(['error_add' => 'Format nomor HP tidak valid.']);
         }
@@ -255,7 +297,9 @@ class ProfileController extends Controller
         if (!preg_match('/^(\+?[0-9]{1,3}[0-9]{1,}|[0-9]{1,})$/', $request->nohpEdit)) {
             return back()->with(['error_add' => 'Format nomor HP tidak valid.']);
         }
-        
+        if (trim($nama) === '' || trim($email) === ''|| trim($no_hp) === ''|| trim($alamat) === '') {
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+        }
 
         // query dibawah adlah digunakan untuk menyimpan data email sebelumnya ( untuk update data akun ketika email yang dimasukkan adalah email baru)
         $getEmailIns = DB::table("instrukturs")->where("id_ins",'=',$id)->first();
@@ -322,7 +366,9 @@ class ProfileController extends Controller
         $nohp = $request->nohp;
         $alamat = $request->alamat;
         $tglMasuk = $request->tglMasuk;
-
+        if (trim($nama) === '' || trim($email) === ''|| trim($nohp) === ''|| trim($alamat) === '') {
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+        }
         // dd($status);
         $cekEmail = instruktur::select("email_ins")->from('instrukturs')->where("email_ins",'=',$email)->first();
         $ceknohp = instruktur::select("no_hp_ins")->from('instrukturs')->where("no_hp_ins",'=',$nohp)->first();
@@ -366,7 +412,9 @@ class ProfileController extends Controller
         if (!preg_match('/^\+?[0-9\s]{8,}$/', $request->nohpEdit)) {
             return back()->with(['error_add' => 'Format nomor HP tidak valid.']);
         } 
-
+        if (trim($nama) === '' || trim($email) === ''|| trim($nohp) === ''|| trim($alamat) === '') {
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+        }
         $getEmailAdmin = DB::table("admins")->where("id_adm",'=',$admins)->first();
 
         $cekEmail1 = users::select("email")->from('users')->where("email",'=',$email)->where("id_akun",'=',$getEmailAdmin->id_akun)->first();

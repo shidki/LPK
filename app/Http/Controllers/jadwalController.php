@@ -6,6 +6,7 @@ use App\Models\jadwal;
 use App\Models\kelas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class jadwalController extends Controller
 {
@@ -31,6 +32,79 @@ class jadwalController extends Controller
         });
 
 
-        return view("admin.jadwal.jadwal")->with(['jadwal' => $dataJadwal->toArray(),'kelas' => $getKelas->nama_kelas]);
+        return view("admin.jadwal.jadwal")->with(['jadwal' => $dataJadwal->toArray(),'kelas' => $getKelas]);
+    }
+
+    public function jadwalLibur($id){
+        // cek status jadwal yang dirubah ( klo udah dimulai / selesai dia gabisa dirubah tiba2 libur)
+        $cekStatus = jadwal::where("id_jadwal",'=',$id)->first();
+        if($cekStatus->status == "mulai" || $cekStatus->status == "selesai"){
+            return back()->with(["error_edit" => "Jadwal telah dimulai atau telah selesai"]);
+        }
+
+        $editStatus = DB::table("jadwals")->where("id_jadwal",'=',$id)->update([
+            "status" => "libur"
+        ]);
+        if($editStatus == true){
+            return back()->with(["sukses_edit" => "Berhasil merubah jadwal"]);
+        }else{
+            return back()->with(["error_edit" => "Gagal merubah jadwal"]);
+        }
+    }
+    public function tambahJadwal($id)
+    {
+        // Ambil tanggal sekarang
+        $currentDate = Carbon::now();
+        
+        // Cek tanggal terakhir jadwal pada kelas
+        $lastScheduleDate = jadwal::where('id_kelas', $id)
+                                ->orderBy('tanggal_pelaksanaan', 'desc')
+                                ->first();
+        
+        if ($lastScheduleDate) {
+            // Ambil tanggal terakhir pelaksanaan jadwal
+            $lastDate = Carbon::parse($lastScheduleDate->tanggal_pelaksanaan);
+            $lastDate2 = Carbon::parse($lastScheduleDate->tanggal_pelaksanaan);
+            // Dapatkan tanggal satu bulan sebelum tanggal terakhir jadwal kelas
+            $oneMonthBeforeLastDate = $lastDate->subMonth();
+            //dd($lastDate2);      
+            // Periksa apakah tanggal sekarang berada dalam rentang satu bulan sebelum tanggal terakhir hingga tanggal terakhir
+            if ($currentDate->greaterThanOrEqualTo($oneMonthBeforeLastDate) && $currentDate->lessThanOrEqualTo($lastDate)) {
+                // Jika tanggal tidak berada dalam rentang tersebut
+                $currentDate = $lastDate2;  // Set tanggal saat ini ke tanggal terakhir jadwal
+                $currentDate = $currentDate->addDay();  // Tambahkan 1 hari untuk mulai dari besok
+                
+                $endDate = $currentDate->copy()->addYear();  // Tambahkan satu tahun dari tanggal terakhir
+                
+                $data = [];
+                
+                while ($currentDate->lte($endDate)) {
+                    // Cek apakah hari ini adalah Senin-Jumat
+                    if ($currentDate->isWeekday()) {
+                        $data[] = [
+                            'id_jadwal' => 'JDWL' . $currentDate->format('y') . $currentDate->format('m') . $currentDate->format('d') . $id,
+                            'id_kelas' => $id,
+                            'tanggal_pelaksanaan' => $currentDate->format('Y-m-d'),
+                            'status' => 'aktif', // Status jadwal
+                        ];
+                    }
+                
+                    // Tambahkan 1 hari setelah setiap iterasi
+                    $currentDate->addDay();
+                }
+                $insertJadwal = DB::table('jadwals')->insert($data);
+                if($insertJadwal == true){
+                    return back()->with(['sukses_add' => "Berhasil menambah jadwal"]);
+                }else{
+                    return back()->with(['error_add' => "Gagal menambah jadwal"]);
+                }
+            } else {
+                
+                return back()->with(['error_add' => "Jadwal hanya bisa ditambah 1 bulan sebelum jadwal berakhir"]);
+            }
+        } else {
+            return back()->with(['error_add' => "Gagal menambah jadwal"]);
+
+        }
     }
 }
