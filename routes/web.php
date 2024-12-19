@@ -128,6 +128,7 @@ Route::get('/delete/kompNilai/{id}',[kompNilaiController::class, 'delete_kompNil
     Route::post('/add/mapel',[materiController::class, 'add_mapel'])->name('add_mapel');
     Route::post('/edit/mapel',[materiController::class, 'edit_mapel'])->name('edit_mapel');
     // ============= MATERI =============
+    Route::post('/edit/materi',[materiController::class, 'edit_materi'])->name('edit_materi');
     Route::get('/delete/mapel/{id}',[materiController::class, 'delete_mapel'])->name('delete_mapel');
     Route::get('/delete/materi/{id}',[materiController::class, 'delete_materi'])->name('delete_materi');
 

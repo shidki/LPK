@@ -21,7 +21,7 @@ class kelasController extends Controller
         $kelas = $request->kelas;
         $kuota = $request->kuota;
         if (trim($kelas) === '') {
-            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);
         }
         if ($kuota == 0) {
             return back()->with(["error_add" => "Kuota tidak boleh 0"]);

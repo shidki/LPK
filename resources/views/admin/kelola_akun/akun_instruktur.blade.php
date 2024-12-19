@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>Dasbor Admin</title>
     <script src="https://kit.fontawesome.com/8183c3e7b3.js" crossorigin="anonymous"></script>
     <!-- Custom fonts for this template -->
     <link href="admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -521,9 +521,9 @@
                 @if (session('error_add'))
                 <script>
                       Swal.fire({
-                          title: "Gagal Menambah Akun",
+                          title: "Akun instruktur gagal ditambahkan!",
                           text: "{{ session('error_add') }}", // Menggunakan blade syntax untuk menampilkan pesan
-                          icon: "error"
+                          icon: "error",
                           customClass: {
                             popup: 'swal-text-capitalize' // Tambahkan class custom
                         }
@@ -571,7 +571,7 @@
                 @if (session('error_edit'))
                 <script>
                       Swal.fire({
-                          title: "Gagal Menambah Instruktur",
+                          title: "Instruktur gagal ditambahkan!",
                           text: "{{ session('error_edit') }}", // Menggunakan blade syntax untuk menampilkan pesan
                           icon: "error",
                           customClass: {

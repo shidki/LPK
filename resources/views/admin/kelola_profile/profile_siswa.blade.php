@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>Dasbor Admin</title>
 
     <!-- Custom fonts for this template -->
     <script src="https://kit.fontawesome.com/8183c3e7b3.js" crossorigin="anonymous"></script>

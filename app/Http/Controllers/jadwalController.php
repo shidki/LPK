@@ -39,16 +39,16 @@ class jadwalController extends Controller
         // cek status jadwal yang dirubah ( klo udah dimulai / selesai dia gabisa dirubah tiba2 libur)
         $cekStatus = jadwal::where("id_jadwal",'=',$id)->first();
         if($cekStatus->status == "mulai" || $cekStatus->status == "selesai"){
-            return back()->with(["error_edit" => "Jadwal telah dimulai atau telah selesai"]);
+            return back()->with(["error_edit" => "Jadwal telah dimulai atau telah selesai!"]);
         }
 
         $editStatus = DB::table("jadwals")->where("id_jadwal",'=',$id)->update([
             "status" => "libur"
         ]);
         if($editStatus == true){
-            return back()->with(["sukses_edit" => "Berhasil merubah jadwal"]);
+            return back()->with(["sukses_edit" => "Jadwal berhasil diubah!"]);
         }else{
-            return back()->with(["error_edit" => "Gagal merubah jadwal"]);
+            return back()->with(["error_edit" => "Jadwal gagal diubah!"]);
         }
     }
     public function tambahJadwal($id)
@@ -94,16 +94,16 @@ class jadwalController extends Controller
                 }
                 $insertJadwal = DB::table('jadwals')->insert($data);
                 if($insertJadwal == true){
-                    return back()->with(['sukses_add' => "Berhasil menambah jadwal"]);
+                    return back()->with(['sukses_add' => "Jadwal berhasil diubah!"]);
                 }else{
-                    return back()->with(['error_add' => "Gagal menambah jadwal"]);
+                    return back()->with(['error_add' => "Jadwal gagal diubah!"]);
                 }
             } else {
                 
-                return back()->with(['error_add' => "Jadwal hanya bisa ditambah 1 bulan sebelum jadwal berakhir"]);
+                return back()->with(['error_add' => "Jadwal hanya bisa ditambah 1 bulan sebelum jadwal berakhir!"]);
             }
         } else {
-            return back()->with(['error_add' => "Gagal menambah jadwal"]);
+            return back()->with(['error_add' => "Jadwal gagal ditambahkan!"]);
 
         }
     }

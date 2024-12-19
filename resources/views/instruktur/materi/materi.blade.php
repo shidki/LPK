@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>profile task with team cards - Bootdey.com</title>
+    <title>Dasbor Instruktur</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="instruktur/style.css">
@@ -219,7 +219,7 @@
                             <span id="error_mapel" class="text-danger mt-1" style="text-transform: capitalize"></span>
                             <span id="jml_input_mapel_container">
                             <span id="jml_input_mapel">0</span> 
-                            / 25</span>
+                            / 50</span>
                         </div>
                         <div class="form-group">
                             <label for="tahunAkademik">Tahun Akademik<strong class="text-danger font-weight-bold">*</strong></label>
@@ -279,7 +279,7 @@
                                     <span id="error_mapelEdit" class="text-danger mt-1" style="text-transform: capitalize"></span>
                                     <span id="jml_input_mapelEdit_container">
                                     <span id="jml_input_mapelEdit">0</span> 
-                                    / 25</span>
+                                    / 50</span>
                                 </div>
                                 <div class="form-group-{{ $mapels->id_mapel }}">
                                     <label for="tahunAkademik">Tahun Akademik<strong class="text-danger font-weight-bold">*</strong></label>
@@ -314,7 +314,7 @@
                             </div>
                             <div class="modal-footer" style="text-align: center">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-                                <button type="submit" class="btn btn-primary">Tambah</button>
+                                <button type="submit" class="btn btn-primary">Ubah</button>
                             </div>
                         </form>
                     </div>
@@ -333,9 +333,11 @@
                             @foreach ($materi as $materis )
                             @if ($materis->id_mapels == $mapels->id_mapel)
                             <div style="display: flex; justify-content: space-between; margin-top: 15px;">
-                               <a style="padding-bottom: 2px; border-bottom: 1px solid rgb(72, 72, 72); text-decoration: none;width: 80%;" href="{{$materis->dok_materi}}" target="_blank">{{ $materis->judul_materi}}</a>
+                               <a style="padding-bottom: 2px; border-bottom: 1px solid rgb(72, 72, 72); text-decoration: none;width: 80%;" href="{{asset($materis->dok_materi)}}" target="_blank">{{ $materis->judul_materi}}</a>
                                 <div style="display: flex; justify-content: space-between;">
                                     <div>
+                                        <button data-id="{{ json_encode(['id' => $materis->id_materi, 'nama' => $materis->judul_materi,'path' => $materis->dok_materi ]) }}" style="border: none; background-color: transparent;" class="mb-0 text-muted fw-medium" data-bs-toggle="modal" data-bs-target="#modalMateri"><i class="mdi mdi-square-edit-outline font-size-16 align-middle"></i></button>
+
                                         <a href="/delete/materi/{{$materis->id_materi}}" class="delete-item">
                                             <i class="mdi mdi-trash-can-outline align-middle font-size-16 text-danger"></i>
                                         </a>
@@ -352,6 +354,33 @@
                 </div>
             </div>
         @endforeach
+        <div class="modal fade" id="modalMateri" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-MateriLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-Materi" data-bs-toggle="modal"  data-bs-target="#modal">Materi Bab</h5>
+                    </div>
+                    <form action="/edit/materi" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body">
+                                <div class="form-group-">
+                                    <label for="materiEditModal">Nama Judul Materi<strong class="text-danger font-weight-bold">*</strong></label>
+                                    <input type="hidden" name="id_materi_modal" id="id_materi_modal" value="">
+                                    <input id="materiEditModal" value="" type="text" class="form-control" placeholder="Masukkan Judul Materi" required name="materiEditModal">
+                                </div>
+                                <div class="form-group" style="margin-top: 10px;">
+                                    <label for="filemateriEditModal">File Materi</label>
+                                    <input id="filemateriEditModal" accept="pdf" value="" type="file" class="form-control"  name="filemateriEditModal">
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="text-align: center">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Ubah</button>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
     <script>
         let fileCount = 1; // Memulai dengan file1
 
@@ -418,7 +447,19 @@
             }
         });
 
+        var materiModal = document.getElementById('modalMateri');
+            materiModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var dataId = button.getAttribute('data-id');
+                var parsedDataId = JSON.parse(dataId);
+                
+                var id = materiModal.querySelector('#id_materi_modal');
+                id.value = parsedDataId.id;
+                var materi = materiModal.querySelector('#materiEditModal');
+                materi.value = parsedDataId.nama;
 
+
+            });
 
         document.addEventListener('DOMContentLoaded', function () {
                 // Mengambil elemen berdasarkan ID
@@ -432,16 +473,44 @@
                     var length = inputmapel.value.length;
                     jmlInputString.textContent = length; // Memperbarui jumlah karakter yang ditampilkan
             
-                    if (length > 25) {
+                    if (length > 50) {
                         jmlInputString_container.style.color = "red";
-                        inputmapel.value = inputmapel.value.substring(0, 25); // Memotong nilai input jika lebih dari 25 karakter
-                        errormapel.textContent = "Maksimal 25 huruf"; // Menampilkan pesan error
-                    } else if (length >  25) {
+                        inputmapel.value = inputmapel.value.substring(0, 50); // Memotong nilai input jika lebih dari 50 karakter
+                        errormapel.textContent = "Maksimal 50 huruf"; // Menampilkan pesan error
+                    } else if (length ===  50) {
                         jmlInputString_container.style.color = "red";
-                        errormapel.textContent = "Maksimal 25 huruf";
+                        errormapel.textContent = "Maksimal 50 huruf";
                     } else {
                         jmlInputString_container.style.color = "black";
-                        errormapel.textContent = ""; // Mengosongkan pesan error jika kurang dari 25 karakter
+                        errormapel.textContent = ""; // Mengosongkan pesan error jika kurang dari 50 karakter
+                    }
+                }
+            
+                // Menambahkan event listener untuk merespons setiap kali ada input
+                inputmapel.addEventListener('input', updateCharacterCount);
+            });
+        document.addEventListener('DOMContentLoaded', function () {
+                // Mengambil elemen berdasarkan ID
+                var inputmapel = document.getElementById('mapelEdit');
+                var errormapel = document.getElementById('error_mapelEdit');
+                var jmlInputString = document.getElementById('jml_input_mapelEdit');
+                var jmlInputString_container = document.getElementById('jml_input_mapelEdit_container');
+            
+                // Fungsi untuk memperbarui jumlah karakter dan memeriksa limit
+                function updateCharacterCount() {
+                    var length = inputmapel.value.length;
+                    jmlInputString.textContent = length; // Memperbarui jumlah karakter yang ditampilkan
+            
+                    if (length > 50) {
+                        jmlInputString_container.style.color = "red";
+                        inputmapel.value = inputmapel.value.substring(0, 50); // Memotong nilai input jika lebih dari 50 karakter
+                        errormapel.textContent = "Maksimal 50 huruf"; // Menampilkan pesan error
+                    } else if (length ===  50) {
+                        jmlInputString_container.style.color = "red";
+                        errormapel.textContent = "Maksimal 50 huruf";
+                    } else {
+                        jmlInputString_container.style.color = "black";
+                        errormapel.textContent = ""; // Mengosongkan pesan error jika kurang dari 50 karakter
                     }
                 }
             

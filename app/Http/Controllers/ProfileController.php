@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\admin;
 use App\Models\instruktur;
+use App\Models\kelas;
 use App\Models\siswa;
 use App\Models\users;
 use Illuminate\Http\Request;
@@ -22,11 +23,21 @@ class ProfileController extends Controller
         $tglMasuk = $request->tglMasuk;
         $status = $request->status_siswa;
         if (trim($nama) === '' || trim($email) === ''|| trim($nohp) === ''|| trim($alamat) === '') {
-            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);
         }
         if (!preg_match('/^(\+?[0-9]{1,3}[0-9]{1,}|[0-9]{1,})$/', $request->nohp)) {
-            return back()->with(['error_add' => 'Format nomor HP tidak valid.']);
+            return back()->with(['error_add' => 'Format nomor telepon tidak valid!']);
         }
+
+        // cek kuota kelas
+        $cekKelas = kelas::where("id_kelas",'=',$kelas)->first();
+        $cekjmlsiswa = siswa::where("id_kelas",'=',$kelas)->count();
+        // dd($cekjmlsiswa);
+        if($cekjmlsiswa == $cekKelas->kuota){
+            return back()->with(['error_add' => 'Kelas sudah penuh!']);
+
+        }
+
         // dd($status);
         $ceknohp = siswa::select("no_hp")->from('siswas')->where("no_hp",'=',$nohp)->first();
         $ceknohpIns = instruktur::select("no_hp_ins")->from('instrukturs')->where("no_hp_ins",'=',$nohp)->first();
@@ -42,10 +53,10 @@ class ProfileController extends Controller
         
         // email tersedia
         if($cekEmail == true || $cekEmailIns == true || $cekEmail1 == true || $cekEmailadmin == true){
-            return back()->with(["error_add" => "Email tersedia"]);
+            return back()->with(["error_add" => "Email sudah tersedia!"]);
         }
         if($ceknohp == true ||  $ceknohpIns == true ||  $ceknohpadmin == true ){
-            return back()->with(["error_add" => "No hp tersedia"]);
+            return back()->with(["error_add" => "Nomor telepon tersedia!"]);
         }
 
         // ==== menentukan id siswa ====
@@ -64,10 +75,10 @@ class ProfileController extends Controller
             "status" => $status,
         ]);
         if($insertData == true){
-            return back()->with(["sukses_add" => "Siswa berhasil ditambah"]);
+            return back()->with(["sukses_add" => "Siswa berhasil ditambahkan!"]);
 
         }else{
-            return back()->with(["sukses_add" => "Siswa gagal ditambah"]);
+            return back()->with(["sukses_add" => "Siswa gagal ditambahkan!"]);
         }
     }
 
@@ -88,17 +99,17 @@ class ProfileController extends Controller
             if($getAkun == true){
                 $deleteEmail = DB::table('users')->where('email','=', $getEmail->email)->delete();
                 if($deleteEmail == true){
-                    return back()->with(['sukses_delete' => "berhasil menghapus siswa"]);
+                    return back()->with(['sukses_delete' => "Siswa berhasil dihapus!"]);
                 }else{
-                    return back()->with(['error_delete' => "gagal menghapus akun siswa"]);
+                    return back()->with(['error_delete' => "Akun siswa gagal dihapus!"]);
                 }
             }else{
                 // ini ketika delete siswa nya berhasil tpi email blm kedaftar
-                return back()->with(['sukses_delete' => "berhasil menghapus siswa"]);
+                return back()->with(['sukses_delete' => "Siswa berhasil dihapus!"]);
             }
             
         }else{
-            return back()->with(['error_delete' => "gagal menghapus siswa"]);
+            return back()->with(['error_delete' => "Siswa gagal dihapus!"]);
         }
     }
 
@@ -113,11 +124,21 @@ class ProfileController extends Controller
         $id_kelas = $request->kelas_siswaEdit;
         $status = $request->status_siswaEdit;
         if (trim($nama) === '' || trim($email) === ''|| trim($no_hp) === ''|| trim($alamat) === '') {
-            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);
         }
         if (!preg_match('/^(\+?[0-9]{1,3}[0-9]{1,}|[0-9]{1,})$/', $request->nohpEdit)) {
-            return back()->with(['error_add' => 'Format nomor HP tidak valid.']);
-        } 
+            return back()->with(['error_add' => 'Format nomor telepon tidak valid!']);
+        }
+        $cekKelasSiswa = siswa::where('id_siswa','=',$id)->first();
+        if($id_kelas !== $cekKelasSiswa->id_kelas){
+            $cekKelas = kelas::where("id_kelas",'=',$id_kelas)->first();
+            $cekjmlsiswa = siswa::where("id_kelas",'=',$id_kelas)->count();
+            // dd($cekjmlsiswa);
+            if($cekjmlsiswa == $cekKelas->kuota){
+                return back()->with(['error_add' => 'Kelas sudah penuh!']);
+    
+            }
+        }
         // query dibawah adlah digunakan untuk menyimpan data email sebelumnya ( untuk update data akun ketika email yang dimasukkan adalah email baru)
         $getEmailSiswa = DB::table("siswas")->where("id_siswa",'=',$id)->first();
         // dd($getEmailSiswa);
@@ -133,14 +154,14 @@ class ProfileController extends Controller
 
 
         if($getEmail == true || $getEmail1 == true || $getEmail2 == true || $cekEmailadmin == true){
-            return back()->with(["error_edit" => "email sudah digunakan"]);
+            return back()->with(["error_edit" => "Email sudah digunakan!"]);
         }
         
         // cek no hp apakah no hp baru sudah digunakan
         // get data no hp
         $getNoHp = DB::table("siswas")->where("no_hp",'=',$no_hp)->where("id_siswa",'!=',$id)->first();
         if($getNoHp == true || $ceknohpadmin == true || $ceknohpins == true){
-            return back()->with(["error_edit" => "No hp sudah digunakan"]);
+            return back()->with(["error_edit" => "Nomor telepon sudah digunakan!"]);
         }
 
         // edit data siswa
@@ -166,12 +187,12 @@ class ProfileController extends Controller
                     ]);
     
                     if($updateEmail == true){
-                        return back()->with(["sukses_edit" => "Berhasil mengubah data siswa"]);
+                        return back()->with(["sukses_edit" => "Data siswa berhasil diubah!"]);
                     }
                 }
-                return back()->with(["sukses_edit" => "Berhasil mengubah data siswa"]);
+                return back()->with(["sukses_edit" => "Data siswa berhasil diubah!"]);
             }else{
-                return back()->with(["error_edit" => "Gagal mengubah data siswa"]);
+                return back()->with(["error_edit" => "Data siswa gagal diubah!"]);
             }
         }else{
             $updateSiswa = DB::table("siswas")->where("id_siswa",'=',$id)->update([
@@ -196,12 +217,12 @@ class ProfileController extends Controller
                     ]);
     
                     if($updateEmail == true){
-                        return back()->with(["sukses_edit" => "Berhasil mengubah data siswa"]);
+                        return back()->with(["sukses_edit" => "Data siswa berhasil diubah!"]);
                     }
                 }
-                return back()->with(["sukses_edit" => "Berhasil mengubah data siswa"]);
+                return back()->with(["sukses_edit" => "Data siswa berhasil diubah!"]);
             }else{
-                return back()->with(["error_edit" => "Gagal mengubah data siswa"]);
+                return back()->with(["error_edit" => "Data siswa gagal diubah!"]);
             }            
         }
     }
@@ -233,10 +254,10 @@ class ProfileController extends Controller
         // dd($cekEmail);
         // email tersedia
         if($cekEmail == true || $cekEmailSiswa == true || $cekEmail1 == true || $cekEmailAdmin == true){
-            return back()->with(["error_add" => "Email tersedia"]);
+            return back()->with(["error_add" => "Email sudah tersedia!"]);
         }
         if($ceknohp == true ||  $ceknohpSiswa == true ||  $ceknohpAdmin == true ){
-            return back()->with(["error_add" => "No hp tersedia"]);
+            return back()->with(["error_add" => "Nomor telepon sudah tersedia!"]);
         }
 
         // ==== menentukan id siswa ====
@@ -251,10 +272,10 @@ class ProfileController extends Controller
             "tgl_masuk_ins" => $tglMasuk,
         ]);
         if($insertData == true){
-            return back()->with(["sukses_add" => "instruktur berhasil ditambah"]);
+            return back()->with(["sukses_add" => "Instruktur berhasil ditambahkan!"]);
 
         }else{
-            return back()->with(["sukses_add" => "instruktur gagal ditambah"]);
+            return back()->with(["sukses_add" => "Instruktur gagal ditambahkan!"]);
         }
     }
 
@@ -275,17 +296,17 @@ class ProfileController extends Controller
             if($getAkun == true){
                 $deleteEmail = DB::table('users')->where('email','=', $getEmail->email_ins)->delete();
                 if($deleteEmail == true){
-                    return back()->with(['sukses_delete' => "berhasil menghapus instruktur"]);
+                    return back()->with(['sukses_delete' => "Instruktur berhasil dihapus!"]);
                 }else{
-                    return back()->with(['error_delete' => "gagal menghapus akun instruktur"]);
+                    return back()->with(['error_delete' => "Akun instruktur gagal dihapus!"]);
                 }
             }else{
                 // ini ketika delete instruktur nya berhasil tpi email blm kedaftar
-                return back()->with(['sukses_delete' => "berhasil menghapus instruktur"]);
+                return back()->with(['sukses_delete' => "Instruktur berhasil dihapus!"]);
             }
             
         }else{
-            return back()->with(['error_delete' => "gagal menghapus instruktur"]);
+            return back()->with(['error_delete' => "Instruktur gagal dihapus!"]);
         }
     }
     public function edit_instruktur(Request $request){
@@ -295,10 +316,10 @@ class ProfileController extends Controller
         $no_hp = $request->nohpEdit;
         $alamat = $request->alamatEdit;
         if (!preg_match('/^(\+?[0-9]{1,3}[0-9]{1,}|[0-9]{1,})$/', $request->nohpEdit)) {
-            return back()->with(['error_add' => 'Format nomor HP tidak valid.']);
+            return back()->with(['error_add' => 'Format nomor telepon tidak valid!']);
         }
         if (trim($nama) === '' || trim($email) === ''|| trim($no_hp) === ''|| trim($alamat) === '') {
-            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);
         }
 
         // query dibawah adlah digunakan untuk menyimpan data email sebelumnya ( untuk update data akun ketika email yang dimasukkan adalah email baru)
@@ -312,7 +333,7 @@ class ProfileController extends Controller
         $cekEmailadmin = admin::select("email_adm")->from('admins')->where("email_adm",'=',$email)->first();
 
         if($getEmail == true || $getEmail1 == true || $cekEmailSiswa == true|| $cekEmailadmin == true){
-            return back()->with(["error_edit" => "email sudah digunakan"]);
+            return back()->with(["error_edit" => "Email sudah digunakan!"]);
         }
 
         // cek no hp apakah no hp baru sudah digunakan
@@ -321,7 +342,7 @@ class ProfileController extends Controller
         $ceknohpadmin = admin::select("no_hp_adm")->from('admins')->where("no_hp_adm",'=',$no_hp)->first();
         $ceknohp = siswa::select("no_hp")->from('siswas')->where("no_hp",'=',$no_hp)->first();
         if($getNoHp == true || $ceknohpadmin == true || $ceknohp == true){
-            return back()->with(["error_edit" => "No hp sudah digunakan"]);
+            return back()->with(["error_edit" => "Nomor telepon sudah digunakan!"]);
         }
 
         // edit data siswa
@@ -342,12 +363,12 @@ class ProfileController extends Controller
                 ]);
 
                 if($updateEmail == true){
-                    return back()->with(["sukses_edit" => "Berhasil mengubah data instruktur"]);
+                    return back()->with(["sukses_edit" => "Data instruktur berhasil diubah!"]);
                 }
             }
-            return back()->with(["sukses_edit" => "Berhasil mengubah data instruktur"]);
+            return back()->with(["sukses_edit" => "Data instruktur berhasil diubah!"]);
         }else{
-            return back()->with(["error_edit" => "Gagal mengubah data instruktur"]);
+            return back()->with(["error_edit" => "Data instruktur gagal diubah!"]);
         }
     }
 
@@ -359,7 +380,7 @@ class ProfileController extends Controller
         // ]);
         
         if (!preg_match('/^(\+?[0-9]{1,3}[0-9]{1,}|[0-9]{1,})$/', $request->nohp)) {
-            return back()->with(['error_add' => 'Format nomor HP tidak valid.']);
+            return back()->with(['error_add' => 'Format nomor telepon tidak valid!']);
         }        
         $nama = $request->nama;
         $email = $request->email;
@@ -367,7 +388,7 @@ class ProfileController extends Controller
         $alamat = $request->alamat;
         $tglMasuk = $request->tglMasuk;
         if (trim($nama) === '' || trim($email) === ''|| trim($nohp) === ''|| trim($alamat) === '') {
-            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);
         }
         // dd($status);
         $cekEmail = instruktur::select("email_ins")->from('instrukturs')->where("email_ins",'=',$email)->first();
@@ -383,10 +404,10 @@ class ProfileController extends Controller
         // dd($cekEmail);
         // email tersedia
         if($cekEmail == true || $cekEmailSiswa == true || $cekEmail1 == true || $cekEmailadmin == true){
-            return back()->with(["error_add" => "Email tersedia"]);
+            return back()->with(["error_add" => "Email sudah tersedia!"]);
         }
         if($ceknohp == true ||  $ceknohpSiswa == true ||  $ceknohpadmin == true ){
-            return back()->with(["error_add" => "No hp tersedia"]);
+            return back()->with(["error_add" => "Nomor telepon sudah tersedia!"]);
         }
 
         $insertData = DB::table("admins")->insert([
@@ -397,10 +418,10 @@ class ProfileController extends Controller
             "tgl_masuk_adm" => $tglMasuk,
         ]);
         if($insertData == true){
-            return back()->with(["sukses_add" => "admin berhasil ditambah"]);
+            return back()->with(["sukses_add" => "Admin berhasil ditambahkan!"]);
 
         }else{
-            return back()->with(["sukses_add" => "admin gagal ditambah"]);
+            return back()->with(["sukses_add" => "Admin gagal ditambahkan!"]);
         }
     }
     public function edit_admin(Request $request){
@@ -433,10 +454,10 @@ class ProfileController extends Controller
         // dd($cekEmail);
         // email tersedia
         if($cekEmail == true || $cekEmailSiswa == true || $cekEmail1 == true || $cekEmailadmin == true){
-            return back()->with(["error_add" => "Email tersedia"]);
+            return back()->with(["error_add" => "Email sudah tersedia!"]);
         }
         if($ceknohp == true ||  $ceknohpSiswa == true ||  $ceknohpadmin == true ){
-            return back()->with(["error_add" => "No hp tersedia"]);
+            return back()->with(["error_add" => "Nomor telepon sudah tersedia!"]);
         }
 
         $updateAdm = DB::table("admins")->where("id_adm",'=',$admins)
@@ -456,12 +477,12 @@ class ProfileController extends Controller
                 ]);
 
                 if($updateEmail == true){
-                    return back()->with(["sukses_edit" => "Berhasil mengubah data admin"]);
+                    return back()->with(["sukses_edit" => "Data admin berhasil diubah!"]);
                 }
             }
-            return back()->with(["sukses_edit" => "Berhasil mengubah data admin"]);
+            return back()->with(["sukses_edit" => "Data admin berhasil diubah!"]);
         }else{
-            return back()->with(["error_edit" => "Gagal mengubah data admin"]);
+            return back()->with(["error_edit" => "Data admin gagal diubah!"]);
         }
     }
     public function delete_admin($id){
@@ -475,7 +496,7 @@ class ProfileController extends Controller
         $getEmail = DB::table("admins")->select("email_adm")->where('id_adm','=', $id)->first();
         // fitur gabisa ngehapus profile sendiri
         if($getEmail->email_adm == session("email")){
-            return back()->with(['error_delete' => "tidak bisa menghapus profile pribadi"]);
+            return back()->with(['error_delete' => "Tidak bisa menghapus profil pribadi!"]);
         }
 
 
@@ -487,17 +508,17 @@ class ProfileController extends Controller
             if($getAkun == true){
                 $deleteEmail = DB::table('users')->where('email','=', $getEmail->email_adm)->delete();
                 if($deleteEmail == true){
-                    return back()->with(['sukses_delete' => "berhasil menghapus admin"]);
+                    return back()->with(['sukses_delete' => "Admin berhasil dihapus!"]);
                 }else{
-                    return back()->with(['error_delete' => "gagal menghapus akun admin"]);
+                    return back()->with(['error_delete' => "Akun admin gagal dihapus!"]);
                 }
             }else{
                 // ini ketika delete admin nya berhasil tpi email blm kedaftar
-                return back()->with(['sukses_delete' => "berhasil menghapus admin"]);
+                return back()->with(['sukses_delete' => "Admin berhasil dihapus!"]);
             }
             
         }else{
-            return back()->with(['error_delete' => "gagal menghapus admin"]);
+            return back()->with(['error_delete' => "Admin gagal dihapus!"]);
         }
     }
 

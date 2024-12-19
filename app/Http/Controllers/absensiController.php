@@ -114,18 +114,18 @@ class absensiController extends Controller
                 if ($updateAbsen) {
                     return response()->json([
                         'success' => true,
-                        'message' => 'Berhasil mengubah absen siswa'
+                        'message' => 'Presensi siswa berhasil diubah!'
                     ]);
                 } else {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Gagal mengubah absen siswa (Tidak ada perubahan)'
+                        'message' => 'Presensi siswa gagal diubah!'
                     ]);
                 }
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Status sudah sesuai'
+                    'message' => 'Status sudah sesuai!'
                 ]);
             }
             
@@ -139,12 +139,12 @@ class absensiController extends Controller
             if ($insertAbsen == true) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Berhasil menambahkan absen siswa'
+                    'message' => 'Presensi siswa berhasil ditambahkan!'
                 ]);
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Gagal menambahkan absen siswa 333'
+                    'message' => 'Presensi siswa gagal ditambahkan!'
                 ]);
             }
         }
@@ -173,18 +173,18 @@ class absensiController extends Controller
                 if ($updateAbsen) {
                     return response()->json([
                         'success' => true,
-                        'message' => 'Berhasil mengubah absen siswa'
+                        'message' => 'Presensi siswa berhasil diubah!'
                     ]);
                 } else {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Gagal mengubah absen siswa (Tidak ada perubahan)'
+                        'message' => 'Presensi siswa gagal diubah!'
                     ]);
                 }
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Status sudah sesuai'
+                    'message' => 'Status sudah sesuai!'
                 ]);
             }
             
@@ -198,12 +198,12 @@ class absensiController extends Controller
             if ($insertAbsen == true) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Berhasil menambahkan absen siswa'
+                    'message' => 'Presensi siswa berhasil ditambahkan!'
                 ]);
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Gagal menambahkan absen siswa 333'
+                    'message' => 'Presensi siswa gagal ditambahkan!'
                 ]);
             }
         }

@@ -51,6 +51,10 @@ class materiController extends Controller
                     if (trim($judulMateri) === '') {
                         return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
                     }
+                    if (strlen($judulMateri) > 25){
+                        return back()->with(["error_add" => "Judul materi ke $fileCount melebihi 25 karakter"]);
+
+                    }
                     // Cek apakah judul materi sudah ada
                     $getMateri = DB::table("materis")->where("judul_materi", '=', $judulMateri)->first();
                     if ($getMateri == true) {
@@ -84,7 +88,6 @@ class materiController extends Controller
                             "id_materi" => "MBJP00" . $getMapel->id_mapel .($cekCountMateri + 1),
                             "judul_materi" => $judulMateri,
                             "dok_materi" => $nama_file_materi_pembelajaran,
-                            "materi_fav" => 0,
                             "tgl_unggah" => now(),
                             "id_mapel" => $getIdMapel->id_mapel
                         ]);
@@ -271,6 +274,9 @@ class materiController extends Controller
                         if (trim($judulMateri) === '') {
                             return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
                         }
+                        if (strlen($judulMateri) > 25){
+                            return back()->with(["error_add" => "Judul materi ke $fileCount melebihi 25 karakter"]);
+                        }
                         // Cek apakah judul materi sudah ada
                         //dd($judulMateri);
                         $getMateri = DB::table("materis")->where("judul_materi", '=', $judulMateri)->first();
@@ -303,7 +309,6 @@ class materiController extends Controller
                                 "id_materi" => "MBJP00" . ($cekCountMateri + 1),
                                 "judul_materi" => $judulMateri,
                                 "dok_materi" => $nama_file_materi_pembelajaran,
-                                "materi_fav" => 0,
                                 "tgl_unggah" => now(),
                                 "id_mapel" => $id
                             ]);
@@ -333,6 +338,9 @@ class materiController extends Controller
                     $judulMateri = $request->input("judulMateriEdit" . $fileCount);
                     if (trim($judulMateri) === '') {
                         return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+                    }
+                    if (strlen($judulMateri) > 25){
+                        return back()->with(["error_add" => "Judul materi ke $fileCount melebihi 25 karakter"]);
                     }
                     // Cek apakah judul materi sudah ada
                     //dd($judulMateri);
@@ -366,7 +374,6 @@ class materiController extends Controller
                             "id_materi" => "MBJP00" . ($cekCountMateri + 1),
                             "judul_materi" => $judulMateri,
                             "dok_materi" => $nama_file_materi_pembelajaran,
-                            "materi_fav" => 0,
                             "tgl_unggah" => now(),
                             "id_mapel" => $id
                         ]);
@@ -436,4 +443,69 @@ class materiController extends Controller
             }
         return back();
     }
+
+    public function edit_materi(Request $request)
+    {
+        $id = $request->id_materi_modal;
+        $nama = $request->materiEditModal;
+    
+        // Ambil file dari request
+        $file = $request->file('filemateriEditModal'); // Pastikan nama input file di form adalah 'filemateriEditModal'
+        //dd($file);
+        // Cek apakah judul materi sudah ada
+        $cekMateri = materi::where("judul_materi", '=', $nama)
+            ->where("id_materi", '!=', $id)
+            ->first();
+    
+        if ($cekMateri) {
+            return back()->with(['error_edit' => "Judul materi sudah tersedia"]);
+        }
+    
+        // Jika tidak ada file yang diunggah
+        if ($file == null) {
+            $update = DB::table("materis")->where("id_materi", '=', $id)->update([
+                "judul_materi" => $nama
+            ]);
+    
+            if ($update) {
+                return back()->with(['sukses_edit' => "Berhasil mengubah materi"]);
+            } else {
+                return back()->with(['error_edit' => "Gagal mengubah materi"]);
+            }
+        } else {
+            // Jika ada file yang diunggah
+            $cekMateri2 = materi::where("id_materi", '=', $id)->first();
+    
+            if ($cekMateri2 && $cekMateri2->dok_materi) {
+                $filePath = public_path($cekMateri2->dok_materi); // Pastikan path ke file sesuai
+                if (file_exists($filePath)) {
+                    unlink($filePath); // Menghapus file lama dari storage
+                }
+            }
+
+            
+            // Validasi file untuk memastikan hanya PDF yang diizinkan
+            $validatedData = $request->validate([
+                'filemateriEditModal' => 'required|mimes:pdf|max:10240', // max 10MB
+            ]);
+            
+            // Menyimpan file PDF dengan nama yang sesuai
+            $nama_file_materi = 'file_materi_' . $nama . '.pdf';
+            $file->move(public_path('file/materi'), $nama_file_materi);
+            $nama_file_materi_pembelajaran = 'file/materi/' . $nama_file_materi;
+            //dd($nama_file_materi_pembelajaran);
+    
+            // Update data di database
+            $update = DB::table("materis")->where("id_materi", '=', $id)->update([
+                "judul_materi" => $nama,
+                "dok_materi" => $nama_file_materi_pembelajaran,
+            ]);
+    
+            if ($update) {
+                return back()->with(['sukses_edit' => "Berhasil mengubah materi"]);
+            } else {
+                return back()->with(['error_edit' => "Gagal mengubah materi"]);
+            }
+        }
+    }    
 }

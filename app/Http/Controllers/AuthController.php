@@ -35,7 +35,7 @@ class AuthController extends Controller
             ->first();
             // dd($getname);
             if($getname->status_akun == "tidak_aktif"){
-                return back()->with(["error_login" => "Status Akun Tidak Aktif"]);
+                return back()->with(["error_login" => "Status akun tidak aktif!"]);
             }
             session(['email' => $request->email]);
             session(['role' => $getname->role]);
@@ -49,11 +49,11 @@ class AuthController extends Controller
             //dd($cek_email);
             if($cek_email == false){
                 return back()->with([
-                    'login_error' => 'Email Tidak Tersedia',
+                    'login_error' => 'Email tidak tersedia!',
                 ])->onlyInput('email'); 
             }else{
                 return back()->with([
-                    'login_error' => 'Password Salah',
+                    'login_error' => 'Password Salah!',
                 ])->onlyInput('email');
             }
         }
@@ -69,7 +69,7 @@ class AuthController extends Controller
 
         if($cekemail){
             //  artinya email sudah ada di database maka akan menghasilkan error saat mendaftar akan
-            return back()->with(["signup_error" => "email sudah digunakan"]);
+            return back()->with(["signup_error" => "Email sudah digunakan!"]);
         }
 
         // cek apakah email nya udah terdaftar di tabel siswa apa belum
@@ -80,7 +80,7 @@ class AuthController extends Controller
         // dd($cekemail1);
         if($cekemail1 == false){
             //  artinya email belum ada di tabel siswa, artinya email tidak digunakan oleh siswa manapun yang terdaftar
-            return back()->with(["signup_error" => "Email belum terdaftar pada siswa"]);
+            return back()->with(["signup_error" => "Email siswa belum terdaftar!"]);
         }
 
         if($request->passwordReg == $request->confirmPasswordReg){
@@ -100,19 +100,19 @@ class AuthController extends Controller
                 ]);
                 // dd($updateSiswa);
                 if($updateSiswa == true){
-                    return redirect()->intended('/')->with(["message" => "Akun telah berhasil dibuat, hubungi admin untuk melakukan aktifasi akun"]);
+                    return redirect()->intended('/')->with(["message" => "Akun telah berhasil dibuat, hubungi admin untuk melakukan aktifasi akun!"]);
                 }else{
                     return back()->with([
-                        'signup_error' => 'Gagal Melakukan Pendaftaran',
+                        'signup_error' => 'Pendaftaran gagal dilakukan!',
                     ]);
                 }
             }else{
                 return back()->with([
-                    'signup_error' => 'Gagal Melakukan Pendaftaran',
+                    'signup_error' => 'Pendaftaran gagal dilakukan!',
                 ]);
             }
         }else{
-            return back()->with(['signup_error' => "password tidak sesuai"]);
+            return back()->with(['signup_error' => "Password tidak sesuai!"]);
         }
         
     }
@@ -124,7 +124,7 @@ class AuthController extends Controller
         session()->forget('nama');
         session()->forget('role');
         
-        return redirect("/")->with(['sukses_edit' => $successMessage, 'message' => "Berhasil Keluar Akun"]);
+        return redirect("/")->with(['sukses_edit' => $successMessage, 'message' => "Berhasil mengeluarkan akun!"]);
     }
     
 
@@ -152,7 +152,7 @@ class AuthController extends Controller
         if($addToken){
             Mail::to($email)->send(new \App\Mail\ResetPasswordMail($verificationCode));
         }
-        return response()->json(['success' => true, 'message' => 'Kode verifikasi telah dikirim ke email Anda']);
+        return response()->json(['success' => true, 'message' => 'Kode verifikasi telah dikirim ke email Anda!']);
     }
 
 
@@ -167,13 +167,13 @@ class AuthController extends Controller
         // cek kode sesuai email
         $cekkode = users::select("kode_reset")->where("email",'=',$email)->first();
         if (!$cekkode) {
-            return response()->json(['success' => false, 'message' => 'Email tidak ditemukan']);
+            return response()->json(['success' => false, 'message' => 'Email tidak ditemukan!']);
         }
         
         if ($kode == $cekkode->kode_reset) {
-            return response()->json(['success' => true, 'message' => 'Kode verifikasi sesuai']);
+            return response()->json(['success' => true, 'message' => 'Kode verifikasi sesuai!']);
         } else {
-            return response()->json(['success' => false, 'message' => 'Kode verifikasi tidak sesuai']);
+            return response()->json(['success' => false, 'message' => 'Kode verifikasi tidak sesuai!']);
         }
         
     }
@@ -190,7 +190,7 @@ class AuthController extends Controller
 
         $cekkode = users::select("kode_reset")->where("email",'=',$email)->first();
         if (!$cekkode) {
-            return back()->with(["error_reset" => "kode tidak sesuai"]);
+            return back()->with(["error_reset" => "Kode tidak sesuai!"]);
         }
 
         if ($kode == $cekkode->kode_reset) {
@@ -203,18 +203,18 @@ class AuthController extends Controller
                 $updatePassword = DB::table("users")->where('email','=',$email)->update([
                     "kode_reset" => ""
                 ]);
-                return view("auth.login.login")->with(["success_reset" => "Berhasil mengatur ulang password"]);
+                return view("auth.login.login")->with(["success_reset" => "Password berhasil diubah!"]);
             }else{
                 $updatePassword = DB::table("users")->where('email','=',$email)->update([
                     "kode_reset" => ""
                 ]);
-                return back()->with(["error_reset" => "gagal mengubah password"]);
+                return back()->with(["error_reset" => "Password gagal diubah!"]);
             }
         } else {
             $updatePassword = DB::table("users")->where('email','=',$email)->update([
                 "kode_reset" => ""
             ]);
-            return back()->with(["error_reset" => "kode tidak sesuai"]);
+            return back()->with(["error_reset" => "Kode tidak sesuai!"]);
         }
     }
 
@@ -224,13 +224,13 @@ class AuthController extends Controller
         $no_hp = $request->no_hp;
         $alamat = $request->alamat;
         if (!preg_match('/^(\+?[0-9]{1,3}[0-9]{1,}|[0-9]{1,})$/', $request->no_hp)) {
-            return back()->with(['error_edit' => 'Format nomor HP tidak valid.']);
+            return back()->with(['error_edit' => 'Format nomor telepon tidak valid!']);
         } 
         // cek apakah no hp yang dimasukkan udah ada di database atau belum ( kondisi no hp nya udah dipake siswa lain blom)
 
         $cekNoHp = DB::table("siswas")->select("*")->where("no_hp",'=',$no_hp)->where("email",'!=',$email)->first();
         if($cekNoHp == true){
-            return back()->with(["error_edit" => "No hp sudah tersedia"]);
+            return back()->with(["error_edit" => "No telepon sudah tersedia!"]);
         }
 
         $updateProfile = DB::table("siswas")->where("email",'=',$email)->update([
@@ -238,9 +238,9 @@ class AuthController extends Controller
             "alamat" => $alamat,
         ]);
         if($updateProfile == true){
-            return back()->with(["sukses_edit" => "Berhasil Mengubah Profil"]);
+            return back()->with(["sukses_edit" => "Profil berhasil diubah!"]);
         }else{
-            return back()->with(["error_edit" => "Gagal Mengubah Profil"]);
+            return back()->with(["error_edit" => "Profil gagal diubah!"]);
         }
     }
 }

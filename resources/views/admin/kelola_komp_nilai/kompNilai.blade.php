@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>Dasbor Admin</title>
     <script src="https://kit.fontawesome.com/8183c3e7b3.js" crossorigin="anonymous"></script>
     <!-- Custom fonts for this template -->
     <link href="admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -232,21 +232,26 @@
                                         <span class="text">Tambah Komponen Nilai</span>
                                     </button>
                                     <thead>
+                                        <style>
+                                            th{
+                                                text-align: center
+                                            }
+                                        </style>
                                         <tr>
-                                            <th>No</th>
+                                            <th style="width: 100px;">No</th>
                                             <th>Komponen Nilai</th>
                                             <th>Proporsi/Bobot Nilai</th>
-                                            <th class="text-center">Aksi</th>
+                                            <th style="width: 100px;" class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                        @foreach ($kompNilai as $kompNilais )
                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
+                                            <td style="text-align: center;">{{ $loop->iteration }}</td>
                                             <td>
                                                 {{$kompNilais->nama_komp_nilai}}
                                             </td>
-                                            <td>
+                                            <td style="text-align: center;">
                                                 {{$kompNilais->proporsi_nilai}}%
                                             </td>
                                             <td class="text-center">

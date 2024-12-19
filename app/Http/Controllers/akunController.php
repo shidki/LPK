@@ -31,10 +31,10 @@ class akunController extends Controller
         $konfirmasiPw2 = trim($request->konfirmasiPw);
         if (strpos($email2, ' ') !== false || strpos($password2, ' ') !== false || strpos($konfirmasiPw2, ' ') !== false) {
             // Jika ada spasi pada email, password, atau konfirmasi password
-            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi"]);
+            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi!"]);
         }
         if($konfirmasiPw != $request->password){
-            return back()->with(["error_add" => "Password tidak sesuai"]);
+            return back()->with(["error_add" => "Password tidak sesuai!"]);
         }
 
         // cek apakah email sudah digunakan atau belum
@@ -43,13 +43,13 @@ class akunController extends Controller
         $cekEmail1 = users::select("email")->from('users')->where("email",'=',$email)->first();
 
         if($cekEmail == true  || $cekEmail1 == true || $cekEmailadmin == true){
-            return back()->with(["error_add" => "Email sudah tersedia"]);
+            return back()->with(["error_add" => "Email sudah tersedia!"]);
         }
         //  cek apakah email yang didaftar udah kedaftar di table instruktur atau belum
         $cekEmailIns = instruktur::select("email_ins")->from('instrukturs')->where("email_ins",'=',$email)->first();
         if($cekEmailIns == false){
             // email ga dipake oleh instuktur manapun
-            return back()->with(["error_add" => "Email tidak terdaftar pada instruktur"]);
+            return back()->with(["error_add" => "Email tidak terdaftar pada instruktur!"]);
         }
 
 
@@ -68,9 +68,9 @@ class akunController extends Controller
                 "id_akun" => $getId->id_akun
             ]);
             if($updateIdAkun == true){
-                return back()->with(["sukses_add" => "Berhasil menambah akun instruktur"]); 
+                return back()->with(["sukses_add" => "Akun instruktur berhasil ditambahkan!"]); 
             }else{
-                return back()->with(["Gagal menambah akun instruktur"]);
+                return back()->with(["Akun instruktur gagal ditambahkan!"]);
             }
         }
     }
@@ -86,7 +86,7 @@ class akunController extends Controller
 
         }
         if($konfirmasiPw != $request->password){
-            return back()->with(["error_add" => "Password tidak sesuai"]);
+            return back()->with(["error_add" => "Password tidak sesuai!"]);
         }
         $email2 = trim($request->email);
         $email2 = str_replace(' ', '', $email);
@@ -97,7 +97,7 @@ class akunController extends Controller
         $konfirmasiPw2 = trim($request->konfirmasiPw);
         if (strpos($email2, ' ') !== false || strpos($password2, ' ') !== false || strpos($konfirmasiPw2, ' ') !== false) {
             // Jika ada spasi pada email, password, atau konfirmasi password
-            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi"]);
+            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi!"]);
         }
         // cek apakah email sudah digunakan atau belum
         $cekEmail = siswa::select("email")->from('siswas')->where("email",'=',$email)->first();
@@ -108,7 +108,7 @@ class akunController extends Controller
         ->first();
 
         if($cekEmail == true  || $cekEmail1 == true || $cekEmailIns == true){
-            return back()->with(["error_add" => "Email sudah tersedia"]);
+            return back()->with(["error_add" => "Email sudah tersedia!"]);
         }
 
 
@@ -121,9 +121,9 @@ class akunController extends Controller
         
 
         if($edit_akun == true){
-            return back()->with(["sukses_edit" => "berhasil mengubah akun instruktur"]);
+            return back()->with(["sukses_edit" => "Akun instruktur berhasil diubah!"]);
         }else{
-            return back()->with(["error_edit" => "gagal mengubah akun instruktur"]);
+            return back()->with(["error_edit" => "Akun instruktur gagal diubah!"]);
         }
     }
     
@@ -148,12 +148,12 @@ class akunController extends Controller
             $deleteAkun = DB::table("users")->where("id_akun",'=',$id)->delete();
             
             if($deleteAkun){
-                return back()->with(["sukses_delete" => "berhasil menghapus akun instruktur"]);
+                return back()->with(["sukses_delete" => "Akun instruktur berhasil dihapus!"]);
             }else{
-                return back()->with(["error_delete" => "gagal menghapus akun instruktur"]);
+                return back()->with(["error_delete" => "Akun instruktur gagal dihapus!"]);
             }
         }else{
-            return back()->with(["error_delete" => "gagal menghapus akun instruktur"]);
+            return back()->with(["error_delete" => "Akun instruktur gagal dihapus!"]);
         }
     }
     public function edit_status_akun_instruktur(Request $request){
@@ -165,9 +165,9 @@ class akunController extends Controller
             "status_akun" => $status
         ]);
         if($updateStatus == true){
-            return back()->with(["sukses_edit" => "berhasil mengubah status akun instruktur"]);
+            return back()->with(["sukses_edit" => "Status instruktur berhasil diubah!"]);
         }else{
-            return back()->with(["error_delete" => "gagal mengubah status akun instruktur"]);
+            return back()->with(["error_delete" => "Status instruktur gagal diubah!"]);
         }
     }
 
@@ -191,10 +191,10 @@ class akunController extends Controller
         $konfirmasiPw2 = trim($request->konfirmasiPw);
         if (strpos($email2, ' ') !== false || strpos($password2, ' ') !== false || strpos($konfirmasiPw2, ' ') !== false) {
             // Jika ada spasi pada email, password, atau konfirmasi password
-            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi"]);
+            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi!"]);
         }
         if($konfirmasiPw != $request->password){
-            return back()->with(["error_add" => "Password tidak sesuai"]);
+            return back()->with(["error_add" => "Password tidak sesuai!"]);
         }
 
         // cek apakah email sudah digunakan atau belum
@@ -203,13 +203,13 @@ class akunController extends Controller
         $cekEmail1 = users::select("email")->from('users')->where("email",'=',$email)->first();
 
         if($cekEmail == true  || $cekEmail1 == true || $cekEmailIns == true){
-            return back()->with(["error_add" => "Email sudah tersedia"]);
+            return back()->with(["error_add" => "Email sudah tersedia!"]);
         }
         //  cek apakah email yang didaftar udah kedaftar di table admin atau belum
         $cekEmailAdmin = admin::select("email_adm")->from('admins')->where("email_adm",'=',$email)->first();
         if($cekEmailAdmin == false){
             // email ga dipake oleh instuktur manapun
-            return back()->with(["error_add" => "Email tidak terdaftar pada Admin"]);
+            return back()->with(["error_add" => "Email tidak terdaftar pada Admin!"]);
         }
 
 
@@ -228,9 +228,9 @@ class akunController extends Controller
                 "id_akun" => $getId->id_akun
             ]);
             if($updateIdAkun == true){
-                return back()->with(["sukses_add" => "Berhasil menambah akun admin"]); 
+                return back()->with(["sukses_add" => "Akun admin berhasil ditambahkan!"]); 
             }else{
-                return back()->with(["Gagal menambah akun admin"]);
+                return back()->with(["Akun admin gagal ditambahkan!"]);
             }
         }
     }
@@ -254,12 +254,12 @@ class akunController extends Controller
             $deleteAkun = DB::table("users")->where("id_akun",'=',$id)->delete();
             
             if($deleteAkun){
-                return back()->with(["sukses_delete" => "berhasil menghapus akun admin"]);
+                return back()->with(["sukses_delete" => "Akun admin berhasil dihapus!"]);
             }else{
-                return back()->with(["error_delete" => "gagal menghapus akun admin"]);
+                return back()->with(["error_delete" => "Akun admin gagal dihapus!"]);
             }
         }else{
-            return back()->with(["error_delete" => "gagal menghapus akun admin"]);
+            return back()->with(["error_delete" => "Akun admin gagal dihapus!"]);
         }
     }
     public function edit_akun_admin(Request $request){
@@ -281,11 +281,11 @@ class akunController extends Controller
         $konfirmasiPw2 = trim($request->konfirmasiPw);
         if (strpos($email2, ' ') !== false || strpos($password2, ' ') !== false || strpos($konfirmasiPw2, ' ') !== false) {
             // Jika ada spasi pada email, password, atau konfirmasi password
-            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi"]);
+            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi!"]);
         }
 
         if($konfirmasiPw != $request->password){
-            return back()->with(["error_add" => "Password tidak sesuai"]);
+            return back()->with(["error_add" => "Password tidak sesuai!"]);
         }
 
         // cek apakah email sudah digunakan atau belum
@@ -297,7 +297,7 @@ class akunController extends Controller
         ->first();
 
         if($cekEmail == true  || $cekEmail1 == true || $cekEmailIns == true){
-            return back()->with(["error_add" => "Email sudah tersedia"]);
+            return back()->with(["error_add" => "Email sudah tersedia!"]);
         }
 
 
@@ -315,9 +315,9 @@ class akunController extends Controller
             if($email == session("email")){
                 return redirect('/logout')->with(["sukses_edit" => "Silahkan Login Kembali"]);
             }
-            return back()->with(["sukses_edit" => "berhasil mengubah akun admin"]);
+            return back()->with(["sukses_edit" => "Akun admin berhasil diubah!"]);
         }else{
-            return back()->with(["error_edit" => "gagal mengubah akun admin"]);
+            return back()->with(["error_edit" => "Akun admin gagal diubah!"]);
         }
     }
 
@@ -330,16 +330,16 @@ class akunController extends Controller
         // get email sesuai id akun
         $getId = users::where("id_akun",'=',$id)->first();
         if($getId->email == session("email")){
-            return back()->with(["error_delete" => "tidak bisa mengubah status akun pribadi"]);
+            return back()->with(["error_delete" => "Status akun pribadi tidak bisa diubah!"]);
         }
         // mengubah status akun
         $updateStatus = DB::table("users")->where("id_akun",'=',$id)->update([
             "status_akun" => $status
         ]);
         if($updateStatus == true){
-            return back()->with(["sukses_edit" => "berhasil mengubah status akun admin"]);
+            return back()->with(["sukses_edit" => "Status akun admin berhasil diubah!"]);
         }else{
-            return back()->with(["error_delete" => "gagal mengubah status akun admin"]);
+            return back()->with(["error_delete" => "Status akun admin gagal diubah!"]);
         }
     }
     // ============================== SISWA ============================================
@@ -362,10 +362,10 @@ class akunController extends Controller
         $konfirmasiPw2 = trim($request->konfirmasiPw);
         if (strpos($email2, ' ') !== false || strpos($password2, ' ') !== false || strpos($konfirmasiPw2, ' ') !== false) {
             // Jika ada spasi pada email, password, atau konfirmasi password
-            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi"]);
+            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi!"]);
         }
         if($konfirmasiPw != $request->password){
-            return back()->with(["error_add" => "Password tidak sesuai"]);
+            return back()->with(["error_add" => "Password tidak sesuai!"]);
         }
 
         // cek apakah email sudah digunakan atau belum
@@ -375,13 +375,13 @@ class akunController extends Controller
         $cekEmail1 = users::select("email")->from('users')->where("email",'=',$email)->first();
 
         if($cekEmailAdmin == true  || $cekEmail1 == true || $cekEmailIns == true){
-            return back()->with(["error_add" => "Email sudah tersedia"]);
+            return back()->with(["error_add" => "Email sudah tersedia!"]);
         }
         //  cek apakah email yang didaftar udah kedaftar di table admin atau belum
         $cekEmail = siswa::select("email")->from('siswas')->where("email",'=',$email)->first();
         if($cekEmail == false){
             // email ga dipake oleh instuktur manapun
-            return back()->with(["error_add" => "Email tidak terdaftar pada Siswa"]);
+            return back()->with(["error_add" => "Email tidak terdaftar pada Siswa!"]);
         }
 
 
@@ -400,9 +400,9 @@ class akunController extends Controller
                 "id_akun" => $getId->id_akun
             ]);
             if($updateIdAkun == true){
-                return back()->with(["sukses_add" => "Berhasil menambah akun siswa"]); 
+                return back()->with(["sukses_add" => "Akun siswa berhasil ditambahkan!"]); 
             }else{
-                return back()->with(["Gagal menambah akun siswa"]);
+                return back()->with(["Akun siswa gagal ditambahkan!"]);
             }
         }
     }
@@ -426,12 +426,12 @@ class akunController extends Controller
             $deleteAkun = DB::table("users")->where("id_akun",'=',$id)->delete();
             
             if($deleteAkun){
-                return back()->with(["sukses_delete" => "berhasil menghapus akun siswa"]);
+                return back()->with(["sukses_delete" => "Akun siswa berhasil dihapus!"]);
             }else{
-                return back()->with(["error_delete" => "gagal menghapus akun siswa"]);
+                return back()->with(["error_delete" => "Akun siswa gagal dihapus!"]);
             }
         }else{
-            return back()->with(["error_delete" => "gagal menghapus akun siswa"]);
+            return back()->with(["error_delete" => "Akun siswa gagal dihapus!"]);
         }
     }
     public function edit_akun_siswa(Request $request){
@@ -446,7 +446,7 @@ class akunController extends Controller
 
         }
         if($konfirmasiPw != $request->password){
-            return back()->with(["error_add" => "Password tidak sesuai"]);
+            return back()->with(["error_add" => "Password tidak sesuai!"]);
         }
         $email2 = trim($request->email);
         $email2 = str_replace(' ', '', $email);
@@ -457,7 +457,7 @@ class akunController extends Controller
         $konfirmasiPw2 = trim($request->konfirmasiPw);
         if (strpos($email2, ' ') !== false || strpos($password2, ' ') !== false || strpos($konfirmasiPw2, ' ') !== false) {
             // Jika ada spasi pada email, password, atau konfirmasi password
-            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi"]);
+            return back()->with(["error_add" => "Input tidak boleh menggunakan spasi!"]);
         }
         $edit_akun = DB::table("users")
         ->where("id_akun" ,'=',$akuns)
@@ -467,9 +467,9 @@ class akunController extends Controller
         ]);
         
         if($edit_akun == true){
-            return back()->with(["sukses_edit" => "berhasil mengubah akun siswa"]);
+            return back()->with(["sukses_edit" => "Akun siswa berhasil diubah!"]);
         }else{
-            return back()->with(["error_edit" => "gagal mengubah akun siswa"]);
+            return back()->with(["error_edit" => "Akun siswa gagal diubah!"]);
         }
     }
     public function edit_status_akun_siswa(Request $request){
@@ -481,9 +481,9 @@ class akunController extends Controller
             "status_akun" => $status
         ]);
         if($updateStatus == true){
-            return back()->with(["sukses_edit" => "berhasil mengubah status akun siswa"]);
+            return back()->with(["sukses_edit" => "Status akun siswa berhasil diubah!"]);
         }else{
-            return back()->with(["error_delete" => "gagal mengubah status akun siswa"]);
+            return back()->with(["error_delete" => "Status akun siswa gagal diubah!"]);
         }
     }
 }

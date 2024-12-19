@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>Dasbor Instruktur</title>
     <script src="https://kit.fontawesome.com/8183c3e7b3.js" crossorigin="anonymous"></script>
     <!-- Custom fonts for this template -->
     <link href="{{asset('admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>DPN PERKASA ADMINISTRASI</title>
+    <title>Dasbor Admin</title>
     <script src="https://kit.fontawesome.com/8183c3e7b3.js" crossorigin="anonymous"></script>
     <!-- Custom fonts for this template-->
     <link href="admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
