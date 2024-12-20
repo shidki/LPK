@@ -37,6 +37,13 @@ class AuthController extends Controller
             if($getname->status_akun == "tidak_aktif"){
                 return back()->with(["error_login" => "Status akun tidak aktif!"]);
             }
+            // cek apakah yang login siswa atau bukan
+            $siswa = siswa::where("email",'=',$request->email)->first();
+            if($siswa == true){
+                if($siswa->status == "lulus"){
+                    return back()->with(["error_login2" => "Status siswa $siswa->nama telah lulus!"]);
+                }
+            }
             session(['email' => $request->email]);
             session(['role' => $getname->role]);
             return redirect()->route('dashboard');

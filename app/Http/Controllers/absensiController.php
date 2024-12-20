@@ -114,7 +114,7 @@ class absensiController extends Controller
                 if ($updateAbsen) {
                     return response()->json([
                         'success' => true,
-                        'message' => 'Presensi siswa berhasil diubah!'
+                        'message' => 'Siswa belum diabsenkan!'
                     ]);
                 } else {
                     return response()->json([

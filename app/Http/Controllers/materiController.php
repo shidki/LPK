@@ -21,7 +21,7 @@ class materiController extends Controller
         $mapel = $request->mapel;
         $tahun = $request->tahunAkademik;
         if (trim($mapel) === '') {
-            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);
         }
         // Cek apakah mapel sudah tersedia
         $getMapel = DB::table("mapels")->where("nama_mapel", '=', $mapel)->first();
@@ -49,7 +49,7 @@ class materiController extends Controller
                 if ($request->has("judulMateri" . $fileCount)) { // Pastikan ada judul materi untuk file ini
                     $judulMateri = $request->input("judulMateri" . $fileCount);
                     if (trim($judulMateri) === '') {
-                        return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+                        return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);
                     }
                     if (strlen($judulMateri) > 25){
                         return back()->with(["error_add" => "Judul materi ke $fileCount melebihi 25 karakter"]);
@@ -72,7 +72,7 @@ class materiController extends Controller
 
                         // Pastikan file adalah PDF
                         if ($file_materi->getClientOriginalExtension() !== 'pdf') {
-                            return back()->with(["error_add" => "Hanya file PDF yang diperbolehkan"]);
+                            return back()->with(["error_add" => "!"]);
                         }
 
                         // Menyimpan file PDF dengan nama yang sesuai
@@ -94,10 +94,10 @@ class materiController extends Controller
 
                         // Menangani hasil insert materi
                         if (!$insertMateri) {
-                            return back()->with(["error_add" => "Gagal menambah Materi "]);
+                            return back()->with(["error_add" => "Gagal menambah materi!"]);
                         }
                     } else {
-                        return back()->with(["error_add" => "File materi tidak ditemukan"]);
+                        return back()->with(["error_add" => "File materi tidak ditemukan!"]);
                     }
                 }
 
@@ -105,9 +105,9 @@ class materiController extends Controller
                 $fileCount++;
             }
 
-            return back()->with(["sukses_add" => "Berhasil menambah Materi"]);
+            return back()->with(["sukses_add" => "Berhasil menambah materi!"]);
         } else {
-            return back()->with(["error_add" => "Gagal menambah Mapel"]);
+            return back()->with(["error_add" => "Gagal menambah mapel!"]);
         }
     }
 
@@ -252,11 +252,11 @@ class materiController extends Controller
         // Cek apakah mapel sudah tersedia
         //dd(5);
         if (trim($mapel) === '') {
-            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);
         }
         $cekMapel = DB::table("mapels")->where("nama_mapel", '=', $mapel)->where('id_mapel','!=',$id)->first();
         if ($cekMapel) {
-            return back()->with(["error_add" => "Judul Bab sudah tersedia"]);
+            return back()->with(["error_add" => "Judul bab sudah tersedia!"]);
         }
 
         $getMapel = mapel::where("id_mapel",'=',$id)->first();
@@ -272,7 +272,7 @@ class materiController extends Controller
                     if ($request->has("judulMateriEdit" . $fileCount)) { // Pastikan ada judul materi untuk file ini
                         $judulMateri = $request->input("judulMateriEdit" . $fileCount);
                         if (trim($judulMateri) === '') {
-                            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+                            return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);
                         }
                         if (strlen($judulMateri) > 25){
                             return back()->with(["error_add" => "Judul materi ke $fileCount melebihi 25 karakter"]);
@@ -295,7 +295,7 @@ class materiController extends Controller
     
                             // Pastikan file adalah PDF
                             if ($file_materi->getClientOriginalExtension() !== 'pdf') {
-                                return back()->with(["error_add" => "Hanya file PDF yang diperbolehkan"]);
+                                return back()->with(["error_add" => "Hanya file PDF yang diperbolehkan!"]);
                             }
     
                             // Menyimpan file PDF dengan nama yang sesuai
@@ -315,19 +315,19 @@ class materiController extends Controller
     
                             // Menangani hasil insert materi
                             if (!$insertMateri) {
-                                return back()->with(["error_add" => "Gagal menambah Materi "]);
+                                return back()->with(["error_add" => "Gagal menambah materi!"]);
                             }
                         } else {
-                            return back()->with(["error_add" => "File materi tidak ditemukan"]);
+                            return back()->with(["error_add" => "File materi tidak ditemukan!"]);
                         }
                     }
     
                     // Lanjutkan ke file berikutnya
                     $fileCount++;
                 }
-                return back()->with(["sukses_edit" => "Berhasil mengubah mapel"]);
+                return back()->with(["sukses_edit" => "Berhasil mengubah mapel!"]);
             }else{
-                return back()->with(["error_edit" => "Gagal mengubah mapel"]);
+                return back()->with(["error_edit" => "Gagal mengubah mapel!"]);
     
             }
         }else{
@@ -337,7 +337,7 @@ class materiController extends Controller
                 if ($request->has("judulMateriEdit" . $fileCount)) { // Pastikan ada judul materi untuk file ini
                     $judulMateri = $request->input("judulMateriEdit" . $fileCount);
                     if (trim($judulMateri) === '') {
-                        return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+                        return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);
                     }
                     if (strlen($judulMateri) > 25){
                         return back()->with(["error_add" => "Judul materi ke $fileCount melebihi 25 karakter"]);
@@ -360,7 +360,7 @@ class materiController extends Controller
 
                         // Pastikan file adalah PDF
                         if ($file_materi->getClientOriginalExtension() !== 'pdf') {
-                            return back()->with(["error_add" => "Hanya file PDF yang diperbolehkan"]);
+                            return back()->with(["error_add" => "!"]);
                         }
 
                         // Menyimpan file PDF dengan nama yang sesuai
@@ -380,17 +380,17 @@ class materiController extends Controller
 
                         // Menangani hasil insert materi
                         if (!$insertMateri) {
-                            return back()->with(["error_add" => "Gagal menambah Materi "]);
+                            return back()->with(["error_add" => "Gagal menambah materi!"]);
                         }
                     } else {
-                        return back()->with(["error_add" => "File materi tidak ditemukan"]);
+                        return back()->with(["error_add" => "File materi tidak ditemukan!"]);
                     }
                 }
 
                 // Lanjutkan ke file berikutnya
                 $fileCount++;
             }
-            return back()->with(["sukses_edit" => "Berhasil mengubah mapel"]);
+            return back()->with(["sukses_edit" => "Berhasil mengubah mapel!"]);
         }
     }
 
@@ -458,7 +458,7 @@ class materiController extends Controller
             ->first();
     
         if ($cekMateri) {
-            return back()->with(['error_edit' => "Judul materi sudah tersedia"]);
+            return back()->with(['error_edit' => "Judul materi sudah tersedia!"]);
         }
     
         // Jika tidak ada file yang diunggah
@@ -468,9 +468,9 @@ class materiController extends Controller
             ]);
     
             if ($update) {
-                return back()->with(['sukses_edit' => "Berhasil mengubah materi"]);
+                return back()->with(['sukses_edit' => "Berhasil mengubah materi!"]);
             } else {
-                return back()->with(['error_edit' => "Gagal mengubah materi"]);
+                return back()->with(['error_edit' => "Gagal mengubah materi!"]);
             }
         } else {
             // Jika ada file yang diunggah
@@ -502,9 +502,9 @@ class materiController extends Controller
             ]);
     
             if ($update) {
-                return back()->with(['sukses_edit' => "Berhasil mengubah materi"]);
+                return back()->with(['sukses_edit' => "Berhasil mengubah materi!"]);
             } else {
-                return back()->with(['error_edit' => "Gagal mengubah materi"]);
+                return back()->with(['error_edit' => "Gagal mengubah materi!"]);
             }
         }
     }    

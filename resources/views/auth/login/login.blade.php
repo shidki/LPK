@@ -111,6 +111,15 @@
           });
     </script>
     @endif
+    @if (session('error_login2'))
+    <script>
+          Swal.fire({
+              title: "Akun tidak dapat digunakan",
+              text: "{{session('error_login2')}}", 
+              icon: "error"
+          });
+    </script>
+    @endif
     @if (session('sukses_edit'))
     <script>
           Swal.fire({
