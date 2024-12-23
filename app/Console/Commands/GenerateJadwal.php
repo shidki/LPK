@@ -29,9 +29,18 @@ class GenerateJadwal extends Command
             if ($lastScheduleDate) {
                 $lastDate = Carbon::parse($lastScheduleDate->tanggal_pelaksanaan);
                 $currentDate = Carbon::now();
-                
+
+                //// cek apakah tanggal udah tersedia apa belom
+                //$lastScheduleDate2 = $lastDate->copy()->addDay();
+                //$cekJadwal = jadwal::where("tanggal_pelaksanaan",'=',$lastDate)->first();
+                //if($cekJadwal == true){
+                //    Log::info('Jadwal telah tersedia untuk kelas: ' . $kelasItem->nama_kelas);
+                //    Log::info('cek tanggal: ' . $lastScheduleDate2);
+                //}
+
                 // Periksa apakah sekarang berada dalam rentang 1 hari sebelum tanggal terakhir
                 if ($currentDate->greaterThanOrEqualTo($lastDate->subDay()) && $currentDate->lessThanOrEqualTo($lastDate)) {
+        
                     $this->info('Menambahkan jadwal baru untuk kelas: ' . $kelasItem->nama_kelas);
                     Log::info('Menambahkan jadwal baru untuk kelas: ' . $kelasItem->nama_kelas);
                     

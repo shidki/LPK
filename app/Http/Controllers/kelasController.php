@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\instruktur;
 use App\Models\kelas;
 use App\Models\siswa;
 use Illuminate\Http\Request;
@@ -90,11 +91,18 @@ class kelasController extends Controller
         }
         
         // mengecek jumlah siswa yang ada di kelas
-        $cekSiswa = siswa::where("id_kelas",'=',$id)->count();
-        if($kuota < $cekSiswa){
+        $cekjmlsiswa = siswa::where("id_kelas",'=',$id)->whereIn('status', ['aktif', 'mangkir'])->count();
+        //dd($cekjmlsiswa);
+        if($kuota < $cekjmlsiswa){
             return back()->with(['error_add' => "Kuota tidak boleh kurang dari jumlah siswa yang ada di kelas"]);
         }
 
+        // cek instuktur yang dipake udah dipake di kelas lain apa belom
+        $cekIns = kelas::where("id_ins",'=',$ins)->where("id_kelas",'!=',$id)->first();
+        if($cekIns == true){
+            return back()->with(['error_add' => "Instruktur telah mengampu kelas lain"]);
+
+        }
         // dd($ins);
         $updateKelas = DB::table("kelas")->where("id_kelas",'=',$id)->update([
             "nama_kelas" => $kelas,

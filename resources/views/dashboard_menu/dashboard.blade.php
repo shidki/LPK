@@ -128,7 +128,7 @@
                                                     
                                                 </div>
                                                 <div>
-                                                    <h5 class="mb-1 font-size-17">Materi</h5>
+                                                    <h5 class="mb-1 font-size-17">Bab dan Materi</h5>
                                                     <p class="text-muted  font-size-13 mb-0">Materi Pembelajaran</p>
                                                 </div>
                                             </div>
@@ -171,8 +171,8 @@
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <h5 class="mb-1 font-size-17">Transkrip Nilai</h5>
-                                                    <p class="text-muted font-size-13 mb-0">Transkrip Siswa</p>
+                                                    <h5 class="mb-1 font-size-17">Daftar Nilai</h5>
+                                                    <p class="text-muted font-size-13 mb-0">Daftar Nilai dan Transkrip Nilai</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -220,7 +220,7 @@
                                                     
                                                 </div>
                                                 <div>
-                                                    <h5 class="mb-1 font-size-17">Materi</h5>
+                                                    <h5 class="mb-1 font-size-17">Bab dan Materi</h5>
                                                     <p class="text-muted  font-size-13 mb-0">Materi Pembelajaran</p>
                                                 </div>
                                             </div>
@@ -317,7 +317,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <h5 class="mb-1 font-size-17">Materi</h5>
+                                                <h5 class="mb-1 font-size-17">Bab dan Materi</h5>
                                                 <p class="text-muted  font-size-13 mb-0">Materi Pembelajaran</p>
                                             </div>
                                         </div>

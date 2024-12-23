@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Transkip Nilai</title>
+    <title>Transkrip Nilai</title>
     <style media="screen">
         body {
             font-family: 'Segoe UI', 'Microsoft Sans Serif', sans-serif;
@@ -167,32 +167,43 @@
         .row {
             display: table-row;
             page-break-inside: avoid;
+            
         }
     </style>
 
 </head>
 
 <body>
-    <header>
-        <div class="" style="text-align: center; margin-bottom: 50px;">
-            <img src="{{ public_path('dashboard/img/logo.png') }}" alt="LPK CIPTA KERJA LOGO" height="181" width="167" />
-        </div>
+   <div>
+    <div style="float: left; width: 50%; text-align: left; top: 10px; left: 0px;font-size: 13px;">
+        <div style="">Kementerian Ketenagakerjaan Republik Indonesia</div>
+        <div>LPK Cipta Kerja DPN Perkasa Jateng</div>
+    </div>
+    <div style="float: right; width: 40%; text-align: right; top: 10px; right: 0px;font-size: 13px; color: blue;" >
+        Madukaran, Kedungwuni Bar., Kec. Kedungwuni, Kabupaten Pekalongan, Jawa Tengah 51173
+    </div>
+   </div>
+    <header style="margin-bottom: 10px;text-align: center;margin-top: 70px;">
+        <img style="margin-bottom: 10px;" src="{{ public_path('dashboard/img/logo.png') }}" alt="LPK CIPTA KERJA LOGO" height="120px" width="100px" />
+        <h3>Transkrip Nilai</h3>
     </header>
 
+    
+
     <div class="fromto from">
-        <div class="panel">Informasi Siswa</div>
+        <div class="panel"><b>Informasi Siswa</b></div>
         <div class="fromtocontent">
-            <span style="margin-bottom: 10px; display: flex; align-items: center ;justify-content: space-between; width: 100%;"><span style="display: inline-block;width:20%;">Nama</span> <span  style="width: 5%;">:</span> <span  style="width: 70%;"> <br>{{ $nama }}</span></span> <hr />
-            <span style="margin-bottom: 10px; display: flex; align-items: center ;justify-content: space-between; width: 100%;"><span style="display: inline-block;width:20%;">Email</span> <span  style="width: 5%;">:</span> <span  style="width: 70%;"><br>{{ $email }}</span></span><hr />
-            <span style="margin-bottom: 10px; display: flex; align-items: center ;justify-content: space-between; width: 100%;"><span style="display: inline-block;width:20%;">No Hp</span> <span  style="width: 5%;">:</span> <span  style="width: 70%;"><br>{{ $no_hp }}</span></span><hr />
-            <span style="display: flex; align-items: center ;justify-content: space-between; width: 100%;"><span style="display: inline-block;width:20%;">Alamat</span> <span  style="width: 5%;">:</span> <span  style="width: 70%;"><br>{{ $alamat }}</span></span><br />
+            <span style="margin-bottom: 10px; display: flex; align-items: center ;justify-content: space-between; width: 100%;"><span style="display: inline-block;width:20%;font-weight: bold">Nama</span> <span  style="width: 5%;"></span> <span  style="width: 70%;"> <br>{{ $nama }}</span></span> <hr />
+            <span style="margin-bottom: 10px; display: flex; align-items: center ;justify-content: space-between; width: 100%;"><span style="display: inline-block;width:20%;font-weight: bold">Email</span> <span  style="width: 5%;"></span> <span  style="width: 70%;"><br>{{ $email }}</span></span><hr />
+            <span style="margin-bottom: 10px; display: flex; align-items: center ;justify-content: space-between; width: 100%;"><span style="display: inline-block;width:20%;font-weight: bold">No Telp</span> <span  style="width: 5%;"></span> <span  style="width: 70%;"><br>{{ $no_hp }}</span></span><hr />
+            <span style="display: flex; align-items: center ;justify-content: space-between; width: 100%;"><span style="display: inline-block;width:20%;font-weight: bold">Alamat</span> <span  style="width: 5%;"></span> <span  style="width: 70%;"><br>{{ $alamat }}</span></span><br />
         </div>
     </div>
     <div class="fromto to">
-        <div class="panel">Informasi Kelas</div>
+        <div class="panel"><b>Informasi Kelas</b></div>
         <div class="fromtocontent">
-			<span style="margin-bottom: 10px; display: flex; align-items: center ;justify-content: space-between; width: 100%;"><span style="display: inline-block;width:40%">Kelas</span> <span  style="width: 5%;">:</span> <span  style="width: 65%;"> <br>{{ $kelas }}</span></span><hr />
-			<span style=" display: flex; align-items: center ;justify-content: space-between; width: 100%;"><span style="display: inline-block;width:40%;">Instruktur</span> <span  style="width: 5%;">:</span> <span  style="width: 65%;"> <br>{{ $instruktur }}</span></span><hr />
+			<span style="margin-bottom: 10px; display: flex; align-items: center ;justify-content: space-between; width: 100%;"><span style="display: inline-block;width:40%;font-weight: bold">Kelas</span> <span  style="width: 5%;"></span> <span  style="width: 65%;"> <br>{{ $kelas }}</span></span><hr />
+			<span style=" display: flex; align-items: center ;justify-content: space-between; width: 100%;"><span style="display: inline-block;width:40%;font-weight: bold">Instruktur</span> <span  style="width: 5%;"></span> <span  style="width: 65%;"> <br>{{ $instruktur }}</span></span><hr />
         </div>
     </div>
 
@@ -200,27 +211,33 @@
 
         <!-- your favorite templating/data-binding library would come in handy here to generate these rows dynamically !-->
         <div class="row">
-            <div class="col-1-10 panel">
+            <div class="col-1-10 panel"  style="text-align: center; font-weight: bold">
                 No
             </div>
-            <div class="col-1-52 panel">
+            <div class="col-1-52 panel"  style="text-align: center; font-weight: bold">
                 Kategori Nilai
             </div>
-            <div class="col-1-10 panel">
+            <div class="col-1-10 panel"  style="text-align: center; font-weight: bold">
                 Nilai
+            </div>
+            <div class="col-1-20 panel"  style="text-align: center; font-weight: bold;">
+                Bobot Nilai
             </div>
         </div>
 		@if (empty($transkip))
             @foreach ($komp_nilai as $item )
             <div class="row">
-                <div class="col-1-10">
+                <div class="col-1-10 " style="text-align: center">
                     {{ $loop->iteration}}
                 </div>
                 <div class="col-1-52">
                     {{ $item['Kategori_Nilai'] }}
                 </div>
-                <div class="col-1-10">
+                <div class="col-1-10 " style="text-align: center">
                     -
+                </div>
+                <div class="col-1-20 " style="text-align: center">
+                    {{$item['proporsi_nilai']}}%
                 </div>
             </div>
             @endforeach
@@ -231,17 +248,20 @@
 		@foreach ($transkip  as $item )
             @php
             // Hanya tambahkan nilai proporsi ke $totalNilai
-            $totalNilai += ($item['nilai'] * ($item['proporsi'] / 100));
+            $totalNilai += ($item['nilai'] * ($item['proporsi_nilai'] / 100));
             @endphp
             <div class="row">
-                <div class="col-1-10">
+                <div class="col-1-10 " style="text-align: center">
                     {{ $loop->iteration}}
                 </div>
                 <div class="col-1-52">
                     {{ $item['Kategori_Nilai'] }}
                 </div>
-                <div class="col-1-10">
+                <div class="col-1-10 " style="text-align: center">
                     {{ $item['nilai'] }}
+                </div>
+                <div class="col-1-20 " style="text-align: center">
+                    {{$item['proporsi_nilai']}}%
                 </div>
             </div>
 		@endforeach

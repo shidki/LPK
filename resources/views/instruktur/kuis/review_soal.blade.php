@@ -132,13 +132,19 @@
                           <div class="col-md-12">
                             <div class="form-group focused">
                               @if ($status_koreksi == false)
-                                <a href="/list/kuis/{{$kuis->id_kuis}}"  class="btn btn-info">Kembali</a>
                                 @if (session('role') == 'instruktur')
                                 <button type="submit" id="btn_submit" class="btn btn-info">Selesai Koreksi</button>
+                                @elseif (session('role') == 'admin')
+                                <a href="/list/kuis/admin/{{$kuis->id_kuis}}"  class="btn btn-info">Kembali</a>
                                 @endif
                               @else
-                                <a href="/list/kuis/{{$kuis->id_kuis}}"  class="btn btn-info">Kembali</a>
-                                <a href="/cancel/koreksi/{{$kuis->id_kuis}}/{{$siswa->id_siswa}}"  class="btn btn-danger">Koreksi Ulang</a>
+                                @if (session('role') == 'instruktur')
+                                  <a href="/list/kuis/{{$kuis->id_kuis}}"  class="btn btn-info">Kembali</a>
+                                  <a href="/cancel/koreksi/{{$kuis->id_kuis}}/{{$siswa->id_siswa}}"  class="btn btn-danger">Koreksi Ulang</a>
+                                @elseif (session('role') == 'admin')
+                                  <a href="/list/kuis/admin/{{$kuis->id_kuis}}"  class="btn btn-info">Kembali</a>
+                              
+                                @endif
                               @endif
                             </div>
                           </div>

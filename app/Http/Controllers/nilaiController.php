@@ -134,12 +134,13 @@ class nilaiController extends Controller
                 'id_nilai' => $n->id_nilai,            // ID Nilai (bisa dimodifikasi sesuai kebutuhan)
                 'Kategori_Nilai' => $n->nama_komp_nilai, // Nama Kompetensi Nilai
                 'nilai' => $n->nilai,
-                'proporsi' => $n->proporsi_nilai,
+                'proporsi_nilai' => $n->proporsi_nilai,
             ];
         }
         foreach ($kompnilai as $komp) {
             $data['komp_nilai'][] = [
                 'Kategori_Nilai' => $komp->nama_komp_nilai, // Nama Kompetensi Nilai
+                'proporsi_nilai' => $komp->proporsi_nilai, // Nama Kompetensi Nilai
             ];
         }
 

@@ -79,6 +79,12 @@ class AuthController extends Controller
             return back()->with(["signup_error" => "Email sudah digunakan!"]);
         }
 
+        $getStatusSiswa = siswa::where("email",'=',$email)->first();
+        if($getStatusSiswa == true){
+            if($getStatusSiswa->status != "aktif"){
+                return back()->with(["signup_error" => "Siswa bukan merupakan siswa aktif!"]);
+            }
+        }
         // cek apakah email nya udah terdaftar di tabel siswa apa belum
         $cekemail1 = siswa::select("email")
         ->from("siswas")
@@ -131,7 +137,7 @@ class AuthController extends Controller
         session()->forget('nama');
         session()->forget('role');
         
-        return redirect("/")->with(['sukses_edit' => $successMessage, 'message' => "Berhasil mengeluarkan akun!"]);
+        return redirect("/")->with(['sukses_edit' => $successMessage, 'message' => "Berhasil keluar akun!"]);
     }
     
 
@@ -208,18 +214,18 @@ class AuthController extends Controller
 
             if($updatePassword == true){
                 $updatePassword = DB::table("users")->where('email','=',$email)->update([
-                    "kode_reset" => ""
+                    "kode_reset" => null
                 ]);
-                return view("auth.login.login")->with(["success_reset" => "Password berhasil diubah!"]);
+                return redirect('/')->with(["success_reset" => "Password berhasil diubah!"]);
             }else{
                 $updatePassword = DB::table("users")->where('email','=',$email)->update([
-                    "kode_reset" => ""
+                    "kode_reset" => null
                 ]);
                 return back()->with(["error_reset" => "Password gagal diubah!"]);
             }
         } else {
             $updatePassword = DB::table("users")->where('email','=',$email)->update([
-                "kode_reset" => ""
+                "kode_reset" => null
             ]);
             return back()->with(["error_reset" => "Kode tidak sesuai!"]);
         }

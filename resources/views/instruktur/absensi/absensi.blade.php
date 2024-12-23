@@ -149,9 +149,9 @@
 									</select>
                                     <thead>
                                         <tr>
-                                            <th style="text-align: center;width: 50px">No</th>
-                                            <th style="text-align: center;width: 200px">Siswa</th>
-                                            <th class="text-center" style="text-align: center;width: 50px">Status</th>
+                                            <th style="text-align: center;width:50px">No</th>
+                                            <th style="text-align: center;">Siswa</th>
+                                            <th class="text-center" style="text-align: center;width: 150px">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -161,7 +161,7 @@
                                                 @if ($siswas->status !== "lulus")
                                                 <tr>
                                                     <td style="text-align: center">{{ $loop->iteration }}</td>
-                                                    <td style="text-align: center">{{ $siswas->nama }}</td>
+                                                    <td>{{ $siswas->nama }}</td>
                                                     <td style="text-align: center">
                                                         <select name="status_absen" class="form-select"  id="status_absen_{{ $siswas->id_siswa }}" onchange="editStatus('{{ $siswas->id_siswa }}', '{{ $id_jadwal }}')">
                                                             <option style="text-transform: capitalize;" value="{{ $siswas->status_presensi ?? 'Belum Absen' }}" selected>
@@ -201,7 +201,7 @@
                                                     @if ($siswas->status !== "lulus")
                                                     <tr>
                                                         <td style="text-align: center">{{ $loop->iteration }}</td>
-                                                        <td style="text-align: center">{{ $siswas->nama }}</td>
+                                                        <td >{{ $siswas->nama }}</td>
                                                         <td style="text-align: center">
                                                             <select name="status_absen" class="form-select"  id="status_absen_{{ $siswas->id_siswa }}" onchange="editStatus('{{ $siswas->id_siswa }}', '{{ $id_jadwal }}')">
                                                                 <option style="text-transform: capitalize;" value="{{ $siswas->status_presensi ?? 'Belum Absen' }}" selected>
@@ -243,7 +243,7 @@
                                                    @if ($siswas->status != 'lulus')
                                                    <tr>
                                                     <td style="text-align: center">{{ $loop->iteration }}</td>
-                                                    <td style="text-align: center">{{ $siswas->nama }}</td>
+                                                    <td >{{ $siswas->nama }}</td>
                                                     <td style="text-align: center">
                                                         <select disabled name="status_absen" class="form-select"  id="status_absen_{{ $siswas->id_siswa }}" onchange="editStatus('{{ $siswas->id_siswa }}', '{{ $id_jadwal }}')">
                                                             <option style="text-transform: capitalize;" value="{{ $siswas->status_presensi ?? 'Belum Absen' }}" selected>
@@ -283,7 +283,7 @@
                                                     @if ($siswas->status !== 'lulus')
                                                     <tr>
                                                         <td style="text-align: center">{{ $loop->iteration }}</td>
-                                                        <td style="text-align: center">{{ $siswas->nama }}</td>
+                                                        <td>{{ $siswas->nama }}</td>
                                                         <td style="text-align: center">
                                                             <select disabled name="status_absen" class="form-select"  id="status_absen_{{ $siswas->id_siswa }}" onchange="editStatus('{{ $siswas->id_siswa }}', '{{ $id_jadwal }}')">
                                                                 <option style="text-transform: capitalize;" value="{{ $siswas->status_presensi ?? 'Belum Absen' }}" selected>
@@ -325,7 +325,7 @@
                                                     @if ($siswas !== "lulus")
                                                     <tr>
                                                         <td style="text-align: center">{{ $loop->iteration }}</td>
-                                                        <td style="text-align: center">{{ $siswas->nama }}</td>
+                                                        <td>{{ $siswas->nama }}</td>
                                                         <td style="text-align: center">
                                                             <select disabled name="status_absen" class="form-select" >
                                                                 <option style="text-transform: capitalize;" value="" selected>
@@ -341,7 +341,7 @@
                                                    @if ($siswas->status !== "lulus")
                                                    <tr>
                                                     <td style="text-align: center">{{ $loop->iteration }}</td>
-                                                    <td style="text-align: center">{{ $siswas->nama }}</td>
+                                                    <td >{{ $siswas->nama }}</td>
                                                     <td style="text-align: center">
                                                         <select disabled name="status_absen" class="form-select" >
                                                             <option style="text-transform: capitalize;" value="" selected>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\instruktur;
+use App\Models\kelas;
 use App\Models\kuis;
 use App\Models\mapel;
 use App\Models\nilai_kuis;
@@ -22,6 +24,7 @@ class kuisController extends Controller
         if (trim($judul) === '') {
             return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
         }
+
         $getJudul = kuis::where("judul_kuis",'=',$judul)->first();
         if($getJudul == true){
             return back()->with(["error_add" => "judul kuis sudah tersedia"]);
@@ -101,8 +104,20 @@ class kuisController extends Controller
         $judul = $request->judulKuisEdit;
         $mapel = $request->MapelKuisEdit;
         //dd($judul);
+        // cek soal udah dikerjain apa belom
+        $cekKerjain = nilai_kuis::where("id_kuis",'=',$id)->first();
+        if($cekKerjain == true){
+            return back()->with(["error_add" => "Kuis telah dikerjakan oleh siswa!"]);
+        }
         if (trim($judul) === '') {
             return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi"]);
+        }
+
+        // cek apakah mapel udah ada kuis apa blom
+        $cekMapel = kuis::where("id_mapel",'=',$mapel)->where("id_kuis",'!=',$id)->first();
+        if($cekMapel == true){
+            return back()->with(["error_edit" => "Mapel sudah terdapat kuis"]);
+
         }
         $cekJudul = kuis::where("judul_kuis",'=',$judul)->where("id_kuis",'!=',$id)->first();
         //dd($cekJudul);
@@ -122,38 +137,76 @@ class kuisController extends Controller
     }
 
     public function downloadLaporanKuis($id_kuis){
+
+        $role = session("role");
+        $email = session("email");
+        
+        if($role != "instruktur"){
+            return abort(403);
+        }
+        $getIns = instruktur::where("email_ins",'=',$email)->first();
+        
         // cek kalau masi ada nilai siswa yang blom fix, gabisa didownload
-        $cekNilai = nilai_kuis::where("id_kuis",'=',$id_kuis)->where("nilai_fix",'=',null)->first();
-        //dd($cekNilai);
+        $getKelas = kelas::where("id_ins",'=',$getIns->id_ins)->first();
         $getNamaKuis = kuis::where("id_kuis",'=',$id_kuis)->first();
+        $cekNilai = nilai_kuis::select('nilai_kuis.*')
+        ->join('siswas', 'siswas.id_siswa', '=', 'nilai_kuis.id_siswa') // Join dengan tabel siswas
+        ->where('nilai_kuis.id_kuis', '=', $id_kuis)
+        ->where('nilai_kuis.nilai_fix', '=', null)
+        ->where('siswas.id_kelas', '=', $getKelas->id_kelas) // Filter siswa berdasarkan kelas
+        ->first();
+
+
         if($cekNilai == true ){
             return back()->with(["error_edit" => "Terdapat nilai yang masih belum fix"]);
         }
-        if($cekNilai == null ){
-            return back()->with(["error_edit" => "Belum ada siswa yang mengerjakan"]);
+
+        $cekNilai2 = nilai_kuis::where("id_kuis",'=',$id_kuis)->first();
+        if($cekNilai2 == null){
+            return back()->with(["error_edit" => "Kuis belum dikerjakan!"]);
+
         }
-        
         // get data nilai kuis berdasar id kuis
-        $getNilai = nilai_kuis::select("n.*",'k.judul_kuis','s.nama')->from("nilai_kuis as n")
-        ->join("kuis as k",'k.id_kuis','=','n.id_kuis')
-        ->join("siswas as s",'s.id_siswa','=','n.id_siswa')
-        ->where("n.id_kuis",'=',$id_kuis)->get();
+        $getSiswa = DB::table('siswas')
+        ->select('id_siswa', 'nama')
+        ->where('id_kelas', '=', $getKelas->id_kelas)
+        ->where('status', '=', "aktif")
+        ->get();
+    
+        $getNilai = nilai_kuis::select('n.id_siswa', 'n.nilai_fix', 'k.judul_kuis')
+            ->from('nilai_kuis as n')
+            ->join('kuis as k', 'k.id_kuis', '=', 'n.id_kuis')
+            ->where('n.id_kuis', '=', $id_kuis)
+            ->get();
         
-        // Generate Excel langsung di Controller
+        // Proses gabungan data siswa dengan nilai kuis
         $excelData = [];
-        // Tambahkan header
         $excelData[] = ['Nama Kuis', 'Nama Siswa', 'Nilai'];
         
-        // Masukkan data nilai kuis
-        foreach ($getNilai as $nilai) {
+        foreach ($getSiswa as $siswa) {
+            $nilaiFix = 0; // Default nilai untuk siswa yang belum mengerjakan
+            $judulKuis = $getNamaKuis->judul_kuis;
+            
+            // Cek apakah siswa ada di daftar nilai kuis
+            foreach ($getNilai as $nilai) {
+                if ($nilai->id_siswa == $siswa->id_siswa) {
+                    $nilaiFix = $nilai->nilai_fix !== null ? $nilai->nilai_fix : 0;
+                    $judulKuis = $nilai->judul_kuis;
+                    break;
+                }
+            }
+        
+            // Tambahkan data ke array Excel
             $excelData[] = [
-                $nilai->judul_kuis, 
-                $nilai->nama, 
-                $nilai->nilai_fix
+                $judulKuis ?? 'Belum Ada Kuis', // Nama kuis jika belum ada datanya
+                $siswa->nama,
+                (string)$nilaiFix
             ];
         }
+        
+        // Debug hasil
         //dd($excelData);
-
+        
         // Download file Excel
         return Excel::download(new class($excelData) implements FromCollection {
             protected $data;

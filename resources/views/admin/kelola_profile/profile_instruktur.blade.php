@@ -257,9 +257,9 @@
                                             <td>{{ $instrukturs->email_ins }}</td>
                                             <td>{{ $instrukturs->no_hp_ins }}</td>
                                             <td>{{ $instrukturs->alamat_ins }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($instrukturs->tgl_masuk_ins )->translatedFormat('j F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($instrukturs->tgl_masuk_ins)->locale('id')->isoFormat('D MMM YYYY') }}</td>
                                             <td class="text-center" style="display: flex;justify-content: center;">
-                                                <button data-id="{{ json_encode(['id' => $instrukturs->id_ins,'nama' => $instrukturs->nama_ins,'email' => $instrukturs->email_ins, 'no_hp' => $instrukturs->no_hp_ins,'alamat' => $instrukturs->alamat_ins]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
+                                                <button data-id="{{ json_encode(['tglMasuk' => $instrukturs->tgl_masuk_ins,'id' => $instrukturs->id_ins,'nama' => $instrukturs->nama_ins,'email' => $instrukturs->email_ins, 'no_hp' => $instrukturs->no_hp_ins,'alamat' => $instrukturs->alamat_ins]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
                                                 <a href="/delete/instruktur/{{ $instrukturs->id_ins }}" class="btn btn-danger btn-circle btn-sm" style="margin-left: 10px">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
@@ -397,6 +397,10 @@
                                 <label for="alamat">Alamat<strong class="text-danger font-weight-bold">*</strong></label>
                                 <textarea required id="alamatEdit" name="alamatEdit" class="form-control" id="" cols="10" rows="5"></textarea>
                             </div>
+                            <div class="form-group">
+                                <label for="date">Tanggal Masuk<strong class="text-danger font-weight-bold">*</strong></label>
+                                <input id="tglMasukEdit" type="date" class="form-control" placeholder="Tanggal Masuk Siswa" required name="tglMasukEdit">
+                            </div>
                         </div>
                         <div class="modal-footer" style="text-align: center">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
@@ -511,6 +515,8 @@
                 nohpEdit.value = parsedDataId.no_hp;
                 var alamatEdit = modalInstruktur.querySelector('#alamatEdit');
                 alamatEdit.value = parsedDataId.alamat;
+                var tglMasukEdit = modalInstruktur.querySelector('#tglMasukEdit');
+                tglMasukEdit.value = parsedDataId.tglMasuk;
 
                 updateCounter(NamaInstruktur, 'jml_input_namaEdit', 50);
                 updateCounter(emailInstruktur, 'jml_input_emailEdit', 50);

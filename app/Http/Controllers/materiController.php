@@ -26,7 +26,7 @@ class materiController extends Controller
         // Cek apakah mapel sudah tersedia
         $getMapel = DB::table("mapels")->where("nama_mapel", '=', $mapel)->first();
         if ($getMapel) {
-            return back()->with(["error_add" => "Judul Bab sudah tersedia"]);
+            return back()->with(["error_add" => "Judul bab sudah tersedia"]);
         }
 
         // Hitung jumlah mapel yang ada untuk id_mapel
@@ -325,9 +325,9 @@ class materiController extends Controller
                     // Lanjutkan ke file berikutnya
                     $fileCount++;
                 }
-                return back()->with(["sukses_edit" => "Berhasil mengubah mapel!"]);
+                return back()->with(["sukses_edit" => "Berhasil mengubah bab!"]);
             }else{
-                return back()->with(["error_edit" => "Gagal mengubah mapel!"]);
+                return back()->with(["error_edit" => "Gagal mengubah bab!"]);
     
             }
         }else{
@@ -390,7 +390,7 @@ class materiController extends Controller
                 // Lanjutkan ke file berikutnya
                 $fileCount++;
             }
-            return back()->with(["sukses_edit" => "Berhasil mengubah mapel!"]);
+            return back()->with(["sukses_edit" => "Berhasil mengubah bab!"]);
         }
     }
 
@@ -448,7 +448,7 @@ class materiController extends Controller
     {
         $id = $request->id_materi_modal;
         $nama = $request->materiEditModal;
-    
+
         // Ambil file dari request
         $file = $request->file('filemateriEditModal'); // Pastikan nama input file di form adalah 'filemateriEditModal'
         //dd($file);
@@ -494,18 +494,38 @@ class materiController extends Controller
             $file->move(public_path('file/materi'), $nama_file_materi);
             $nama_file_materi_pembelajaran = 'file/materi/' . $nama_file_materi;
             //dd($nama_file_materi_pembelajaran);
-    
-            // Update data di database
-            $update = DB::table("materis")->where("id_materi", '=', $id)->update([
-                "judul_materi" => $nama,
-                "dok_materi" => $nama_file_materi_pembelajaran,
-            ]);
-    
-            if ($update) {
-                return back()->with(['sukses_edit' => "Berhasil mengubah materi!"]);
-            } else {
-                return back()->with(['error_edit' => "Gagal mengubah materi!"]);
+            
+            // cek judul materi berubah apa ga
+            $cekMateri3 = materi::
+            where("id_materi", '=', $id)
+            ->first();
+
+            if($cekMateri3->judul_materi != $nama){
+                //dd(4);
+                // Update data di database
+                $update = DB::table("materis")->where("id_materi", '=', $id)->update([
+                    "judul_materi" => $nama,
+                    "dok_materi" => $nama_file_materi_pembelajaran,
+                ]);
+        
+                if ($update) {
+                    return back()->with(['sukses_edit' => "Berhasil mengubah materi!"]);
+                } else {
+                    return back()->with(['error_edit' => "Gagal mengubah materi!"]);
+                }
+            }else{
+                //dd(5);
+                $update = DB::table("materis")->where("id_materi", '=', $id)->update([
+                    "dok_materi" => $nama_file_materi_pembelajaran,
+                ]);
+        
+                if ($update) {
+                    return back()->with(['sukses_edit' => "Berhasil mengubah materi!"]);
+                } else {
+                    return back()->with(['error_edit' => "Gagal mengubah materi!"]);
+                }
             }
+
         }
     }    
 }

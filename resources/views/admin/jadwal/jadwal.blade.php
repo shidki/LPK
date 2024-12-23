@@ -126,15 +126,22 @@
                                             <td class="text-center">{{ $jadwals['tanggal_format'] }}</td>
                                             <td class="text-center">
                                                 <a 
-                                                    @if ($jadwals['status'] == "selesai" || $jadwals['status'] == "mulai"|| $jadwals['status'] == "libur") 
+                                                    @if ($jadwals['status'] == "selesai" || $jadwals['status'] == "mulai") 
                                                         href="#" 
                                                         onclick="return false;" 
                                                         class="btn btn-danger disabled"
+                                                    @elseif ($jadwals['status'] == "libur")
+                                                    class="btn btn-danger"
+                                                        href="/editstatus/libur/{{$jadwals['id_jadwal']}}" 
                                                     @else 
                                                         class="btn btn-primary"
                                                         href="/editstatus/libur/{{$jadwals['id_jadwal']}}" 
                                                     @endif>
-                                                    Libur
+                                                    @if ($jadwals['status'] == "libur")
+                                                        Batal
+                                                    @else
+                                                        Libur
+                                                    @endif
                                                 </a>
                                             </td>
                                         </tr>

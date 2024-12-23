@@ -82,7 +82,7 @@
                     <div class="tab-content p-4">
                         <div class="tab-pane active show" id="tasks-tab" role="tabpanel">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Kuis  </a>\ <a style="text-decoration: none;" href="/review/kuis">{{$judulKuis->judul_kuis}} </a>\ Daftar Kuis Siswa</h4>
+                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Menu  </a>\ <a style="text-decoration: none;" href="/review/kuis">{{$judulKuis->judul_kuis}} </a>\ Daftar Kuis Siswa</h4>
                                 <a href="/download/laporan/kuis/{{$judulKuis->id_kuis}}" class="btn btn-primary" title="Download Laporan" style="align-content: center; width: 90px;height: 40px;;"><i style="font-size: 17px;" class="fa fa-download"></i></a>
                             </div>
                             <div class="row">

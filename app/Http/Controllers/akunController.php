@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\admin;
 use App\Models\instruktur;
+use App\Models\nilai;
+use App\Models\nilai_kuis;
 use App\Models\siswa;
 use App\Models\users;
 use Illuminate\Http\Request;
@@ -160,6 +162,8 @@ class akunController extends Controller
         $id = $request->akuns;
         $status = $request->status;
 
+        
+        
         // get id akun berdasar email 
         $updateStatus = DB::table("users")->where("id_akun",'=',$id)->update([
             "status_akun" => $status
@@ -413,6 +417,14 @@ class akunController extends Controller
 
         }
         
+        // cek kalau siswa dia udah pnya data nilai brarti gabisa dihapus
+        $cekNilai = nilai_kuis::where("id_siswa",'=',$id)->first();
+        $cekNilai = nilai::where("id_siswa",'=',$id)->first();
+        if($cekNilai == true){
+            return back()->with(["error_delete" => "Siswa memiliki data nilai!"]);
+
+        }
+
         // mencari admin yang menggunakan email tersebut
         $getIns = siswa::select("*")->where("id_akun",'=',$id)->first();
         // mengupdate id akun pada Ins tersebut
@@ -475,7 +487,12 @@ class akunController extends Controller
     public function edit_status_akun_siswa(Request $request){
         $id = $request->akuns;
         $status = $request->status;
-
+        // cek status siswa aktif apa engga
+        $getEmail = users::where("id_akun",'=',$id)->first();
+        $getStatusSiswa = siswa::where("email",'=',$getEmail->email)->first();
+        if($getStatusSiswa->status != "aktif"){
+            return back()->with(["error_edit" => "Siswa bukan merupakan siswa aktif!"]);
+        }
         // mengubah status akun
         $updateStatus = DB::table("users")->where("id_akun",'=',$id)->update([
             "status_akun" => $status

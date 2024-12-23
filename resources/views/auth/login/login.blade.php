@@ -87,8 +87,17 @@
     @if (session('success_reset'))
     <script>
           Swal.fire({
-              title: "Berhasil Mengubah Kata Sandi",
+              title: "Berhasil mengubah kata sandi",
               text: "{{ session('success_reset') }}", 
+              icon: "success"
+          });
+    </script>
+    @endif
+    @if (session('message'))
+    <script>
+          Swal.fire({
+              title: "{{ session('message') }}",
+              
               icon: "success"
           });
     </script>
@@ -106,7 +115,7 @@
     <script>
           Swal.fire({
               title: "{{ session('error_login') }}",
-              text: "Hubungi Admin Untuk Aktifasi Akun", 
+              text: "Hubungi Admin Untuk Aktivasi Akun", 
               icon: "error"
           });
     </script>
@@ -123,7 +132,7 @@
     @if (session('sukses_edit'))
     <script>
           Swal.fire({
-              title: "Berhasil Mengubah Password",
+              title: "Berhasil mengubah password",
               text: "{{ session('sukses_edit') }}", 
               icon: "success"
           });

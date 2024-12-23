@@ -84,7 +84,7 @@
                     <div class="tab-content p-4">
                         <div class="tab-pane active show" id="tasks-tab" role="tabpanel">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Kembali  </a>\ Riwayat Absensi</h4>
+                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Menu  </a>\ Riwayat Absensi</h4>
                             </div>
                             <div class="row">
                                 <div class="col-xl-12">

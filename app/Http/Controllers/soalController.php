@@ -33,9 +33,16 @@ class soalController extends Controller
         }
         $jawabanBenar = $request->checkOpsi;
 
+        // cek dlu kuis nya udah dikerjain apa blom
+        $cekKuis = nilai_kuis::where("id_kuis",'=',$idKuis)->first();
+        if($cekKuis == true){
+            return back()->with(['error_add' => "Kuis telah dikerjakan!"]);
+
+        }
+
         // menambah data ke table soal dlu
         // cek pertanyaan udha ad apa blom\
-        $getPertanyaan = soal::where("pertanyaan",'=',$soal)->first();
+        $getPertanyaan = soal::where("pertanyaan",'=',$soal)->where("id_kuis",'=',$idKuis)->first();
         if($getPertanyaan == true){
             return back()->with(['error_add' => "Pertanyaan sudah tersedia!"]);
         }
@@ -53,12 +60,15 @@ class soalController extends Controller
             "id_kuis" => $idKuis
         ]);
         if($insertSoal == true){
-            $getSoal = soal::where("pertanyaan",'=',$soal)->first();
+            $getSoal = soal::where("pertanyaan",'=',$soal)->where("id_kuis",'=',$idKuis)->first();
+            
             if($tipe_soal == 'pilgan'){
-                // menambah data ke opsi jawban dlu
                 if (trim($opsiA) === '' || trim($opsiB) === ''|| trim($opsiC) === ''|| trim($opsiD) === '') {
+                    $deleteSoal = soal::where("id_soal",'=',$getSoal->id_soal)->delete();
+
                     return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);
                 }
+                // menambah data ke opsi jawban dlu
                 $insertOpsiA = DB::table("opsi_pgs")->insert([
                     "opsi" => $opsiA,
                     "id_soal" => $getSoal->id_soal,
@@ -66,7 +76,7 @@ class soalController extends Controller
                 if($insertOpsiA == true){
                     $cekOpsiB = opsi_pg::where("opsi",'=',$opsiB)->where("id_soal",'=',$getSoal->id_soal)->first();
                         if($cekOpsiB == true){
-                            $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->delete();
+                            $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->where('id_soal','=',$getSoal->id_soal)->delete();
                             $deleteSoal = soal::where("id_soal",'=',$getSoal->id_soal)->delete();
                             if($deleteOpsiA && $deleteSoal){
                                 return back()->with(['error_add' => "Isi dari Opsi B sudah tersedia pada soal ini!"]);
@@ -81,8 +91,8 @@ class soalController extends Controller
                     if($insertOpsiB == true){
                         $cekOpsiC = opsi_pg::where("opsi",'=',$opsiC)->where("id_soal",'=',$getSoal->id_soal)->first();
                         if($cekOpsiC == true){
-                            $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->delete();
-                            $deleteOpsiB = opsi_pg::where("opsi",'=',$opsiB)->delete();
+                            $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->where('id_soal','=',$getSoal->id_soal)->delete();
+                            $deleteOpsiB = opsi_pg::where("opsi",'=',$opsiB)->where('id_soal','=',$getSoal->id_soal)->delete();
                             $deleteSoal = soal::where("id_soal",'=',$getSoal->id_soal)->delete();
                             if($deleteOpsiA && $deleteOpsiB && $deleteSoal){
                                 return back()->with(['error_add' => "Isi dari Opsi C sudah tersedia pada soal ini!"]);
@@ -97,9 +107,9 @@ class soalController extends Controller
                         if($insertOpsiC == true){
                             $cekOpsiD = opsi_pg::where("opsi",'=',$opsiD)->where("id_soal",'=',$getSoal->id_soal)->first();
                             if($cekOpsiD == true){
-                                $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->delete();
-                                $deleteOpsiB = opsi_pg::where("opsi",'=',$opsiB)->delete();
-                                $deleteOpsiC = opsi_pg::where("opsi",'=',$opsiC)->delete();
+                                $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->where('id_soal','=',$getSoal->id_soal)->delete();
+                                $deleteOpsiB = opsi_pg::where("opsi",'=',$opsiB)->where('id_soal','=',$getSoal->id_soal)->delete();
+                                $deleteOpsiC = opsi_pg::where("opsi",'=',$opsiC)->where('id_soal','=',$getSoal->id_soal)->delete();
                                 $deleteSoal = soal::where("id_soal",'=',$getSoal->id_soal)->delete();
                                 if($deleteOpsiA && $deleteOpsiB && $deleteOpsiC && $deleteSoal){
                                     return back()->with(['error_add' => "Isi dari Opsi D sudah tersedia pada soal ini!"]);
@@ -122,10 +132,10 @@ class soalController extends Controller
                                 }else{
                                     // jika jawaban benar gagal ditambahkan maka menghhaopus data soal dan semua opsi jawaban
                                     //jika gagal menambah opsi D, maka menghapus data soal dan opsi A B C
-                                    $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->delete();
-                                    $deleteOpsiB = opsi_pg::where("opsi",'=',$opsiB)->delete();
-                                    $deleteOpsiC = opsi_pg::where("opsi",'=',$opsiC)->delete();
-                                    $deleteOpsiD = opsi_pg::where("opsi",'=',$opsiD)->delete();
+                                    $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->where('id_soal','=',$getSoal->id_soal)->delete();
+                                    $deleteOpsiB = opsi_pg::where("opsi",'=',$opsiB)->where('id_soal','=',$getSoal->id_soal)->delete();
+                                    $deleteOpsiC = opsi_pg::where("opsi",'=',$opsiC)->where('id_soal','=',$getSoal->id_soal)->delete();
+                                    $deleteOpsiD = opsi_pg::where("opsi",'=',$opsiD)->where('id_soal','=',$getSoal->id_soal)->delete();
                                     $deleteSoal = soal::where("id_soal",'=',$getSoal->id_soal)->delete();
                                     if($deleteOpsiA && $deleteOpsiB && $deleteOpsiC && $deleteOpsiD && $deleteSoal){
                                         return back()->with(['error_add' => "Gagal menambah soal beserta jawaban"]);
@@ -135,9 +145,9 @@ class soalController extends Controller
                                 }
                             }else{
                                 //jika gagal menambah opsi D, maka menghapus data soal dan opsi A B C
-                                $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->delete();
-                                $deleteOpsiB = opsi_pg::where("opsi",'=',$opsiB)->delete();
-                                $deleteOpsiC = opsi_pg::where("opsi",'=',$opsiC)->delete();
+                                $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->where('id_soal','=',$getSoal->id_soal)->delete();
+                                $deleteOpsiB = opsi_pg::where("opsi",'=',$opsiB)->where('id_soal','=',$getSoal->id_soal)->delete();
+                                $deleteOpsiC = opsi_pg::where("opsi",'=',$opsiC)->where('id_soal','=',$getSoal->id_soal)->delete();
                                 $deleteSoal = soal::where("id_soal",'=',$getSoal->id_soal)->delete();
                                 if($deleteOpsiA && $deleteOpsiB && $deleteOpsiC && $deleteSoal){
                                     return back()->with(['error_add' => "Gagal menambah soal karena terdapat opsi yang sama!!"]);
@@ -147,8 +157,8 @@ class soalController extends Controller
                             }
                         }else{
                             //jika gagal menambah opsi C, maka menghapus data soal dan opsi A B
-                            $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->delete();
-                            $deleteOpsiB = opsi_pg::where("opsi",'=',$opsiB)->delete();
+                            $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->where('id_soal','=',$getSoal->id_soal)->delete();
+                            $deleteOpsiB = opsi_pg::where("opsi",'=',$opsiB)->where('id_soal','=',$getSoal->id_soal)->delete();
                             $deleteSoal = soal::where("id_soal",'=',$getSoal->id_soal)->delete();
                             if($deleteOpsiA && $deleteOpsiB && $deleteSoal){
                                 return back()->with(['error_add' => "Gagal menambah soal karena terdapat opsi yang sama!"]);
@@ -159,7 +169,7 @@ class soalController extends Controller
                     }
                     else{
                         //jika gagal menambah opsi B, maka menghapus data soal dan opsi A
-                        $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->delete();
+                        $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->where('id_soal','=',$getSoal->id_soal)->delete();
                         $deleteSoal = soal::where("id_soal",'=',$getSoal->id_soal)->delete();
                         if($deleteOpsiA && $deleteSoal){
                             return back()->with(['error_add' => "Gagal menambah soal karena terdapat opsi yang sama!"]);
@@ -167,8 +177,7 @@ class soalController extends Controller
                             return back()->with(['error_add' => "Tedapat kesalahan saat menghapus soal!"]);
                         }
                     }
-                }
-                else{
+                }else{
                     //jika gagal menambah opsi A, maka menghapus data soal 
                     $deleteSoal = soal::where("id_soal",'=',$getSoal->id_soal)->delete();
                     if($deleteSoal == true){
@@ -177,29 +186,19 @@ class soalController extends Controller
                         return back()->with(['error_add' => "Tedapat kesalahan saat menghapus soal!"]);
                     }
                 }
+                if($insertOpsiA == true && $insertOpsiB == true && $insertOpsiC == true && $insertOpsiD == true ){
+                    return back()->with(['sukses_add' => "Berhasil menambah soal!"]);
+                }else{
+                    $deleteOpsiA = opsi_pg::where("opsi",'=',$opsiA)->where('id_soal','=',$getSoal->id_soal)->delete();
+                    $deleteOpsiB = opsi_pg::where("opsi",'=',$opsiB)->where('id_soal','=',$getSoal->id_soal)->delete();
+                    $deleteOpsiC = opsi_pg::where("opsi",'=',$opsiC)->where('id_soal','=',$getSoal->id_soal)->delete();
+                    $deleteOpsiD = opsi_pg::where("opsi",'=',$opsiD)->where('id_soal','=',$getSoal->id_soal)->delete();
+                    $deleteSoal = soal::where("id_soal",'=',$getSoal->id_soal)->delete();
+                    return back()->with(['error_add' => "Gagal menambah soal!"]);
+                }
+            }else{
+                return back()->with(['sukses_add' => "Berhasil menambah soal!"]);
             }
-            //else{
-            //    if($tipe_soal == "isian"){
-            //        // karena tipe nya isiam, jadi langsung nambahin jawban ke table jawaban
-            //        $insertJawabanIsian = DB::table("jawabans")->insert([
-            //            "jawaban" => $isian,
-            //            "id_soal" => $getSoal->id_soal,
-            //        ]);
-            //        if($insertJawabanIsian == true){
-            //            return back()->with(['sukses_add' => "berhasil menambah soal! beserta jawaban"]);
-            //        }else{
-                        
-            //            // jika gagal, menghapus data soal yang telah ditambah sebelumnya dlu
-            //            $deleteSoal = soal::where("id_soal",'=',$getSoal->id_soal)->delete();
-            //            if($deleteSoal == true){
-            //                return back()->with(['error_add' => "Gagal Menambah soal beserta jawaban"]);
-            //            }else{
-            //                return back()->with(['error_add' => "Tedapat kesalahan saat menghapus soal"]);
-            //            }
-            //        }
-            //    }
-            //}
-            return back()->with(['sukses_add' => "Berhasil menambah soal!"]);
         }else{
             return back()->with(['error_add' => "Gagal menambah soal!"]);
         }
@@ -243,13 +242,19 @@ class soalController extends Controller
         $idSoal = $request->soalss;
         $soal = $request->soal;
         $isian = $request->isian;
+        // cek soal udah dikerjain apa belom
+        $cekKerjain = riwayat_pengerjaan::where("id_soal",'=',$idSoal)->first();
+        if($cekKerjain == true){
+            return back()->with(["error_add" => "Soal telah dikerjakan oleh siswa!"]);
+        }
         if (trim($soal) === '') {
             return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);
         }
         //cek apakah soal udah dipake atau belum
-        $cekSoal = soal::where("pertanyaan",'=',$soal)->where("id_soal",'!=',$idSoal)->first();
+        $getIdKuis = soal::where("id_soal",'=',$idSoal)->first();
+        $cekSoal = soal::where("pertanyaan",'=',$soal)->where("id_soal",'!=',$idSoal)->where("id_kuis",'!=',$getIdKuis->id_soal)->first();
         if($cekSoal == true){
-            return back()->with(['error_edit' => "P"]);
+            return back()->with(['error_edit' => "Pertanyaan sudah tersedia!"]);
         }
         $updateSoal = DB::table("soals")->where("id_soal",'=',$idSoal)->update([
             "pertanyaan" => $soal,
@@ -408,15 +413,18 @@ class soalController extends Controller
             return abort(403);
         }
 
+        // cek kuis  udah ada soal nya atau belom
+        $cekSoal = soal::where("id_kuis",'=',$id_kuis)->first();
+        if($cekSoal == false){
+            return back()->with(["error_kuis" => "Soal belum tersedia di kuis ini!"]);
+
+        }
         $siswa = siswa::where("email",'=',$email)->first();
         // cek apakah kuis udah dikerjain atau belum ( kalau udah brarti review kuis )
         $cekKuis = nilai_kuis::where("id_kuis",'=',$id_kuis)->where("id_siswa",'=',$siswa->id_siswa)->first();
         if($cekKuis == true){
             return redirect('/review/kuis')->with(['id_kuis' => $id_kuis]);
         }
-
-
-
         // cek dulu siswa lagi ngerjain kuis yang lain apa engga
 
         $getLog = log_kuis::where("id_siswa",'=',$siswa->id_siswa)->where('id_kuis','!=',$id_kuis)->first();
@@ -463,10 +471,12 @@ class soalController extends Controller
                 $jmlSoal = $soal->count();
                 $opsi = opsi_pg::get();
 
+                //dd($soal);
                 // get log yang barusan ditambah buat get time start kuis nya
                 $getLog3 = log_kuis::where("id_siswa", '=', $siswa->id_siswa)
                 ->where('id_kuis', '=', $id_kuis)
                 ->first();
+                //dd($opsi);
                 $currentDate = Carbon::now()->toDateString(); // Format: YYYY-MM-DD
                 $startTime = $currentDate . ' ' . $getLog3->start_time; // Gabungkan tanggal dengan waktu
                 $getLog3->start_time = Carbon::parse($startTime)->format('Y-m-d\TH:i:s'); 
@@ -489,6 +499,11 @@ class soalController extends Controller
     
         $jawaban = $request->all();
         
+        // cek kuisnya udah di submit apa blom
+        $cekSubmit = nilai_kuis::where("id_kuis",'=',$id_kuis)->where("id_siswa",'=',$siswa->id_siswa)->first();
+        if($cekSubmit == true){
+            return redirect('/view/kuis')->with(["status_kuis" => "Kuis telah dikerjakan!"]);
+        }
         // untuk mendapat data apakah di kuis ini soalnya mix pilgan dan isian atau engga
         $mix = false;
         $pilgan = false;
@@ -642,7 +657,7 @@ class soalController extends Controller
         // menampilkan nilai
         $getNilai = nilai_kuis::where("id_kuis",'=',$id_kuis)->where("id_siswa",'=',$siswa->id_siswa)->first();
 
-        return view('siswa.kuis.review_kuis')->with(["soal" => $soal, "siswa" => $siswa,'opsi' => $opsi,'jml_soal' => $jmlSoal,'kuis' => $kuis,'nilai' => $getNilai]);
+        return view('siswa.kuis.review_kuis')->with(["soal" => $soal, "siswa" => $siswa,'opsi' => $opsi,'jml_soal' => $jmlSoal,'kuis' => $kuis,'nilai' => $getNilai,'id' => $id_kuis]);
     }
 
     public function reviewKuis_siswa($id_kuis, $id_siswa){
@@ -692,7 +707,7 @@ class soalController extends Controller
         if(!is_null($getNilai->nilai_fix)){
             $status_koreksi = true;
         }
-        return view('instruktur.kuis.review_soal')->with(["soal" => $soal,"status_koreksi" => $status_koreksi, "siswa" => $siswa,'opsi' => $opsi,'kuis' => $kuis,'jml_soal' => $jmlSoal,'nilai' => $getNilai,'type' => $type_kuis]);
+        return view('instruktur.kuis.review_soal')->with(["soal" => $soal,"status_koreksi" => $status_koreksi, "siswa" => $siswa,'opsi' => $opsi,'kuis' => $kuis,'jml_soal' => $jmlSoal,'nilai' => $getNilai,'type' => $type_kuis,'id' => $id_kuis]);
     }
 
     public function editStatusJawabanAjax(Request $request){

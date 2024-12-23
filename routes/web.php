@@ -174,6 +174,7 @@ Route::get('/review/kuis/{id}',[soalController::class, 'reviewKuis'])->name('rev
 
 // ============ REVIEW KUIS GURU ================
 Route::get('/list/kuis/{id}',[halamanController::class, 'view_kuis_instruktur'])->name('view_kuis_instruktur');
+Route::get('/list/kuis/admin/{id}',[halamanController::class, 'view_kuis_admin'])->name('view_kuis_admin');
 Route::get('/review/kuis/{id}/{id_siswa}',[soalController::class, 'reviewKuis_siswa'])->name('reviewKuis_siswa');
 Route::post('/edit/status_jawaban', [soalController::class, 'editStatusJawabanAjax']);
 Route::post('/submit/koreksi/{id_kuis}/{id_siswa}',[soalController::class, 'submitKoreksi'])->name('submitKoreksi');

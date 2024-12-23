@@ -84,7 +84,7 @@
 
                         <div class="tab-pane active show" id="tasks-tab" role="tabpanel">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Materi </a>\ Daftar Materi</h4>
+                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Menu </a>\ Daftar Bab</h4>
                                 <button data-bs-toggle="modal"  data-bs-target="#staticBackdrop" type="submit" class="btn btn-primary" style="padding: 0 30px;height: 40px;"><i class="fa fa-plus"></i></button>
                             </div>
                             <div class="row">
@@ -99,7 +99,7 @@
                                                             <div class="checklist form-check font-size-15" >
                                                                 {{--<input type="checkbox" class="star-checkbox" id="starCheck{{ $mapels->id_mapel }}">
                                                                 <label for="starCheck{{ $mapels->id_mapel }}" class="star-label">♥</label>--}}
-                                                                <label class="form-check-label ms-1 task-title" for="customCheck1">{{ $mapels->nama_mapel }}</label>
+                                                                <label class="form-check-label ms-1 task-title" for="customCheck1"><b>Bab:</b> {{ $mapels->nama_mapel }}</label>
                                                             </div>
                                                         </div>
                                                         <!-- end col -->
@@ -327,13 +327,13 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modal-{{ $mapels->id_mapel }}Label" data-bs-toggle="modal"  data-bs-target="#modal-{{ $mapels->id_mapel }}">Materi Bab {{ $mapels->nama_mapel}}</h5>
+                            <h5 class="modal-title" id="modal-{{ $mapels->id_mapel }}Label" data-bs-toggle="modal"  data-bs-target="#modal-{{ $mapels->id_mapel }}">Materi dari bab {{ $mapels->nama_mapel}}</h5>
                         </div>
                         <div class="modal-body">
                             @foreach ($materi as $materis )
                             @if ($materis->id_mapels == $mapels->id_mapel)
                             <div style="display: flex; justify-content: space-between; margin-top: 15px;">
-                               <a style="padding-bottom: 2px; border-bottom: 1px solid rgb(72, 72, 72); text-decoration: none;width: 80%;" href="{{asset($materis->dok_materi)}}" target="_blank">{{ $materis->judul_materi}}</a>
+                               <a style="padding-bottom: 2px; border-bottom: 1px solid rgb(72, 72, 72); text-decoration: none;width: 80%;" href="{{asset($materis->dok_materi)}}" target="_blank"><b>Materi:</b> {{ $materis->judul_materi}}</a>
                                 <div style="display: flex; justify-content: space-between;">
                                     <div>
                                         <button data-id="{{ json_encode(['id' => $materis->id_materi, 'nama' => $materis->judul_materi,'path' => $materis->dok_materi ]) }}" style="border: none; background-color: transparent;" class="mb-0 text-muted fw-medium" data-bs-toggle="modal" data-bs-target="#modalMateri"><i class="mdi mdi-square-edit-outline font-size-16 align-middle"></i></button>
@@ -370,7 +370,7 @@
                                 </div>
                                 <div class="form-group" style="margin-top: 10px;">
                                     <label for="filemateriEditModal">File Materi</label>
-                                    <input id="filemateriEditModal" accept="pdf" value="" type="file" class="form-control"  name="filemateriEditModal">
+                                    <input id="filemateriEditModal" accept="application/pdf" value="" type="file" class="form-control"  name="filemateriEditModal">
                                 </div>
                             </div>
                             <div class="modal-footer" style="text-align: center">

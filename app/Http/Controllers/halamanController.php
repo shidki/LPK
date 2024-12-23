@@ -154,7 +154,12 @@ class halamanController extends Controller
         $listkelas = kelas::get();
 
         $kompNilai = kompNilai::select("*")->get();
-        return view('admin.kelola_komp_nilai.kompNilai')->with(['kompNilai' => $kompNilai, 'listkelas' => $listkelas]);
+        $jmlBobot = 0;
+        foreach($kompNilai as $item){
+            $jmlBobot += $item->proporsi_nilai;
+        }
+        //dd($jmlBobot);
+        return view('admin.kelola_komp_nilai.kompNilai')->with(['kompNilai' => $kompNilai, 'listkelas' => $listkelas, 'jmlBobot' => $jmlBobot]);
     }
     public function dataKelas(){
         $role = session("role");
@@ -169,6 +174,7 @@ class halamanController extends Controller
         ->leftJoinSub(
             DB::table('siswas')
                 ->select('id_kelas', DB::raw('COUNT(*) as jumlah'))
+                ->whereIn('status', ['aktif', 'mangkir'])
                 ->groupBy('id_kelas'),
             'jumlah_siswa',
             'jumlah_siswa.id_kelas',
@@ -177,7 +183,7 @@ class halamanController extends Controller
         )
         ->distinct()
         ->get();
-    
+            //dd($kelas);
         // dd($kelas);
         $instruktur = instruktur::select("*")->get();
         return view('admin.kelola_kelas.kelas')->with(['kelas' => $kelas , 'instruktur' => $instruktur, 'listkelas' => $listkelas]);
@@ -236,8 +242,11 @@ class halamanController extends Controller
         if($role != "instruktur"){
             return abort(403);
         }
-
         $getIns = instruktur::where("email_ins",'=',$email)->first();
+        $kelas = kelas::where("id_ins",'=',$getIns->id_ins)->first();
+        if($kelas == false){
+            return back()->with(["error_masuk" => "Instruktur belum terdapat kelas!"]);
+        }
         $mapel = mapel::get();
         $materi = materi::select("mapels.id_mapel as id_mapels", 'materis.*')
         ->from("materis")
@@ -256,6 +265,10 @@ class halamanController extends Controller
         $getKuis = kuis::select("kuis.*",'mapels.nama_mapel')->from("kuis")->join("mapels",'mapels.id_mapel','=','kuis.id_mapel')->get();
         $getMapel = mapel::get();
         $getIns = instruktur::where("email_ins",'=',$email)->first();
+        $kelas = kelas::where("id_ins",'=',$getIns->id_ins)->first();
+        if($kelas == false){
+            return back()->with(["error_masuk" => "Instruktur belum terdapat kelas!"]);
+        }
         return view("instruktur.kuis.kuis")->with(["kuis" => $getKuis,'mapel' => $getMapel, "instruktur" => $getIns]);
     }
 
@@ -271,8 +284,9 @@ class halamanController extends Controller
             ->join("kuis", "soals.id_kuis", "=", "kuis.id_kuis")
             ->leftJoin("jawabans", "soals.id_soal", "=", "jawabans.id_soal")
             ->where("kuis.id_kuis", '=', $id)
+            ->orderBy("soals.id_soal",'ASC')
             ->get();
-
+        //dd($getSoal);
         // Ambil semua id_soal dari $getSoal
         $idSoalList = $getSoal->pluck('id_soal')->toArray();
 
@@ -304,7 +318,9 @@ class halamanController extends Controller
         $getId = instruktur::where("email_ins",'=',$email)->first();
         //dd($getId);
 
-
+        if (Carbon::now()->isWeekend()){
+            return back()->with(['error_masuk' => "Menu daftar hadir ditutup pada akhir pekan!"]);
+        }
         //cek status jadwal
         $getTglSelected = session('tanggal_selected');
         //dd($getTglSelected);
@@ -315,7 +331,6 @@ class halamanController extends Controller
                 ->where("k.id_ins",'=',$getId->id_ins)
                 ->whereDate('j.tanggal_pelaksanaan', $getTglSelected)
                 ->first();
-            //dd(55);
 
         }else{
             $getStatus = jadwal::select("j.*")
@@ -324,9 +339,7 @@ class halamanController extends Controller
             ->where("k.id_ins",'=',$getId->id_ins)
             ->whereDate('j.tanggal_pelaksanaan', Carbon::now()->toDateString())
             ->first();
-            //dd($getStatus);
         }
-
         if($getStatus == false){
             return back()->with(['error_masuk' => "Instruktur belum terdapat kelas"]);
         }
@@ -483,7 +496,14 @@ class halamanController extends Controller
         if($role != "instruktur" && $role != "admin"){
             return abort(403);
         }
+        
         if($role == 'instruktur'){
+            $getIns = instruktur::where("email_ins",'=',$email)->first();
+            //get id kelas yang diajar
+            $kelas = kelas::where("id_ins",'=',$getIns->id_ins)->first();
+            if($kelas == false){
+                return back()->with(["error_masuk" => "Instruktur belum terdapat kelas!"]);
+            }
             $getKuis = kuis::select("kuis.*",'mapels.nama_mapel')->from("kuis")->join("mapels",'mapels.id_mapel','=','kuis.id_mapel')->get();
             $getMapel = mapel::get();
             $getIns = instruktur::where("email_ins",'=',$email)->first();
@@ -500,25 +520,36 @@ class halamanController extends Controller
         $role = session("role");
         $email = session("email");
         
-        if($role != "instruktur" && $role != "admin"){
+        if($role != "instruktur"){
             return abort(403);
         }
         if($role == 'instruktur'){
             //get data kuis2 yang dikerjain siswa sesuai id
+            $getIns = instruktur::where("email_ins",'=',$email)->first();
+
+            $getKelas = kelas::where("id_ins",'=',$getIns->id_ins)->first();
             $getKuis = kuis::select("kuis.*",'mapels.nama_mapel','n.*','siswas.nama')
             ->from("kuis")
             ->join("mapels",'mapels.id_mapel','=','kuis.id_mapel')
             ->join("nilai_kuis as n",'n.id_kuis','=','kuis.id_kuis')
             ->join("siswas",'siswas.id_siswa','=','n.id_siswa')
             ->where('kuis.id_kuis','=',$id)
+            ->where('siswas.id_kelas','=',$getKelas->id_kelas)
             ->get();
-
+            //dd($getKuis);
             $namaKuis = kuis::where("id_kuis", $id)->first();
             //dd($getKuis);
-            $getIns = instruktur::where("email_ins",'=',$email)->first();
 
             return view("instruktur.kuis.listKuis")->with(['judulKuis' => $namaKuis,'kuis' => $getKuis,'instruktur' => $getIns]);
-        }elseif($role == "admin"){
+        }
+    }
+    public function view_kuis_admin($id){
+        $role = session("role");
+        $email = session("email");
+        
+        if($role != "admin"){
+            return abort(403);
+        }
         //get data kuis2 yang dikerjain siswa sesuai id
         $getKuis = kuis::select("kuis.*",'mapels.nama_mapel','n.*','siswas.nama')
         ->from("kuis")
@@ -532,9 +563,7 @@ class halamanController extends Controller
         //dd($getKuis);
         $admin = admin::where("email_adm",'=',$email)->first();
 
-        return view("admin.kuis.listKuis")->with(['judulKuis' => $namaKuis,'kuis' => $getKuis,'admin' => $admin]);
-        }
-
+        return view("admin.kuis.listKuis")->with(['judulKuis' => $namaKuis,'kuis' => $getKuis,'admin' => $admin,'id' => $id]);
 
     }
 
@@ -548,6 +577,9 @@ class halamanController extends Controller
         $getIns = instruktur::where("email_ins",'=',$email)->first();
         //get id kelas yang diajar
         $kelas = kelas::where("id_ins",'=',$getIns->id_ins)->first();
+        if($kelas == false){
+            return back()->with(["error_masuk" => "Instruktur belum terdapat kelas!"]);
+        }
         // get data komp nilai
         $kompNilai = kompNilai::get();
         // get data siswa dari table nilai siswa yang diajar
@@ -690,6 +722,7 @@ class halamanController extends Controller
 
         if($nilai->isEmpty()){
             $komp = kompNilai::get();
+            
             return view('siswa.penilaian.penilaian')->with(['siswa' => $siswa,'nilai' => null, 'komp' => $komp]);
         }else{
             //dd($nilai);

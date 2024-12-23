@@ -34,7 +34,7 @@ class kompNilaiController extends Controller
         }
 
         if($valueProporsi > (100 - $jmlProporsi)){
-            return back()->with(['error_add' => "Bobot Nilai Tidak Memenuhi"]);
+            return back()->with(['error_add' => "Bobot nilai tidak memenuhi"]);
         }
 
         $insertKompNilai = DB::table("komp_nilais")->insert([
@@ -67,7 +67,7 @@ class kompNilaiController extends Controller
             $jmlProporsi = $jmlProporsi + $item->proporsi_nilai;
         }
         if($valueProporsi > (100 - ($jmlProporsi - $cekProporsiById->proporsi_nilai))){
-            return back()->with(['error_add' => "Bobot Nilai Tidak Memenuhi"]);
+            return back()->with(['error_add' => "Bobot nilai tidak memenuhi"]);
         }
 
 

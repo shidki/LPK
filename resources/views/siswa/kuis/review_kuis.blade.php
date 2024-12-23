@@ -119,7 +119,11 @@
                         <div class="row">
                           <div class="col-md-12">
                             <div class="form-group focused">
+                              @if (session('role') == 'siswa')
                               <a href="/view/kuis" class="btn btn-info">Kembali</a>
+                              @elseif (session("role" == "admin"))
+                              <a href="/view/kuis/{{$id}}" class="btn btn-info">Kembali</a>
+                              @endif
                             </div>
                           </div>
                         </div>

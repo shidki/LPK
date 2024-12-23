@@ -84,14 +84,17 @@
                     <div class="tab-content p-4">
                         <div class="tab-pane active show" id="tasks-tab" role="tabpanel">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Kuis  </a>\ <a style="text-decoration: none;" href="/review/kuis">{{$judulKuis->judul_kuis}} </a>\ List Kuis Siswa</h4>
-                                <a href="/download/laporan/kuis/{{$judulKuis->id_kuis}}" class="btn btn-primary" title="Download Laporan" style="align-content: center; width: 90px;height: 40px;;"><i style="font-size: 17px;" class="fa fa-download"></i></a>
+                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Menu  </a>\ <a style="text-decoration: none;" href="/review/kuis">{{$judulKuis->judul_kuis}} </a>\ List Kuis Siswa</h4>
+                                @if (session("role") == "instruktur")
+                                    <a href="/download/laporan/kuis/{{$judulKuis->id_kuis}}" class="btn btn-primary" title="Download Laporan" style="align-content: center; width: 90px;height: 40px;;"><i style="font-size: 17px;" class="fa fa-download"></i></a>
+                                
+                                @endif
                             </div>
                             <div class="row">
                                 <div class="col-xl-12">
                                     <div class="task-list-box" id="landing-task" style="height: 400px; overflow-y: auto;">
                                         @foreach ($kuis as $kuiss )
-                                        <div style="cursor: pointer;" id="task-item" onclick="window.location.href='/review/kuis/{{$kuiss->id_kuis}}/{{$kuiss->id_siswa}}'">
+                                        <div  id="task-item" >
                                             <div class="card task-box rounded-3">
                                                 <div class="card-body">
                                                     <div class="row align-items-center">

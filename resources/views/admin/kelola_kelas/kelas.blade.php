@@ -234,11 +234,11 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center">No</th>
-                                            <th>Kelas</th>
-                                            <th>Jumlah Siswa</th>
-                                            <th>Pengajar</th>
-                                            <th>List Siswa</th>
-                                            <th>Jadwal</th>
+                                            <th>Nama Kelas</th>
+                                            <th>Jumlah Siswa / Jumlah Kuota</th>
+                                            <th>Nama Pengajar</th>
+                                            <th style="width: 50px;">Daftar Siswa</th>
+                                            <th style="width: 50px;">Jadwal</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -259,13 +259,13 @@
                                                 Belum ada pengajar
                                                 @endif
                                             </td>
-                                            <td>
-                                                <a href="/detail/kelas/{{ $kelass->id_kelas }}">
+                                            <td style="text-align: center">
+                                                <a  href="/detail/kelas/{{ $kelass->id_kelas }}">
                                                     <i class="fas fa-search"></i>
                                                 </a>
                                             </td>
-                                            <td>
-                                                <a href="/view/jadwal/{{ $kelass->nama_kelas }}">
+                                            <td style="text-align: center">
+                                                <a  href="/view/jadwal/{{ $kelass->nama_kelas }}">
                                                     <i class="fas fa-search"></i>
                                                 </a>
                                             </td>

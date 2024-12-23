@@ -93,6 +93,7 @@
                                                     <th class="text-center">No</th>
                                                     <th class="text-center">Kategori Nilai</th>
                                                     <th class="text-center">Nilai</th>
+                                                    <th class="text-center">Bobot Nilai</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -110,18 +111,21 @@
                                                             0
                                                             @endif
                                                         </td>
+                                                        <td class="text-center">{{$nilais->proporsi_nilai}}%</td>
                                                     </tr>
                                                 @endforeach
                                                @else
                                                @foreach ($komp as $komps )
                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td class="text-center">{{ $loop->iteration }}</td>
                                                     <td>
                                                         {{$komps->nama_komp_nilai}}
                                                     </td>
-                                                    <td style="text-transform: capitalize">
+                                                    <td style="text-transform: capitalize" class="text-center">
                                                         -
                                                     </td>
+                                                    <td class="text-center">{{$komps->proporsi_nilai}}%</td>
+
                                                 </tr>
                                                @endforeach
                                                @endif

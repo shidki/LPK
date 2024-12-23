@@ -350,7 +350,7 @@
                                     
                                     @foreach ($bidang as $items )
                                     <h4 class="small font-weight-bold">{{$items->nama_bidang}} <span
-                                        class="float-right">{{$items->jumlah_siswa}}</span></h4>
+                                        class="float-right">Jumlah siswa : {{$items->jumlah_siswa}}</span></h4>
                                     <div class="progress mb-4">
                                         <div class="progress-bar bg-danger" role="progressbar" style="width: {{$items->persentase_siswa}}%"
                                             aria-valuenow=" {{$items->persentase_siswa}}" aria-valuemin="0" aria-valuemax="100"></div>

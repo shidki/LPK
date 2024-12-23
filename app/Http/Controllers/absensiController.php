@@ -297,20 +297,6 @@ class absensiController extends Controller
                     'B'  => ['alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER]], // Rata tengah kolom STATUS KEHADIRAN
                 ];
             }
-    
-            public function afterSheet(Worksheet $sheet)
-            {
-                $sheet->getColumnDimension('A')->setWidth(300); // Lebar kolom NAMA SISWA
-                $sheet->getColumnDimension('B')->setWidth(300); // Lebar kolom STATUS KEHADIRAN
-    
-                // Menyesuaikan lebar kolom berdasarkan data terpanjang pada kolom tersebut
-                $sheet->getColumnDimension('A')->setAutoSize(true);
-                $sheet->getColumnDimension('B')->setAutoSize(true);
-    
-                // Jika tetap sempit, coba set ukuran manual berdasarkan panjang teks
-                $sheet->getColumnDimension('A')->setWidth(500); // Atur lebih lebar jika perlu
-                $sheet->getColumnDimension('B')->setWidth(500); // Atur lebih lebar jika perlu
-            }
         }, 'laporan_kehadiran_bulanan_' . $bulan . '_' . $tahun . '.xlsx');
     }
 }

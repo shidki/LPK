@@ -85,13 +85,13 @@
                     <div class="tab-content p-4">
                         <div class="tab-pane active show" id="tasks-tab" role="tabpanel">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Kuis  </a>\ Review Kuis Siswa</h4>
+                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Menu  </a>\ Daftar Kuis</h4>
                             </div>
                             <div class="row">
                                 <div class="col-xl-12">
                                     <div class="task-list-box" id="landing-task">
                                         @foreach ($kuis as $kuiss )
-                                        <div style="cursor: pointer;" id="task-item" onclick="window.location.href='/list/kuis/{{$kuiss->id_kuis}}'">
+                                        <div style="cursor: pointer;" id="task-item" onclick="window.location.href='/list/kuis/admin/{{$kuiss->id_kuis}}'">
                                             <div class="card task-box rounded-3">
                                                 <div class="card-body">
                                                     <div class="row align-items-center">

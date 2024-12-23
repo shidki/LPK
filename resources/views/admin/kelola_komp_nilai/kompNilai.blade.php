@@ -240,7 +240,7 @@
                                         <tr>
                                             <th style="width: 100px;">No</th>
                                             <th>Komponen Nilai</th>
-                                            <th>Proporsi/Bobot Nilai</th>
+                                            <th style="width: 150px;">Bobot Nilai</th>
                                             <th style="width: 100px;" class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -262,8 +262,31 @@
                                             </td>
                                         </tr>
                                        @endforeach
+                                       <tr>
+                                            <td  colspan="2" class="text-center" style="font-weight: bold">
+                                                Total Bobot 
+                                            </td>
+                                            @if ($jmlBobot == 100)
+                                            <td colspan="2"  class="text-center text-success font-bold">
+                                                {{$jmlBobot}}%
+                                            </td>
+                                            @else
+                                            <td  colspan="2"  class="text-center text-danger font-bold">
+                                                {{$jmlBobot}}%
+                                            </td>
+                                            @endif
+                                            
+                                       </tr>
                                     </tbody>
                                 </table>
+                                <div>
+                                    <h6>Catatan: </h6>
+                                    <ol>
+                                        <li style="margin-top: 10px;">Pastikan total bobot nilai 100%</li>
+                                        <li style="margin-top: 10px;">⁠Jika akan melakukan perubahan bobot nilai menjadi lebih tinggi, ubah bobot nilai lain dengan bobot yang lebih rendah agar pengubahan bobot yang lebih tinggi dapat dilakukan</li>
+                                        <li style="margin-top: 10px;">⁠Hapus komponen nilai tidak dapat dilakukan jika komponen nilai yang tertera sudah memiliki data nilai yang diperoleh siswa</li>
+                                    </ol>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -284,15 +307,15 @@
                             <div class="modal-body">        
                                 <div class="form-group">
                                     <label for="kompNilai">Nama Komponen Nilai<strong class="text-danger font-weight-bold">*</strong></label>
-                                    <input id="kompNilai" type="text" class="form-control" placeholder="Masukkan nama Komponen Nilai" required name="kompNilai">
+                                    <input id="kompNilai" type="text" class="form-control" placeholder="Masukkan nama komponen nilai" required name="kompNilai">
                                 </div>
                                 <div id="error_kompNilai_container" style="display: flex; justify-content: space-between;margin-top: 10px;">
                                     <span id="error_kompNilai" class="text-danger mt-1" style="text-transform: capitalize"></span>
                                     <span id="jml_input_kompNilai_container">
                                     <span id="jml_input_kompNilai">0</span> 
-                                    / 25</span>
+                                    / 50</span>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" style="margin-top: 10px;">
                                     <label for="proporsi">Proporsi  Nilai ( <span id="valueRange" style="font-weight: bold">0</span> % )<strong class="text-danger font-weight-bold">*</strong></label>
                                     <input type="range" class="form-range" id="proporsi" name="proporsi" value="0" min="0" max="100" oninput="updateValue(this.value)">  
                                 </div>
@@ -318,13 +341,13 @@
                                 <input type="hidden" name="kompNilais" id="kompNilais">      
                                 <div class="form-group">
                                     <label for="kompNilaiEdit">Nama Komponen Nilai<strong class="text-danger font-weight-bold">*</strong></label>
-                                    <input id="kompNilaiEdit" type="text" class="form-control" placeholder="Masukkan nama Komponen Nilai" required name="kompNilai">
+                                    <input id="kompNilaiEdit" type="text" class="form-control" placeholder="Masukkan nama komponen nilai" required name="kompNilai">
                                 </div>
                                 <div id="error_kompNilai_containerEdit" style="display: flex; justify-content: space-between;margin-top: 10px;">
                                     <span id="error_kompNilaiEdit" class="text-danger mt-1" style="text-transform: capitalize"></span>
                                     <span id="jml_input_kompNilai_containerEdit">
                                     <span id="jml_input_kompNilaiEdit">0</span> 
-                                    / 25</span>
+                                    / 50</span>
                                 </div>
                                 <div class="form-group">
                                     <label for="proporsiEdit">Proporsi  Nilai ( <span id="valueRange2" style="font-weight: bold">0</span> % )<strong class="text-danger font-weight-bold">*</strong></label>
@@ -375,19 +398,21 @@
                 function updateCharacterCount() {
                     var length = inputkompNilai.value.length;
                     jmlInputString.textContent = length; // Memperbarui jumlah karakter yang ditampilkan
-            
-                    if (length > 25) {
+
+                    if (length > 50) {
                         jmlInputString_container.style.color = "red";
-                        inputkompNilai.value = inputkompNilai.value.substring(0, 25); // Memotong nilai input jika lebih dari 25 karakter
-                        errorkompNilai.textContent = "Maksimal 25 huruf"; // Menampilkan pesan error
-                    } else if (length >  25) {
+                        inputkompNilai.value = inputkompNilai.value.substring(0, 50); // Memotong nilai input jika lebih dari 50 karakter
+                        jmlInputString.textContent = 50; // Memperbarui jumlah karakter ke 50 setelah pemotongan
+                        errorkompNilai.textContent = "Maksimal 50 huruf"; // Menampilkan pesan error
+                    } else if (length == 50) {
                         jmlInputString_container.style.color = "red";
-                        errorkompNilai.textContent = "Maksimal 25 huruf";
+                        errorkompNilai.textContent = "Maksimal 50 huruf";
                     } else {
                         jmlInputString_container.style.color = "black";
-                        errorkompNilai.textContent = ""; // Mengosongkan pesan error jika kurang dari 25 karakter
+                        errorkompNilai.textContent = ""; // Mengosongkan pesan error jika kurang dari 50 karakter
                     }
                 }
+
             
                 // Menambahkan event listener untuk merespons setiap kali ada input
                 inputkompNilai.addEventListener('input', updateCharacterCount);
@@ -405,16 +430,16 @@
                     var length = inputkompNilai.value.length;
                     jmlInputString.textContent = length; // Memperbarui jumlah karakter yang ditampilkan
             
-                    if (length > 25) {
+                    if (length > 50) {
                         jmlInputString_container.style.color = "red";
-                        inputkompNilai.value = inputkompNilai.value.substring(0, 25); // Memotong nilai input jika lebih dari 25 karakter
-                        errorkompNilai.textContent = "Maksimal 25 huruf"; // Menampilkan pesan error
-                    } else if (length >  25) {
+                        inputkompNilai.value = inputkompNilai.value.substring(0, 50); // Memotong nilai input jika lebih dari 50 karakter
+                        errorkompNilai.textContent = "Maksimal 50 huruf"; // Menampilkan pesan error
+                    } else if (length ==  50) {
                         jmlInputString_container.style.color = "red";
-                        errorkompNilai.textContent = "Maksimal 25 huruf";
+                        errorkompNilai.textContent = "Maksimal 50 huruf";
                     } else {
                         jmlInputString_container.style.color = "black";
-                        errorkompNilai.textContent = ""; // Mengosongkan pesan error jika kurang dari 25 karakter
+                        errorkompNilai.textContent = ""; // Mengosongkan pesan error jika kurang dari 50 karakter
                     }
                 }
             
@@ -437,7 +462,7 @@
                 var kompNilais = modalInstruktur.querySelector('#kompNilais');
                 kompNilais.value = parsedDataId.kompNilais;
 
-                updateCounter(kompNilai, 'jml_input_kompNilaiEdit',25);
+                updateCounter(kompNilai, 'jml_input_kompNilaiEdit',50);
 
             });
             function updateCounter(inputElement, counterId, maxLength) {
@@ -449,7 +474,7 @@
             // Event listener for real-time input counting
             document.addEventListener('DOMContentLoaded', function () {
                 const fields = [
-                    { id: 'kompNilaiEdit', max: 25, counterId: 'jml_input_kompNilaiEdit' },
+                    { id: 'kompNilaiEdit', max: 50, counterId: 'jml_input_kompNilaiEdit' },
                 ];
 
                 fields.forEach(field => {
@@ -465,7 +490,7 @@
                         counter.textContent = length;
                         
                         // Optional: Change counter color if it exceeds max length
-                        if (length > field.max) {
+                        if (length >= field.max) {
                             counter.style.color = 'red';
                         } else {
                             counter.style.color = 'black';
@@ -480,8 +505,8 @@
                 @if (session('error_add'))
                 <script>
                       Swal.fire({
-                          title: "Gagal Menambah Komponen Nilai",
-                          text: "{{ session('error_add') }}", // Menggunakan blade syntax untuk menampilkan pesan
+                          title: "Gagal menambah komponen nilai",
+                          html: "Bobot nilai tidak memenuhi<br>Pastikan total bobot nilai 100%!",
                           icon: "error",
                           customClass: {
                             popup: 'swal-text-capitalize' // Tambahkan class custom
@@ -494,6 +519,7 @@
                 <script>
                       Swal.fire({
                           title: "{{ session('sukses_add') }}",
+                          text: "Pastikan total bobot nilai 100%!",
                           icon: "success",
                           customClass: {
                             popup: 'swal-text-capitalize' // Tambahkan class custom
@@ -505,7 +531,7 @@
                 @if (session('error_delete'))
                 <script>
                       Swal.fire({
-                          title: "Gagal Menghapus Komponen Nilai",
+                          title: "Gagal menghapus komponen nilai",
                           text: "{{ session('error_delete') }}", // Menggunakan blade syntax untuk menampilkan pesan
                           icon: "error",
                           customClass: {
@@ -519,6 +545,7 @@
                 <script>
                       Swal.fire({
                           title: "{{ session('sukses_delete') }}",
+                          text: "Pastikan total bobot nilai 100%!",
                           icon: "success",
                           customClass: {
                             popup: 'swal-text-capitalize' // Tambahkan class custom
@@ -530,8 +557,8 @@
                 @if (session('error_edit'))
                 <script>
                       Swal.fire({
-                          title: "Gagal Menambah Komponen Nilai",
-                          text: "{{ session('error_edit') }}", // Menggunakan blade syntax untuk menampilkan pesan
+                          title: "Gagal mengubah komponen nilai",
+                          html: "Bobot nilai tidak memenuhi<br>Pastikan total bobot nilai 100%!",
                           icon: "error",
                           customClass: {
                             popup: 'swal-text-capitalize' // Tambahkan class custom
@@ -544,6 +571,7 @@
                 <script>
                       Swal.fire({
                           title: "{{ session('sukses_edit') }}",
+                          text: "Pastikan total bobot nilai 100%!",
                           icon: "success",
                           customClass: {
                             popup: 'swal-text-capitalize' // Tambahkan class custom

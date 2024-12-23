@@ -82,7 +82,7 @@
                     <div class="tab-content p-4">
                         <div class="tab-pane active show" id="tasks-tab" role="tabpanel">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Kuis  </a>\ Kelola Kuis</h4>
+                                <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Menu  </a>\ Kelola Kuis</h4>
                                 <button data-bs-toggle="modal"  data-bs-target="#staticBackdrop" type="submit" class="btn btn-primary" style="padding: 0 30px;height: 40px;"><i class="fa fa-plus"></i></button>
                             </div>
                             <div class="row">
@@ -97,9 +97,9 @@
                                                             <div class="checklist form-check font-size-15" >
                                                                 {{--<input type="checkbox" class="star-checkbox" id="starCheck{{ $kuiss->id_kuis }}">
                                                                 <label for="starCheck{{ $kuiss->id_kuis }}" class="star-label">♥</label>--}}
-                                                                <label class="form-check-label ms-1 task-title" for="customCheck1"><b>{{ $kuiss->judul_kuis }}</b></label>
+                                                                <label class="form-check-label ms-1 task-title" for="customCheck1">Kuis: <b>{{ $kuiss->judul_kuis }}</b></label>
 																<hr>
-																<div class="form-check-label ms-1 task-title" style="font-size: 15px;">Bab : {{ $kuiss->nama_mapel}}</div>
+																<div class="form-check-label ms-1 task-title" style="font-size: 15px;">Bab: {{ $kuiss->nama_mapel}}</div>
                                                             </div>
                                                         </div>
                                                         <!-- end col -->
@@ -273,7 +273,7 @@
                     </div>
                     <div class="modal-footer" style="text-align: center">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-                        <button type="submit" class="btn btn-primary">Tambah</button>
+                        <button type="submit" class="btn btn-primary">Ubah</button>
                     </div>
                 </form>
             </div>

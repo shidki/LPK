@@ -41,14 +41,24 @@ class jadwalController extends Controller
         if($cekStatus->status == "mulai" || $cekStatus->status == "selesai"){
             return back()->with(["error_edit" => "Jadwal telah dimulai atau telah selesai!"]);
         }
-
-        $editStatus = DB::table("jadwals")->where("id_jadwal",'=',$id)->update([
-            "status" => "libur"
-        ]);
-        if($editStatus == true){
-            return back()->with(["sukses_edit" => "Jadwal berhasil diubah!"]);
-        }else{
-            return back()->with(["error_edit" => "Jadwal gagal diubah!"]);
+        if($cekStatus->status == "libur"){
+            $editStatus = DB::table("jadwals")->where("id_jadwal",'=',$id)->update([
+                "status" => "aktif"
+            ]);
+            if($editStatus == true){
+                return back()->with(["sukses_edit" => "Jadwal berhasil diubah!"]);
+            }else{
+                return back()->with(["error_edit" => "Jadwal gagal diubah!"]);
+            }
+        }elseif($cekStatus->status == "aktif"){
+            $editStatus = DB::table("jadwals")->where("id_jadwal",'=',$id)->update([
+                "status" => "libur"
+            ]);
+            if($editStatus == true){
+                return back()->with(["sukses_edit" => "Jadwal berhasil diubah!"]);
+            }else{
+                return back()->with(["error_edit" => "Jadwal gagal diubah!"]);
+            }
         }
     }
     public function tambahJadwal($id)
@@ -67,6 +77,17 @@ class jadwalController extends Controller
             $lastDate2 = Carbon::parse($lastScheduleDate->tanggal_pelaksanaan);
             // Dapatkan tanggal satu bulan sebelum tanggal terakhir jadwal kelas
             $oneMonthBeforeLastDate = $lastDate->subMonth();
+
+            
+            //$lastDate3 = $lastDate2->copy()->addDay();
+
+            //// cek apakah jadwal sudah ditambah atau belum
+            //$cekJadwal = jadwal::where("id_kelas",'=',$id)->where("tanggal_pelaksanaan",'=',$lastDate3)->first();
+            //if($cekJadwal == true){
+            //    return back()->with(['error_add' => "Jadwal telah tersedia!"]);
+            //}
+
+
             //dd($lastDate2);      
             // Periksa apakah tanggal sekarang berada dalam rentang satu bulan sebelum tanggal terakhir hingga tanggal terakhir
             if ($currentDate->greaterThanOrEqualTo($oneMonthBeforeLastDate) && $currentDate->lessThanOrEqualTo($lastDate)) {
@@ -76,6 +97,8 @@ class jadwalController extends Controller
                 
                 $endDate = $currentDate->copy()->addYear();  // Tambahkan satu tahun dari tanggal terakhir
                 
+
+
                 $data = [];
                 
                 while ($currentDate->lte($endDate)) {

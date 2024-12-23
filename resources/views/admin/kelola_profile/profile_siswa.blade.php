@@ -290,7 +290,7 @@
                                             <td>{{ $siswas->alamat }}</td>
                                             <td>{{ $siswas->nama_kelas }}</td>
                                             <td>{{ $siswas->nama_bidang }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($siswas->tgl_masuk )->translatedFormat('j F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($siswas->tgl_masuk)->locale('id')->isoFormat('D MMM YYYY') }}</td>
                                             <td >
                                                 @if ($siswas->tgl_lulus != null)
                                                     {{ \Carbon\Carbon::parse($siswas->tgl_lulus)->translatedFormat('j F Y') }}
@@ -303,7 +303,7 @@
                                             <td style="text-transform: capitalize">{{ $siswas->status }}</td>
                                             <td class="text-center" style="display: flex; justify-content: center; ">
                                                 @if ($siswas->status !== "lulus")
-                                                <button data-id="{{ json_encode(['id' => $siswas->id_siswa,'nama' => $siswas->nama,'email' => $siswas->email, 'no_hp' => $siswas->no_hp,'alamat' => $siswas->alamat, 'id_kelas' => $siswas->id_kelas, 'id_bidang' => $siswas->id_bidang, 'status' => $siswas->status]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
+                                                <button data-id="{{ json_encode(['id' => $siswas->id_siswa,'nama' => $siswas->nama,'email' => $siswas->email, 'no_hp' => $siswas->no_hp,'alamat' => $siswas->alamat, 'id_kelas' => $siswas->id_kelas, 'id_bidang' => $siswas->id_bidang, 'tglMasuk' => $siswas->tgl_masuk, 'status' => $siswas->status]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
                                                 <a href="/delete/siswa/{{ $siswas->id_siswa }}" class="btn btn-danger btn-circle btn-sm" style="margin-left: 10px">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
@@ -498,6 +498,10 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label for="date">Tanggal Masuk<strong class="text-danger font-weight-bold">*</strong></label>
+                            <input id="tglMasukEdit" type="date" class="form-control" placeholder="Tanggal Masuk Siswa" required name="tglMasukEdit">
+                        </div>
+                        <div class="form-group">
                             <label for="status">Status<strong class="text-danger font-weight-bold">*</strong></label>
                             <select required name="status_siswaEdit" class="form-select form-select-sm" id="status_siswaEdit" onchange="Lulus()">
                                 <option value="">Status</option>
@@ -641,6 +645,8 @@
                 bidang_siswaEdit.value = parsedDataId.id_bidang;
                 var kelas_siswaEdit = modalSiswa.querySelector('#kelas_siswaEdit');
                 kelas_siswaEdit.value = parsedDataId.id_kelas;
+                var tglMasuk = modalSiswa.querySelector('#tglMasukEdit');
+                tglMasuk.value = parsedDataId.tglMasuk;
                 var status_siswaEdit = modalSiswa.querySelector('#status_siswaEdit');
                 status_siswaEdit.value = parsedDataId.status;
 

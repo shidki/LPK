@@ -299,7 +299,7 @@
                                     <input id="password" type="password" class="form-control" placeholder="Masukkan Kata Sandi" required name="password">
                                 </div>
                                 <div class="form-group">
-                                    <label for="konfirmasiPw">Konfirmasi Passowrd<strong class="text-danger font-weight-bold">*</strong></label>
+                                    <label for="konfirmasiPw">Konfirmasi Password<strong class="text-danger font-weight-bold">*</strong></label>
                                     <input id="konfirmasiPw" name="konfirmasiPw" type="password" class="form-control" placeholder="Masukkan Ulang Kata Sandi" required>
                                 </div>
                             </div>
@@ -337,7 +337,7 @@
                                     <input id="password" type="password" class="form-control" placeholder="Masukkan Kata Sandi Baru" required name="password">
                                 </div>
                                 <div class="form-group">
-                                    <label for="konfirmasiPw">Konfirmasi Passowrd<strong class="text-danger font-weight-bold">*</strong></label>
+                                    <label for="konfirmasiPw">Konfirmasi Password<strong class="text-danger font-weight-bold">*</strong></label>
                                     <input id="konfirmasiPw" name="konfirmasiPw" type="password" class="form-control" placeholder="Masukkan Ulang Kata Sandi Baru" required>
                                 </div>
                             </div>

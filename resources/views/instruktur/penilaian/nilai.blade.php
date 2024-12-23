@@ -86,28 +86,37 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800"><a href="/kuis">Penilaian</a> \ Kelola NIlai</h1>
+                    <h1 class="h3 mb-2 text-gray-800"><a href="/kuis">Menu</a> \ Kelola NIlai</h1>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Data Siswa</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="" width="100%" cellspacing="0">
+                                <h6><b>Bobot penilaian</b></h6>
+                                @foreach ($komponen_nilai as $item )
+                                <div style="display: flex;justify-center: space-between; width: 35%;">
+                                    <span style="width: 50%">{{$item->nama_komp_nilai}}</span>
+                                    <span style="width: 5%">:</span>
+                                    <span style="width: 30%"> {{$item->proporsi_nilai}}%</span>
+                                </div>
+                                @endforeach
+                                <table class="table table-bordered" id="" width="100%" cellspacing="0" style="margin-top: 20px;">
                                     <thead>
                                         <tr>
                                             <th style="text-align: center; width: 100px">No</th>
                                             <th style="text-align: center;">Nama Siswa</th>
                                             @foreach ($komponen_nilai as $item )
-                                                <th style="text-align: center; width: 150px;text-transform:capitalize;">{{ $item->nama_komp_nilai}}</th>
+                                                <th style="text-align: center; width: 180px;text-transform:capitalize;">{{ $item->nama_komp_nilai}}</th>
                                             @endforeach
+                                            <th class="text-center">Nilai Keseluruhan</th>
                                             <th class="text-center" style="text-align: center; width: 80px">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($datasiswa as $siswa)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td class="text-center">{{ $loop->iteration }}</td>
                                                 <td>{{ $siswa->nama }}</td>
                                                 @foreach ($komponen_nilai as $komponen)
                                                     @php
@@ -118,6 +127,24 @@
                                                     @endphp
                                                     <td style="text-align: center">{{ $nilai }}</td>
                                                 @endforeach
+                                                @php
+                                                 $totalNilai = 0;
+                                                // Ambil semua nilai berdasarkan siswa
+                                                $nilaiBobot = $nilaiSiswa->where('id_siswa', $siswa->id_siswa);
+
+                                                
+                                                foreach ($nilaiBobot as $item) {
+                                                    $bobot = 0;
+                                                    foreach ($komponen_nilai as $items) {
+                                                        if($items->id_komp_nilai == $item->id_komp_nilai){
+                                                            $bobot = $items->proporsi_nilai / 100;
+                                                        }
+                                                    }
+                                                    
+                                                    $totalNilai += $item->nilai*$bobot ?? 0; // Tambahkan nilai atau 0 jika null
+                                                }
+                                                @endphp
+                                                <td style="text-align: center">{{ $totalNilai }}</td>
                                                 <td class="text-center">
                                                     <button
                                                     data-id="{{ json_encode([

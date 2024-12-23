@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\bidang_minat;
+use App\Models\siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -33,6 +34,13 @@ class BidangController extends Controller
     public function delete_bidang($id){
         if(session("role") != "admin"){
             return abort(403);
+        }
+
+        // cek bidang udah dipake apa belom
+        $cekBidang = siswa::where('id_bidang','=',$id)->first();
+        if($cekBidang == true){
+            return back()->with(['error_delete' => "Bidang telah digunakan!"]);
+
         }
         $deleteBidang = DB::table('bidang_minats')->where("id_bidang",'=',$id)->delete();
         if($deleteBidang == true){

@@ -109,13 +109,13 @@
                                     </button>
                                     <thead>
                                         <tr>
-                                            <th style="text-align: center;">No</th>
+                                            <th style="text-align: center;width:20px;">No</th>
                                             <th style="text-align: center;">Pertanyaan</th>
-                                            <th style="text-align: center; width: 80px;">Jenis Soal</th>
-                                            <th style="text-align: center; width: 80px;">Opsi</th>
+                                            <th style="text-align: center; width: 50px;">Jenis Soal</th>
+                                            <th style="text-align: center; width: 20px;">Opsi</th>
                                             <th style="text-align: center; width: 200px;">Jawaban Benar</th>
-                                            <th style="text-align: center; width: 200px;">Bab</th>
-                                            <th class="text-center" style="text-align: center; width: 100px">Aksi</th>
+                                            <th style="text-align: center; width: 150px;">Bab</th>
+                                            <th class="text-center" style="text-align: center; width: 30px">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -132,7 +132,13 @@
                                                     @endif
                                                 </div>
                                             </td>
-											<td>{{ $soals->type_soal }}</td>											
+											<td style="text-transform: capitalize">
+                                            @if ($soals->type_soal == "pilgan")
+                                                Pilihan Ganda
+                                            @else
+                                            {{ $soals->type_soal }}
+                                            @endif    
+                                            </td>											
 											<td>
                                                 @if ($soals->type_soal == "pilgan")
 
@@ -667,7 +673,7 @@
         @if (session('error_add'))
         <script>
               Swal.fire({
-                  title: "Gagal Menambah Siswa",
+                  title: "Gagal Menambah Kuis",
                   text: "{{ session('error_add') }}", // Menggunakan blade syntax untuk menampilkan pesan
                   icon: "error"
               });
@@ -688,7 +694,7 @@
         @if (session('error_edit'))
         <script>
               Swal.fire({
-                  title: "Gagal Mengubah Siswa",
+                  title: "Gagal Mengubah Kuis",
                   text: "{{ session('error_edit') }}", // Menggunakan blade syntax untuk menampilkan pesan
                   icon: "error"
               });
@@ -707,7 +713,7 @@
         @if (session('error_delete'))
         <script>
               Swal.fire({
-                  title: "Gagal Menghapus Siswa",
+                  title: "Gagal Menghapus Kuis",
                   text: "{{ session('error_delete') }}", // Menggunakan blade syntax untuk menampilkan pesan
                   icon: "error"
               });

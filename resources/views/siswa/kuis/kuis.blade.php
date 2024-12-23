@@ -96,7 +96,7 @@
                                                             <div class="checklist form-check font-size-15" >
                                                                 {{--<input type="checkbox" class="star-checkbox" id="starCheck{{ $kuiss->id_mapel }}">
                                                                 <label for="starCheck{{ $kuiss->id_mapel }}" class="star-label">♥</label>--}}
-                                                                <label class="form-check-label ms-1 task-title" for="customCheck1">{{ $kuiss->judul_kuis }}</label>
+                                                                <label class="form-check-label ms-1 task-title" for="customCheck1">Kuis: <b>{{ $kuiss->judul_kuis }}</b></label>
                                                             </div>
                                                         </div>
                                                         

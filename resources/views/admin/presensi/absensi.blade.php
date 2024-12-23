@@ -229,7 +229,7 @@
                                     <thead>
                                         <tr>
                                             <th style="text-align: center;width: 50px">No</th>
-                                            <th style="text-align: center;width: 200px">Siswa</th>
+                                            <th style="text-align: center;width: 200px">Nama Siswa</th>
                                             <th class="text-center" style="text-align: center;width: 50px">Status</th>
                                         </tr>
                                     </thead>

@@ -94,7 +94,7 @@
                                                         <div class="row align-items-center">
                                                             <div class="col-xl-6 col-sm-5">
                                                                 <div class="checklist form-check font-size-15" >
-                                                                    <label class="form-check-label ms-1 task-title" for="customCheck1">{{ $mapels->nama_mapel }}</label>
+                                                                    <label class="form-check-label ms-1 task-title" for="customCheck1"><b>Bab: </b>{{ $mapels->nama_mapel }}</label>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -245,7 +245,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-{{ $mapels->id_mapel }}Label" data-bs-toggle="modal"  data-bs-target="#modal-{{ $mapels->id_mapel }}">Materi Bab {{ $mapels->nama_mapel}}</h5>
+                    <h5 class="modal-title" id="modal-{{ $mapels->id_mapel }}Label" data-bs-toggle="modal"  data-bs-target="#modal-{{ $mapels->id_mapel }}">Materi dari bab {{ $mapels->nama_mapel}}</h5>
                 </div>
                 <div class="modal-body">
                     @foreach ($materi as $materis )
@@ -255,7 +255,7 @@
                             href="{{asset($materis->dok_materi)}}" 
                             {{--onclick="openDocumentAndRedirect('{{ route('ubah_status_materi', ['id_mapel' => $mapels->id_mapel, 'id_materi' => $materis->id_materi]) }}', '{{ asset($materis->dok_materi) }}'); return false;" --}}
                             target="_blank">
-                            {{ $materis->judul_materi }}
+                           <b>Materi:</b> {{ $materis->judul_materi }}
                          </a>
                         </div>
                     @endif
