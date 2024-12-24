@@ -511,14 +511,15 @@
                                 <option value="lulus">Lulus</option>
                             </select>
                             <script>
-                                function Lulus(){
+                                function Lulus() {
                                     var select = document.getElementById("status_siswaEdit").value;
                                     var tglLulus = document.getElementById("tglLulus");
-                                    if(select == "lulus"){
-                                        tglLulus.style.display = "block";
-                                    }else{
-                                        tglLulus.style.display = "none";
-
+                                    if (select === "lulus") {
+                                        tglLulus.style.display = "block"; // Menampilkan elemen
+                                        tglLulus.setAttribute("required", "required"); // Menambahkan atribut "required"
+                                    } else {
+                                        tglLulus.style.display = "none"; // Menyembunyikan elemen
+                                        tglLulus.removeAttribute("required"); // Menghapus atribut "required"
                                     }
                                 }
                             </script>

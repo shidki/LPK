@@ -230,10 +230,12 @@
                                     $startYear = $currentYear - 1; // 3 tahun sebelum tahun sekarang
                                     $endYear = $currentYear;   // 1 tahun setelah tahun sekarang
 
-                                    for ($year = $startYear; $year <= $endYear; $year++) {
-                                        $nextYear = $year + 1;
-                                        echo "<option value='{$year}'>{$year}/{$nextYear}</option>";
-                                    }
+                                    //for ($year = $startYear; $year <= $endYear; $year++) {
+                                    //    $nextYear = $year + 1;
+                                    //    echo "<option value='{$year}'>{$year}/{$nextYear}</option>";
+                                    //}
+                                    $nextYear = $currentYear + 1;
+                                    echo "<option value='{$currentYear}'>{$currentYear}/{$nextYear}</option>";
                                 ?>
                             </select>
                         </div>
@@ -290,12 +292,14 @@
                                                 $startYear = $currentYear - 1; // Mulai dari 1 tahun sebelum tahun sekarang
                                                 $endYear = $currentYear;       // Hingga tahun sekarang
 
-                                                for ($year = $startYear; $year <= $endYear; $year++) {
-                                                    $nextYear = $year + 1;
-                                                    // Bandingkan dengan $mapels->tahun_akademik
-                                                    $isSelected = ($mapels->thn_akademik == "{$year}") ? "selected" : "";
-                                                    echo "<option value='{$year}' {$isSelected}>{$year}/{$nextYear}</option>";
-                                                }
+                                                //for ($year = $startYear; $year <= $endYear; $year++) {
+                                                //    $nextYear = $year + 1;
+                                                //    // Bandingkan dengan $mapels->tahun_akademik
+                                                //    $isSelected = ($mapels->thn_akademik == "{$year}") ? "selected" : "";
+                                                //    echo "<option value='{$year}' {$isSelected}>{$year}/{$nextYear}</option>";
+                                                //}
+                                                $isSelected = ($mapels->thn_akademik == "{$currentYear}") ? "selected" : "";
+                                                echo "<option value='{$currentYear}' {$isSelected}>{$currentYear}/{$nextYear}</option>";
                                         ?>
                                     </select>
                                 </div>
