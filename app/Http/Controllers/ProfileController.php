@@ -150,12 +150,18 @@ class ProfileController extends Controller
         if ($tahunMasuk < 2023 || $tahunMasuk > $currentYear) {
             return back()->with(["error_add" => "Format tahun pada tanggal masuk tidak valid!"]);
         }
+        if($status == 'lulus'){
+            if($tglLulus == null){
+                return back()->with(["error_add" => "Tahun lulus tidak boleh kosong!"]);
+            }
+        }
         if($tglLulus != null){
             $tahunLulus = (int) date('Y', strtotime($tglLulus));
             if ($tglLulus <= $tglMasuk || $tahunLulus > $currentYear) {
                 return back()->with(["error_add" => "Format tahun lulus tidak valid!"]);
             }
         }
+        
 
         if (trim($nama) === '' || trim($email) === ''|| trim($no_hp) === ''|| trim($alamat) === '') {
             return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);

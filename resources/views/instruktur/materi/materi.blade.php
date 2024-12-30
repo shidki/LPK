@@ -80,8 +80,6 @@
 
                 <div class="card">
                     <div class="tab-content p-4">
-
-
                         <div class="tab-pane active show" id="tasks-tab" role="tabpanel">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
                                 <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Menu </a>\ Daftar Bab</h4>
@@ -100,6 +98,11 @@
                                                                 {{--<input type="checkbox" class="star-checkbox" id="starCheck{{ $mapels->id_mapel }}">
                                                                 <label for="starCheck{{ $mapels->id_mapel }}" class="star-label">♥</label>--}}
                                                                 <label class="form-check-label ms-1 task-title" for="customCheck1"><b>Bab:</b> {{ $mapels->nama_mapel }}</label>
+                                                            </div>
+                                                            <div class="checklist form-check font-size-15" >
+                                                                {{--<input type="checkbox" class="star-checkbox" id="starCheck{{ $mapels->id_mapel }}">
+                                                                <label for="starCheck{{ $mapels->id_mapel }}" class="star-label">♥</label>--}}
+                                                                <label class="form-check-label ms-1 task-title" for="customCheck1"><b>Tahun:</b> {{ $mapels->thn_akademik }} / {{ $mapels->thn_akademik + 1 }} </label>
                                                             </div>
                                                         </div>
                                                         <!-- end col -->
@@ -139,8 +142,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
                 <!-- end card -->

@@ -259,7 +259,7 @@
                                             <td>{{ $admins->email_adm }}</td>
                                             <td>{{ $admins->no_hp_adm }}</td>
                                             <td>{{ $admins->alamat_adm }}</td>
-                                            <<td>{{ \Carbon\Carbon::parse($admins->tgl_masuk_adm)->locale('id')->isoFormat('D MMM YYYY') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($admins->tgl_masuk_adm)->locale('id')->isoFormat('D MMM YYYY') }}</td>
 
                                             <td  style="display: flex; flex-direction: row;justify-content: center; align-content: center; border: none;">
                                                 <button data-id="{{ json_encode(['tglMasuk' => $admins->tgl_masuk_adm,'id' => $admins->id_adm,'nama' => $admins->nama_adm,'email' => $admins->email_adm, 'no_hp' => $admins->no_hp_adm,'alamat' => $admins->alamat_adm]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>

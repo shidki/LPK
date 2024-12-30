@@ -456,7 +456,9 @@ class materiController extends Controller
         $cekMateri = materi::where("judul_materi", '=', $nama)
             ->where("id_materi", '!=', $id)
             ->first();
-    
+        if (strlen($nama) > 25){
+            return back()->with(["error_add" => "Judul materi  melebihi 25 karakter"]);
+        }
         if ($cekMateri) {
             return back()->with(['error_edit' => "Judul materi sudah tersedia!"]);
         }
@@ -466,7 +468,6 @@ class materiController extends Controller
             $update = DB::table("materis")->where("id_materi", '=', $id)->update([
                 "judul_materi" => $nama
             ]);
-    
             if ($update) {
                 return back()->with(['sukses_edit' => "Berhasil mengubah materi!"]);
             } else {
@@ -518,12 +519,13 @@ class materiController extends Controller
                 $update = DB::table("materis")->where("id_materi", '=', $id)->update([
                     "dok_materi" => $nama_file_materi_pembelajaran,
                 ]);
-        
-                if ($update) {
-                    return back()->with(['sukses_edit' => "Berhasil mengubah materi!"]);
-                } else {
-                    return back()->with(['error_edit' => "Gagal mengubah materi!"]);
-                }
+                
+                return back()->with(['sukses_edit' => "Berhasil mengubah materi!"]);
+                //if ($update) {
+                //    return back()->with(['sukses_edit' => "Berhasil mengubah materi!"]);
+                //} else {
+                //    return back()->with(['error_edit' => "Gagal mengubah materi!"]);
+                //}
             }
 
         }

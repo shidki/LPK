@@ -440,7 +440,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdrop2Label">Ubah Siswa</h5>
                 </div>
-                <form action="/edit_siswa_admin" method="post">
+                <form action="/edit_siswa_admin" method="post" onsubmit="return validateForm()">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
@@ -516,10 +516,8 @@
                                     var tglLulus = document.getElementById("tglLulus");
                                     if (select === "lulus") {
                                         tglLulus.style.display = "block"; // Menampilkan elemen
-                                        tglLulus.setAttribute("required", "required"); // Menambahkan atribut "required"
                                     } else {
                                         tglLulus.style.display = "none"; // Menyembunyikan elemen
-                                        tglLulus.removeAttribute("required"); // Menghapus atribut "required"
                                     }
                                 }
                             </script>

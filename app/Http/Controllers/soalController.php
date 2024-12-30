@@ -281,7 +281,11 @@ class soalController extends Controller
                 return back()->with(['error_edit' => "Opsi jawaban sudah tersedia!"]);
             }
         }
-
+        $cekKerjain = riwayat_pengerjaan::where("id_soal",'=',$idsoal)->first();
+        if($cekKerjain == true){
+            return back()->with(["error_add" => "Soal telah dikerjakan oleh siswa!"]);
+        }
+        
         $updateOpsi = DB::table("opsi_pgs")->where("id_opsi",'=',$id)->update([
             "opsi" => $Newopsi
         ]);
@@ -318,7 +322,10 @@ class soalController extends Controller
         $updateJawaban = DB::table("jawabans")->where("id_soal",'=',$idSoal)->update([
             "jawaban" => $jawaban
         ]);
-
+        //$cekKerjain = riwayat_pengerjaan::where("id_soal",'=',$idSoal)->first();
+        //if($cekKerjain == true){
+        //    return back()->with(["error_add" => "Soal telah dikerjakan oleh siswa!"]);
+        //}
         if($updateJawaban == true){
             // update nilai 
             // get id siswa sama id kuisnya dlu

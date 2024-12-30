@@ -520,7 +520,7 @@
 
                 updateCounter(NamaInstruktur, 'jml_input_namaEdit', 50);
                 updateCounter(emailInstruktur, 'jml_input_emailEdit', 50);
-                updateCounter(nohpEdit, 'jml_input_nohEditp', 14);
+                updateCounter(nohpEdit, 'jml_input_nohpEdit', 14);
             });
 
             function updateCounter(inputElement, counterId, maxLength) {
@@ -534,7 +534,7 @@
                 const fields = [
                     { id: 'namaEdit', max: 50, counterId: 'jml_input_namaEdit' },
                     { id: 'emailEdit', max: 50, counterId: 'jml_input_emailEdit' },
-                    { id: 'nohpEdit', max: 14, counterId: 'jml_input_nohEditp' }
+                    { id: 'nohpEdit', max: 14, counterId: 'jml_input_nohpEdit' }
                 ];
 
                 fields.forEach(field => {

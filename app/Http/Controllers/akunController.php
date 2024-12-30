@@ -239,15 +239,21 @@ class akunController extends Controller
         }
     }
     public function delete_akun_admin($id){
+        $email = session("email");
         $role = session("role");
         if($role != "admin"){
             return abort(403);
 
         }
         
+        $getEmail = users::where("id_akun",'=',$id)->first();
+        if($getEmail->email == $email){
+            return back()->with(["error_delete" => "Tidak bisa menghapus akun pribadi!"]);
+
+        }
         // mencari admin yang menggunakan email tersebut
         $getIns = admin::select("*")->where("id_akun",'=',$id)->first();
-        // mengupdate id akun pada Ins tersebut
+        // mengupdate id akun pada admin tersebut
         // dd($getIns);
         $updateAkun = DB::table("admins")->where("id_adm",'=',$getIns->id_adm)->update([
             "id_akun" => null

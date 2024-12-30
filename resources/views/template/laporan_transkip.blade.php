@@ -183,7 +183,7 @@
         Madukaran, Kedungwuni Bar., Kec. Kedungwuni, Kabupaten Pekalongan, Jawa Tengah 51173
     </div>
    </div>
-    <header style="margin-bottom: 10px;text-align: center;margin-top: 70px;">
+    <header style="text-align: center;margin-top: 70px;">
         <img style="margin-bottom: 10px;" src="{{ public_path('dashboard/img/logo.png') }}" alt="LPK CIPTA KERJA LOGO" height="120px" width="100px" />
         <h3>Transkrip Nilai</h3>
     </header>
@@ -272,20 +272,23 @@
             <div class="col-1-10 panel">
                 Nilai Keseluruhan
             </div>
-            <div class="col-1-10 panel">
+            <div class="col-1-10 panel" style="text-align: center">
                 {{ number_format($totalNilai, 2) }}
+            </div>
+            <div class="col-1-10 panel">
+
             </div>
         </div>
         @endif
     </section>
 	
-	<div id="TtdContainer" style="width: 100%; margin-top: 30px; display: flex; justify-content: space-between; align-items: flex-start;">
+	<div id="TtdContainer" style="width: 100%;  display: flex; justify-content: space-between; align-items: flex-start;">
 	</div>
 	<div id="kiri" style="float: right;margin-right: 20px;">
 		<div>Kepala LPK Cipta Kerja  DPN Perkasa Jateng,</div>
 		<div style="margin-bottom: 100px;"></div>
 		<hr style="width: 100%; margin-left: auto; margin-right: 0;">
-        <div style="text-align: center">Ir. Muhamad Ridwan Ash'shidqi S.Kom</div>
+        <div style="text-align: center">Ir.Muhamad Hilal Amin</div>
 	</div>
 </body>
 

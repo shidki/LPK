@@ -243,7 +243,7 @@
                                         <select required onchange="selectedTahun()" name="selectTahun" class="form-select" style="margin-bottom: 20px; display: none;" id="tahunSelect">
                                             <option value="">Pilih Tahun</option>
                                         </select>
-                                        <button style="display: none;" id="btn_submit" type="submit" class="btn btn-info">Download</button>
+                                        <button style="display: none;" id="btn_submit" type="submit" class="btn btn-info">Unduh</button>
                                     </form>                     
                                 </table>
                             </div>

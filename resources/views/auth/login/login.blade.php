@@ -33,6 +33,7 @@
             <div>Lupa kata sandi? Klik <a href="/resetSandi" style="text-decoration: none; color: red;">di sini</a></div>
             <input type="submit" value="Masuk" class="btn solid" />
           </form>
+          
           <form action="{{route('daftar')}}" method="post" class="sign-up-form">
             @csrf
             <h2 class="title">DAFTAR</h2>

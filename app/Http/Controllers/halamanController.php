@@ -242,6 +242,7 @@ class halamanController extends Controller
         if($role != "instruktur"){
             return abort(403);
         }
+        
         $getIns = instruktur::where("email_ins",'=',$email)->first();
         $kelas = kelas::where("id_ins",'=',$getIns->id_ins)->first();
         if($kelas == false){

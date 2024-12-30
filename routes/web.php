@@ -20,6 +20,7 @@ Route::get('/',[AuthController::class, 'loginCounter'])->name('loginCounter');
 
 // ============= Auth Route ==============
 Route::post('/confirmLogin',[AuthController::class, 'login'])->name('masuk');
+
 Route::post('/daftar',[AuthController::class, 'register'])->name('daftar');
 Route::get('/logout',[AuthController::class, 'logout'])->name('logout');
 Route::get('/resetSandi',[AuthController::class, 'HalamanResetSandi'])->name('HalamanResetSandi');
