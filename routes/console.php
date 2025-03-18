@@ -88,14 +88,13 @@ Schedule::call(function () {
     }
 })->dailyAt('17:00');
 
-
-//Schedule::call(function () {
-//    // Panggil command generate jadwal di sini
-//    Artisan::call('jadwal:generate');
-//    Log::info('Jadwal generate command telah dijalankan.');
-//})->everyMinute();
 Schedule::call(function () {
-    // Panggil command generate jadwal di sini
+
     Artisan::call('jadwal:generate');
     Log::info('Jadwal generate command telah dijalankan.');
 })->dailyAt('17:00');
+
+Schedule::call(function () {
+    Artisan::call('qr:clear-expired');
+    Log::info('Hapus QR command telah dijalankan.');
+})->everyMinute();

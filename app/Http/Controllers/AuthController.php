@@ -241,7 +241,12 @@ class AuthController extends Controller
         } 
         // cek apakah no hp yang dimasukkan udah ada di database atau belum ( kondisi no hp nya udah dipake siswa lain blom)
 
-        $cekNoHp = DB::table("siswas")->select("*")->where("no_hp",'=',$no_hp)->where("email",'!=',$email)->first();
+        $cekNoHp = DB::table('siswas')->where('no_hp', $no_hp)->where('email','!=', $email)
+        ->union(DB::table('instrukturs')->where('no_hp_ins', $no_hp))
+        ->union(DB::table('admins')->where('no_hp_adm', $no_hp))
+        ->exists();
+
+
         if($cekNoHp == true){
             return back()->with(["error_edit" => "No telepon sudah tersedia!"]);
         }
@@ -249,6 +254,66 @@ class AuthController extends Controller
         $updateProfile = DB::table("siswas")->where("email",'=',$email)->update([
             "no_hp" => $no_hp,
             "alamat" => $alamat,
+        ]);
+        if($updateProfile == true){
+            return back()->with(["sukses_edit" => "Profil berhasil diubah!"]);
+        }else{
+            return back()->with(["error_edit" => "Profil gagal diubah!"]);
+        }
+    }
+    public function edit_profile_ins(Request $request){
+
+        $email = $request->email;
+        $no_hp = $request->no_hp;
+        $alamat = $request->alamat;
+        if (!preg_match('/^(\+?[0-9]{1,3}[0-9]{1,}|[0-9]{1,})$/', $request->no_hp)) {
+            return back()->with(['error_edit' => 'Format nomor telepon tidak valid!']);
+        } 
+        // cek apakah no hp yang dimasukkan udah ada di database atau belum ( kondisi no hp nya udah dipake apa blom)
+
+        $cekNoHp = DB::table('instrukturs')->where('no_hp_ins', $no_hp)->where('email_ins','!=', $email)
+        ->union(DB::table('siswas')->where('no_hp', $no_hp))
+        ->union(DB::table('admins')->where('no_hp_adm', $no_hp))
+        ->exists();
+
+
+        if($cekNoHp == true){
+            return back()->with(["error_edit" => "No telepon sudah tersedia!"]);
+        }
+
+        $updateProfile = DB::table("instrukturs")->where("email_ins",'=',$email)->update([
+            "no_hp_ins" => $no_hp,
+            "alamat_ins" => $alamat,
+        ]);
+        if($updateProfile == true){
+            return back()->with(["sukses_edit" => "Profil berhasil diubah!"]);
+        }else{
+            return back()->with(["error_edit" => "Profil gagal diubah!"]);
+        }
+    }
+    public function edit_profile_adm(Request $request){
+
+        $email = $request->email;
+        $no_hp = $request->no_hp;
+        $alamat = $request->alamat;
+        if (!preg_match('/^(\+?[0-9]{1,3}[0-9]{1,}|[0-9]{1,})$/', $request->no_hp)) {
+            return back()->with(['error_edit' => 'Format nomor telepon tidak valid!']);
+        } 
+        // cek apakah no hp yang dimasukkan udah ada di database atau belum ( kondisi no hp nya udah dipake apa blom)
+
+        $cekNoHp = DB::table('admins')->where('no_hp_adm', $no_hp)->where('email_adm','!=', $email)
+        ->union(DB::table('siswas')->where('no_hp', $no_hp))
+        ->union(DB::table('instrukturs')->where('no_hp_ins', $no_hp))
+        ->exists();
+
+
+        if($cekNoHp == true){
+            return back()->with(["error_edit" => "No telepon sudah tersedia!"]);
+        }
+
+        $updateProfile = DB::table("admins")->where("email_adm",'=',$email)->update([
+            "no_hp_adm" => $no_hp,
+            "alamat_adm" => $alamat,
         ]);
         if($updateProfile == true){
             return back()->with(["sukses_edit" => "Profil berhasil diubah!"]);

@@ -31,8 +31,16 @@ Route::post('/confirmResetPassword', [AuthController::class, 'confirmResetPasswo
 // =========================================================================================================================================================================
 
 // ========== edit profile ========
-Route::post('/edit_siswa', [AuthController::class, 'edit_profile'])->name("edit_profile"); // edit profile oleh siswa
+Route::post('/edit_siswa', [AuthController::class, 'edit_profile'])->name("edit_profile_oleh_siswa"); // edit profile oleh siswa
 Route::get('/edit_siswa', function(){
+    return abort(403);
+});
+Route::post('/edit_ins', [AuthController::class, 'edit_profile_ins'])->name("edit_profile_oleh_ins"); // edit profile oleh ins
+Route::get('/edit_ins', function(){
+    return abort(403);
+});
+Route::post('/edit_adm', [AuthController::class, 'edit_profile_adm'])->name("edit_profile_oleh_adm"); // edit profile oleh adm
+Route::get('/edit_adm', function(){
     return abort(403);
 });
 // ============= dashboard menu di awal ===========
@@ -69,17 +77,18 @@ Route::get('/dataMateri',[halamanController::class, 'dataMateri'])->name('dataMa
 // =========================================================================================================================================================================
 // ====== profile route =====
     // ======== siswa =====
-    Route::get('/edit/profile/{id}',[halamanController::class, 'edit_profile'])->name('edit_profile');
+    Route::get('/edit/profile/siswa/{id}',[halamanController::class, 'edit_profile_siswa'])->name('edit_profile_siswa');
     Route::post('/add/siswa',[ProfileController::class, 'add_siswa'])->name('add_siswa');
     Route::get('/delete/siswa/{id}',[ProfileController::class, 'delete_siswa'])->name('delete_siswa');
     Route::post('/edit_siswa_admin', [ProfileController::class, 'edit_siswa_admin'])->name("edit_siswa_admin"); // edit profile oleh admin
     // ======== instruktur ======
-   
+    Route::get('/edit/profile/ins/{id}',[halamanController::class, 'edit_profile_ins'])->name('edit_profile_ins');
     Route::post('/add/instruktur',[ProfileController::class, 'add_instruktur'])->name('add_instruktur');
     Route::get('/delete/instruktur/{id}',[ProfileController::class, 'delete_instruktur'])->name('delete_instruktur');
     Route::post('/edit/instruktur', [ProfileController::class, 'edit_instruktur'])->name("edit_instruktur");
     
     // ======== admin ===========
+    Route::get('/edit/profile/adm/{id}',[halamanController::class, 'edit_profile_adm'])->name('edit_profile_adm');
     Route::post('/add/admin',[ProfileController::class, 'add_admin'])->name('add_admin');
     Route::get('/delete/admin/{id}',[ProfileController::class, 'delete_admin'])->name('delete_admin');
     Route::post('/edit/admin', [ProfileController::class, 'edit_admin'])->name("edit_admin");
@@ -206,3 +215,9 @@ Route::get('/tambah/jadwal/{id}',[jadwalController::class, 'tambahJadwal'])->nam
 // =============== TRANSKIP NILAI SISWA ===========
 Route::get('/download/transkip/nilai/{id_siswa}', [nilaiController::class, 'downloadTranskip']);
 Route::get('/view/transkip/nilai/{id_siswa}', [nilaiController::class, 'viewTranskip']);
+
+
+// ================ ABSEN QR CODE ==================
+Route::post('/generate/qr-code/absen', [absensiController::class,'generate_absen'])->name('generate_absen');
+Route::get('/scan/absen/qr', [halamanController::class,'halaman_scan'])->name('halaman_scan');
+Route::get('scan/qr-code/absen/{jadwal}', [absensiController::class,'scan_absen'])->name('scan_absen');

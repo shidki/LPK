@@ -39,6 +39,7 @@
             <a href="/logout" class="text-light" style="text-decoration: none;"><span class="name-profile" style="margin-right: 10px;">Keluar</span><i class="fa-solid fa-right-from-bracket"></i></a>
         </div>
     </div>
+    
     <div class="container">
         <div class="row">
             <div class="col-xl-8">
@@ -311,16 +312,38 @@
             });
 
 
+            //function deleteItem(event) {
+            //    event.preventDefault(); // Mencegah pengalihan langsung ke URL
+            //    event.stopPropagation(); // Mencegah event click merambat ke elemen induk
+
+            //    // Tambahkan konfirmasi penghapusan atau lakukan aksi yang diperlukan di sini
+            //    if (confirm("Apakah Anda yakin ingin menghapus item ini?")) {
+            //        window.location.href = event.currentTarget.getAttribute('href');
+            //    }
+            //}
             function deleteItem(event) {
-                event.preventDefault(); // Mencegah pengalihan langsung ke URL
-                event.stopPropagation(); // Mencegah event click merambat ke elemen induk
+                event.preventDefault(); // Mencegah navigasi default
+                event.stopImmediatePropagation(); // Menghentikan propagasi event ke elemen induk
 
-                // Tambahkan konfirmasi penghapusan atau lakukan aksi yang diperlukan di sini
-                if (confirm("Apakah Anda yakin ingin menghapus item ini?")) {
-                    window.location.href = event.currentTarget.getAttribute('href');
-                }
+                // Ambil URL dari elemen yang diklik
+                const url = event.currentTarget.getAttribute("href");
+
+                // Tampilkan SweetAlert
+                Swal.fire({
+                    title: "Anda yakin menghapus kuis ini?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Hapus",
+                    cancelButtonText: "Batal",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Jika user mengonfirmasi, arahkan ke URL
+                        window.location.href = url;
+                    }
+                });
             }
-
 
 			var modalInstruktur = document.getElementById('staticBackdrop2');
             modalInstruktur.addEventListener('show.bs.modal', function (event) {
@@ -379,7 +402,7 @@
     @if (session('error_add'))
     <script>
           Swal.fire({
-              title: "Gagal Menambah Kuis",
+              title: "Gagal",
               text: "{{ session('error_add') }}", // Menggunakan blade syntax untuk menampilkan pesan
               icon: "error"
           });
@@ -398,7 +421,7 @@
     @if (session('error_delete'))
     <script>
           Swal.fire({
-              title: "Gagal Menghapus Kuis",
+              title: "Gagal",
               text: "{{ session('error_delete') }}", // Menggunakan blade syntax untuk menampilkan pesan
               icon: "error"
           });
@@ -417,7 +440,7 @@
     @if (session('error_edit'))
     <script>
           Swal.fire({
-              title: "Gagal Menambah Kuis",
+              title: "Gagal",
               text: "{{ session('error_edit') }}", // Menggunakan blade syntax untuk menampilkan pesan
               icon: "error"
           });

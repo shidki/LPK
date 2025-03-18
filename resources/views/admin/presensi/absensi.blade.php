@@ -235,10 +235,11 @@
                                     </thead>
                                     <tbody>
                                         @if ($siswa !== null)
+                                            @php $no = 1; @endphp 
                                             @foreach ($siswa as $siswas )
                                             @if ($siswas->status !== "lulus")
                                             <tr>
-                                                <td style="text-align: center">{{ $loop->iteration }}</td>
+                                                <td style="text-align: center">{{ $no }}</td>
                                                 <td style="text-align: center">{{ $siswas->nama }}</td>
                                                 <td style="text-align: center">
                                                 @php
@@ -278,6 +279,7 @@
                                                     </select>												
                                                 </td>
                                             </tr>
+                                            @php $no++; @endphp
                                             @endif
                                             @endforeach
                                         @endif

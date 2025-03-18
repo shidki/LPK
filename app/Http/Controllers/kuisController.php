@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\instruktur;
 use App\Models\kelas;
 use App\Models\kuis;
+use App\Models\log_kuis;
 use App\Models\mapel;
 use App\Models\nilai_kuis;
 use App\Models\opsi_pg;
@@ -59,10 +60,16 @@ class kuisController extends Controller
             return abort(403);
         }
         // klo kuisnya udah ada yang ngerjain brarti gabole dihapus
+        $cekKuis2 = log_kuis::where("id_kuis",'=',$id)->first();
+        if($cekKuis2 == true){
+            return back()->with(["error_delete" => "Kuis Telah Dikerjakan Siswa"]);
+        }
+
         $cekKuis = nilai_kuis::where("id_kuis",'=',$id)->first();
         if($cekKuis == true){
             return back()->with(["error_delete" => "Kuis Telah Dikerjakan Siswa"]);
         }
+
         // get soal yang terhubung dengan kuis
         $getSoal = soal::where("id_kuis",'=',$id)->get();
 
@@ -105,6 +112,10 @@ class kuisController extends Controller
         $mapel = $request->MapelKuisEdit;
         //dd($judul);
         // cek soal udah dikerjain apa belom
+        $cekKuis2 = log_kuis::where("id_kuis",'=',$id)->first();
+        if($cekKuis2 == true){
+            return back()->with(["error_delete" => "Kuis Telah Dikerjakan Siswa"]);
+        }
         $cekKerjain = nilai_kuis::where("id_kuis",'=',$id)->first();
         if($cekKerjain == true){
             return back()->with(["error_add" => "Kuis telah dikerjakan oleh siswa!"]);

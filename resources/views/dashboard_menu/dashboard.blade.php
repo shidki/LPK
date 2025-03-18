@@ -390,7 +390,7 @@
                                             <tr>
                                                 <th scope="row">Aksi</th>
                                                 <td>
-                                                    <a href="/edit/profile/{{ $siswa->id_siswa}}" class="btn btn-primary btn-icon-split btn-sm">
+                                                    <a href="/edit/profile/siswa/{{ $siswa->id_siswa}}" class="btn btn-primary btn-icon-split btn-sm">
                                                         <span class="icon text-white-50" style="margin-right: 10px;">
                                                             <i class="fas fa-pen"></i>
                                                         </span>
@@ -415,6 +415,17 @@
                                             <th scope="row">Tanggal Masuk</th>
                                             <td>{{ \Carbon\Carbon::parse($admin->tgl_masuk_adm)->translatedFormat('j F Y') }}</td>
                                         </tr>
+                                        <tr>
+                                            <th scope="row">Aksi</th>
+                                            <td>
+                                                <a href="/edit/profile/adm/{{ $admin->id_adm}}" class="btn btn-primary btn-icon-split btn-sm">
+                                                    <span class="icon text-white-50" style="margin-right: 10px;">
+                                                        <i class="fas fa-pen"></i>
+                                                    </span>
+                                                    <span class="text" style="font-weight: bold">Ubah Profil</span>
+                                                </a>
+                                            </td>
+                                        </tr>
                                         @elseif (session("role") == "instruktur")
                                         <tr>
                                             <th scope="row">Nama</th>
@@ -431,6 +442,17 @@
                                         <tr>
                                             <th scope="row">Tanggal Masuk</th>
                                             <td>{{ \Carbon\Carbon::parse($instruktur->tgl_masuk_ins)->translatedFormat('j F Y') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Aksi</th>
+                                            <td>
+                                                <a href="/edit/profile/ins/{{ $instruktur->id_ins}}" class="btn btn-primary btn-icon-split btn-sm">
+                                                    <span class="icon text-white-50" style="margin-right: 10px;">
+                                                        <i class="fas fa-pen"></i>
+                                                    </span>
+                                                    <span class="text" style="font-weight: bold">Ubah Profil</span>
+                                                </a>
+                                            </td>
                                         </tr>
                                         @endif
                                     </tbody>

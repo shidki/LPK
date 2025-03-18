@@ -339,7 +339,7 @@ class ProfileController extends Controller
         // ==== menentukan id siswa ====
         //$cekCountIns = instruktur::count();
 
-        $lastInsId = instruktur::select(DB::raw('CAST(SUBSTRING(id_ins, 6) AS UNSIGNED) AS angka'))
+        $lastInsId = instruktur::select(DB::raw('CAST(SUBSTRING(id_ins, 4) AS UNSIGNED) AS angka'))
             ->orderBy('angka', 'desc')
             ->first();
 
@@ -564,7 +564,7 @@ class ProfileController extends Controller
         
 
 
-        
+
         // query dibawah adlah digunakan untuk menyimpan data email sebelumnya ( untuk update data akun ketika email yang dimasukkan adalah email baru)
         
         // dd($cekEmail);

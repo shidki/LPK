@@ -26,7 +26,14 @@
     <!-- Custom styles for this page -->
     <link href="{{asset('admin/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet">
+    <style>
+            .select2-container .select2-selection--single {
+                height: 40px !important; /* Atur tinggi */
+                padding: 5px 10px;
+                align-content: center;
+            }
+    </style>
 </head>
 
 <body id="page-top">
@@ -128,6 +135,18 @@
                                     <button disabled class="btn btn-success btn-icon-split mb-3">
                                         <span class="text">Kelas Telah Dimulai</span>
                                     </button>
+                                    @if ($qrcode == null)
+                                    <form action="/generate/qr-code/absen" method="post">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-icon-split mb-3 ml-3">
+                                            <span class="text"><i class="fa-solid fa-qrcode"></i> Generate Absen </span>
+                                        </button>
+                                    </form>
+                                    @else
+                                    <button data-bs-toggle="modal"  data-bs-target="#viewQr" class="btn btn-success btn-icon-split mb-3 ml-3">
+                                        <span class="text"><i class="fa-solid fa-qrcode"></i> Lihat QR </span>
+                                    </button>
+                                    @endif
                                     @elseif ($status == 'libur' && $tanggal_selected == $tanggalHariIni)
                                     <button disabled class="btn btn-success btn-icon-split mb-3">
                                         <span class="text">Kelas Libur</span>
@@ -141,17 +160,18 @@
                                             @endif
                                         </button>
                                     @endif
-									<select name="tglJadwal" class="form-select" style="margin-bottom: 20px;" id="tglJadwal" onchange="tanggalJadwal()">
-										<option value="">Pilih jadwal tanggal</option>
-										@foreach ($tglJadwal as $item)
-											<option value="{{$item->tanggal_pelaksanaan}}">{{$item->tanggal}}</option>
-										@endforeach
-									</select>
-                                    <thead>
+                                    <select name="tglJadwal"  class="form-select select2" style="margin-bottom: 20px; width: 100%;height: 100px" id="tglJadwal" onchange="tanggalJadwal()">
+                                        <option value="">Pilih jadwal tanggal</option>
+                                        @foreach ($tglJadwal as $item)
+                                            <option value="{{$item->tanggal_pelaksanaan}}">{{$item->tanggal}}</option>
+                                        @endforeach
+                                    </select>
+                                    <div style="margin-top: 20px"></div>
+                                    <thead style="margin-top: 100px">
                                         <tr>
                                             <th style="text-align: center;width:50px">No</th>
                                             <th style="text-align: center;">Siswa</th>
-                                            <th class="text-center" style="text-align: center;width: 150px">Status</th>
+                                            <th class="text-center" style="text-align: center;width: 250px">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -363,27 +383,17 @@
                 </div>
             </div>
 
-            {{-- modal edit akun --}}
-            <div class="modal fade" id="editStatus" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editStatusLabel" aria-hidden="true">
+            {{-- modal view QR--}}
+            <div class="modal fade" id="viewQr" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewQrLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="editStatusLabel" data-bs-toggle="modal"  data-bs-target="#editStatus">Ubah Status Presensi</h5>
+                            <h5 class="modal-title" id="viewQrLabel" data-bs-toggle="modal"  data-bs-target="#viewQr">Absen QR</h5>
                         </div>
-                        <form action="/edit/presensi" method="post">
+                        <form action="" method="post">
                             @csrf
-                            <div class="modal-body">  
-                                <input type="hidden" name="akuns" id="akuns">      
-                                <div class="form-group">
-                                    <label for="email">Status Hadir<strong class="text-danger font-weight-bold">*</strong></label>
-									<input type="hidden" name="absensis" id="absensis">
-                                    <select name="status" class="form-select" id="status">
-										<option value="hadir">hadir</option>
-										<option value="alpha">alpha</option>
-										<option value="sakit">sakit</option>
-										<option value="izin">izin</option>
-									</select>
-                                </div>
+                            <div class="modal-body text-center">  
+                                <img src="{{ asset($qrcode) }}" alt="">
                             </div>
                             <div class="modal-footer" style="text-align: center">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
@@ -620,6 +630,16 @@
                     console.log("Error reset message:", "{{ session('sukses_add') }}");
                 </script>
                 @endif
+
+                @if (session('sukses_generate'))
+                <script>
+                      Swal.fire({
+                          title: "{{ session('sukses_generate') }}",
+                          icon: "success"
+                      });
+                    console.log("Error reset message:", "{{ session('sukses_generate') }}");
+                </script>
+                @endif
                 @if (session('error_delete'))
                 <script>
                       Swal.fire({
@@ -675,7 +695,19 @@
     <!-- Page level custom scripts -->
     <script src="{{ asset('admin/js/demo/datatables-demo.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <script>
+            $(document).ready(function() {
+                $('#tglJadwal').select2({
+                    placeholder: "Pilih jadwal tanggal",
+                    allowClear: true,
+                    height: "100px"
+                });
+            });
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 </body>
 
 </html>

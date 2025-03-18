@@ -27,6 +27,10 @@
     <!-- Custom styles for this page -->
     <link href="{{ asset('admin/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
     <link href="admin/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+
     <style>
         .opsiNone{
             display: none;
@@ -71,7 +75,7 @@
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
-                    <form class="form-inline">
+                    <form class="form-inline" id="toggleForm">
                         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                             <i class="fa fa-bars"></i>
                         </button>
@@ -109,12 +113,14 @@
                                     </button>
                                     <thead>
                                         <tr>
-                                            <th style="text-align: center;width:20px;">No</th>
-                                            <th style="text-align: center;">Pertanyaan</th>
+                                            <th style="text-align: center;width:10px;">No</th>
+                                            <th style="text-align: center; width: 150px;">Pertanyaan</th>
+                                            <th style="text-align: center; width: 200px;">Gambar</th>
+                                            <th style="text-align: center; width: 100px;">Audio</th>
                                             <th style="text-align: center; width: 50px;">Jenis Soal</th>
                                             <th style="text-align: center; width: 20px;">Opsi</th>
-                                            <th style="text-align: center; width: 200px;">Jawaban Benar</th>
-                                            <th style="text-align: center; width: 150px;">Bab</th>
+                                            <th style="text-align: center; width: 50px;">Jawaban Benar</th>
+                                            <th style="text-align: center; width: 50px;">Bab</th>
                                             <th class="text-center" style="text-align: center; width: 30px">Aksi</th>
                                         </tr>
                                     </thead>
@@ -122,9 +128,9 @@
 										@foreach($soal as $soals)
 										<tr>
 											<td style="text-align: center;">{{ $loop->iteration }}</td>
-											<td>
-                                                <div style="display: flex; justify-content: space-between;">
-                                                    <div>{{ $soals->pertanyaan }}</div>
+											<td style="align-content: center">
+                                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                    <div>{!! $soals->pertanyaan !!} </div>
                                                     @if ($soals->type_soal =='pilgan')
                                                         <button style="margin-right: 10px;border: none; background-color: transparent;" data-id="{{ json_encode(['soals' => $soals->id_soal,'soal' => $soals->pertanyaan]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop3" type="submit" class=""><i class="fas fa-pen"></i></button>
                                                     @else
@@ -132,14 +138,32 @@
                                                     @endif
                                                 </div>
                                             </td>
-											<td style="text-transform: capitalize">
+                                            <td style="align-content: center; text-align: center;">
+                                                @if ($soals->gambar_path !== null)
+                                                    <img src="{{ asset($soals->gambar_path) }}" width="60%" height="150px" alt="">
+                                                @else
+                                                <strong>-</strong>
+                                                @endif
+                                            </td>
+                                            <td style="align-content: center; text-align: center;">
+                                                @if ($soals->audio_path !== null)
+                                                <audio controls style="width: 200px">
+                                                    <source src="{{ asset($soals->audio_path) }}" type="audio/mpeg">
+                                                    Browser Anda tidak mendukung tag audio.
+                                                </audio>
+                                                @else
+                                                <strong>-</strong>
+
+                                                @endif
+                                            </td>
+											<td style="text-transform: capitalize;align-content: center">
                                             @if ($soals->type_soal == "pilgan")
                                                 Pilihan Ganda
                                             @else
                                             {{ $soals->type_soal }}
                                             @endif    
                                             </td>											
-											<td>
+											<td style="align-content: center">
                                                 @if ($soals->type_soal == "pilgan")
 
                                                 <div style="text-align: center;"><button style="border: none; background-color: transparent;" type="button" data-bs-target="#viewOpsiModal{{$soals->id_soal}}" data-bs-toggle="modal"><i class="fa fa-search"></i></button></div>
@@ -177,12 +201,11 @@
                                                 </div>
                                             </div>
 									
-											<td>
+											<td style="align-content: center">
                                                 @if ($soals->type_soal =='pilgan')
-                                                <div style="display: flex; justify-content: space-between;">
+                                                <div style="display: flex; justify-content: space-between;align-items: center">
                                                     <div>{{ $soals->jawaban }}</div>
                                                     <div>
-                                                        
                                                         <button 
                                                             style="margin-right: 10px; background: transparent; border: none;" 
                                                             data-id="{{ json_encode(collect($opsi)->filter(fn($o) => $o->id_soal == $soals->id_soal)
@@ -201,17 +224,17 @@
                                                 </div>
                                                 @else
                                                             {{--<button style="margin-right: 10px; background: transparent;border: none;" data-id="{{ json_encode(['soals' => $soals->id_soal,'jawaban' => $soals->jawaban]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop3" type="submit"><i class="fas fa-pen"></i></button>--}}
-                                                <div style="text-align: center"><b>-</b></div>
+                                                <div style="text-align: center;"><b>-</b></div>
                                                 @endif
                                             </td>
-											<td >{{ $soals->judul_kuis }}</td>
+											<td style="align-content: center" >{{ $soals->judul_kuis }}</td>
 											<td class="text-center" style="align-content: center ;" >
                                                 {{--@if ($soals->type_soal =='pilgan')
                                                     <button style="margin-right: 10px" data-id="{{ json_encode(['soals' => $soals->id_soal,'soal' => $soals->pertanyaan]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop3" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
                                                 @else
                                                     <button style="margin-right: 10px" data-id="{{ json_encode(['soals' => $soals->id_soal,'soal' => $soals->pertanyaan, 'jawaban' => $soals->jawaban]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
                                                 @endif--}}
-                                                <a href="/delete/soal/{{$soals->id_soal}}" class="btn btn-danger btn-circle btn-sm">
+                                                <a href="/delete/soal/{{$soals->id_soal}}" onclick="deleteItem(event)" class="btn btn-danger btn-circle btn-sm">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -259,13 +282,19 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Tambah Soal</h5>
                 </div>
-                <form action="/add/soal" method="post">
+                <form id="formTambahSoal" action="/add/soal" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="soal">Soal<strong class="text-danger font-weight-bold">*</strong></label>
                             <input type="hidden" name="kuiss" value="{{$kuiss}}">
-                            <textarea id="soal" class="form-control" placeholder="Masukkan Pertanyaan" required name="soal" cols="30" rows="10"></textarea>
+                            {{-- quill JS editor --}}
+                            <div id="editor-container" style="height: 200px;"></div>
+                            <input type="hidden" name="soal" id="soal">
+                        </div>
+                        <div class="form-group">
+                            <label for="gambar"><strong>Gambar ( opsional )</strong></label>
+                            <input id="gambarInput" type="file" class="form-control" accept=".jpg , .png , .jpeg" placeholder="Masukkan Gambar" name="gambar">
                         </div>
 						<div class="form-group">
                             <label for="tipe_soal">Tipe Soal<strong class="text-danger font-weight-bold">*</strong></label>
@@ -274,6 +303,8 @@
 								<option value="pilgan">Pilihan Ganda</option>
 								<option value="isian">Isian</option>
 								<option value="uraian">Uraian</option>
+								<option value="listening">Listening</option>
+								<option value="speaking">Speaking</option>
                             </select>
                         </div>
 						<hr>
@@ -308,10 +339,9 @@
                                 <input id="opsiD" type="text" class="form-control" placeholder="Masukkan Opsi Jawaban D" required name="opsiD" oninput="updateRadioValue('opsiD', 'radioD')">
                             </div>
                         </div>
-						<div class="form-group isian opsiNone">
-                            {{--<h5 class="text-center">Jawaban Isian</h5>
-                            <label for="isian">isian<strong class="text-danger font-weight-bold">*</strong></label>
-							<input id="isian" type="text" class="form-control" placeholder="Masukkan Jawaban" required name="isian">--}}
+						<div class="form-group listening opsiNone">
+                            <label for="audioInput">Masukkan Audio ( Format File : MP3 )<strong class="text-danger font-weight-bold">*</strong></label>
+							<input id="audioInput" type="file" class="form-control" accept=".mp3,audio/mpeg" placeholder="Masukkan Jawaban" name="audio">
                         </div>
                     </div>
                     <div class="modal-footer" style="text-align: center">
@@ -330,20 +360,16 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdrop2Label">Ubah Soal</h5>
                 </div>
-                <form action="/edit/soal" method="post">
+                <form id="formEditSoal" action="/edit/soal" method="post">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="soal">Soal<strong class="text-danger font-weight-bold">*</strong></label>
                             <input type="hidden" id="soalss" name="soalss">
-                            <textarea id="soalEdit" class="form-control" placeholder="Masukkan Pertanyaan" required name="soal" cols="30" rows="10"></textarea>
+                            <div id="editor-containerEdit" style="height: 200px;"></div>
+                            <input type="hidden" name="soal" id="soalEdit">
                         </div>
 						<hr>
-						{{--<div class="form-group">
-                            <h5 class="text-center">Jawaban Isian</h5>
-                            <label for="isianEdit">isian<strong class="text-danger font-weight-bold">*</strong></label>
-							<input id="isianEdit" type="text" class="form-control" placeholder="Masukkan Jawaban" required name="isian">
-                        </div>--}}
                     </div>
                     <div class="modal-footer" style="text-align: center">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
@@ -360,13 +386,15 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdrop3Label">Ubah Soal</h5>
                 </div>
-                <form action="/edit/soal" method="post">
+                <form id="formEditSoal2" action="/edit/soal" method="post">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="soal">Soal<strong class="text-danger font-weight-bold">*</strong></label>
                             <input type="hidden" id="soalssEdit2" name="soalss">
-                            <textarea id="soalEdit2" class="form-control" placeholder="Masukkan Pertanyaan" required name="soal" cols="30" rows="10"></textarea>
+                            {{-- <textarea id="soalEdit2" class="form-control" placeholder="Masukkan Pertanyaan" required name="soal" cols="30" rows="10"></textarea> --}}
+                            <div id="editor-containerEdit2" style="height: 200px;"></div>
+                            <input type="hidden" name="soal" id="soalEdit2">
                         </div>
 						<hr>
                     </div>
@@ -435,6 +463,9 @@
 
    
     <script>
+            document.getElementById("toggleForm").addEventListener("submit", function(event) {
+                event.preventDefault(); // Mencegah reload
+            });
             document.addEventListener('DOMContentLoaded', function () {
                 // Mengambil elemen berdasarkan ID
                 var inputNama = document.getElementById('nama');
@@ -522,19 +553,6 @@
                 inputnohp.addEventListener('input', updateCharacterCount);
             });
 
-
-            var modalSoals = document.getElementById('staticBackdrop3');
-            modalSoals.addEventListener('show.bs.modal', function (event) {
-                var button = event.relatedTarget;
-                var dataId = button.getAttribute('data-id');
-                var parsedDataId = JSON.parse(dataId);
-                
-                var siswas = modalSoals.querySelector('#soalssEdit2');
-                siswas.value = parsedDataId.soals;
-                var soalsSiswa = modalSoals.querySelector('#soalEdit2');
-                soalsSiswa.value = parsedDataId.soal;
-
-            });
             var modalOpsiss = document.getElementById('editOpsiModal');
             modalOpsiss.addEventListener('show.bs.modal', function (event) {
                 var button = event.relatedTarget;
@@ -551,20 +569,7 @@
                 soalsSiswa.value = parsedDataId.soal;
 
             });
-            var modalSoals2 = document.getElementById('staticBackdrop2');
-            modalSoals2.addEventListener('show.bs.modal', function (event) {
-                var button = event.relatedTarget;
-                var dataId = button.getAttribute('data-id');
-                var parsedDataId = JSON.parse(dataId);
-                
-                var siswas = modalSoals2.querySelector('#soalss');
-                siswas.value = parsedDataId.soals;
-                var soalsSiswa = modalSoals2.querySelector('#soalEdit');
-                soalsSiswa.value = parsedDataId.soal;
-                var jawaban = modalSoals2.querySelector('#isianEdit');
-                jawaban.value = parsedDataId.jawaban;
 
-            });
     // Pastikan ini dijalankan setelah DOM siap
     document.addEventListener("DOMContentLoaded", function () {
         const editJawabanModal = document.getElementById('editJawabanbenar');
@@ -598,6 +603,31 @@
             jawabanBenarOld.textContent = data.jawaban || '-';
         });
     });
+
+
+    function deleteItem(event) {
+                event.preventDefault(); // Mencegah navigasi default
+                event.stopImmediatePropagation(); // Menghentikan propagasi event ke elemen induk
+
+                // Ambil URL dari elemen yang diklik
+                const url = event.currentTarget.getAttribute("href");
+
+                // Tampilkan SweetAlert
+                Swal.fire({
+                    title: "Anda yakin menghapus soal ini?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Hapus",
+                    cancelButtonText: "Batal",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Jika user mengonfirmasi, arahkan ke URL
+                        window.location.href = url;
+                    }
+                });
+            }
     </script>
 
     {{-- opsi jawaban --}}
@@ -620,7 +650,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const tipeSoal = document.getElementById('tipe_soal');
             const opsiPilgan = document.querySelector('.opsiPilgan');
-            //const opsiIsian = document.querySelector('.isian');
+            const opsilistening = document.querySelector('.listening');
             //const isianInput = document.getElementById('isian');
             const opsiPilganInputs = document.querySelectorAll('.opsiPilgan input');
 
@@ -628,8 +658,8 @@
                 if (this.value === 'pilgan') {
                     // Tampilkan opsi pilihan ganda dan sembunyikan isian
                     opsiPilgan.classList.remove('opsiNone');
-                    //opsiIsian.classList.add('opsiNone');
-
+                    opsilistening.classList.add('opsiNone');
+                    opsilistening.removeAttribute("required");
                     // Tambahkan atribut required untuk opsi pilihan ganda
                     opsiPilganInputs.forEach(input => {
                         if (input.type === 'text') {
@@ -639,9 +669,10 @@
 
                     // Hapus atribut required untuk isian
                     //isianInput.removeAttribute('required');
-                } else if (this.value === 'isian') {
+                } else if (this.value === 'listening') {
                     // Tampilkan isian dan sembunyikan opsi pilihan ganda
-                    //opsiIsian.classList.remove('opsiNone');
+                    opsilistening.classList.remove('opsiNone');
+                    opsilistening.setAttribute("required" , "required");
                     opsiPilgan.classList.add('opsiNone');
 
                     // Tambahkan atribut required untuk isian
@@ -654,7 +685,8 @@
                 } else {
                     // Sembunyikan semua opsi
                     opsiPilgan.classList.add('opsiNone');
-                    //opsiIsian.classList.add('opsiNone');
+                    opsilistening.classList.add('opsiNone');
+                    opsilistening.removeAttribute("required");
 
                     // Hapus atribut required dari semua input
                     //isianInput.removeAttribute('required');
@@ -745,7 +777,93 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <!-- Page level custom scripts -->
     <script src="{{asset('admin/js/demo/datatables-demo.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Inisialisasi Quill untuk modal
+            const quill = new Quill('#editor-container', {
+                theme: 'snow'
+            });
+            const quill2 = new Quill('#editor-containerEdit', {
+                theme: 'snow'
+            });
+            const quill3 = new Quill('#editor-containerEdit2', {
+                theme: 'snow'
+            });
 
+            // Pilih form modal secara spesifik
+            const formModal = document.querySelector("#formTambahSoal");
+            const formModalEdit = document.querySelector("#formEditSoal");
+            const formModalEdit2 = document.querySelector("#formEditSoal2");
+
+            // Event listener untuk submit form modal
+            formModal.addEventListener("submit", function(event) {
+                let soalValue = quill.root.innerHTML;
+                if (soalValue === "<p><br></p>") {
+                    soalValue = ""; // Jika hanya newline, kosongkan
+                }
+                document.querySelector("#soal").value = soalValue;
+            });
+
+
+            formModalEdit.addEventListener("submit", function(event) {
+                let soalValue = quill2.root.innerHTML;
+                if (soalValue === "<p><br></p>") {
+                    soalValue = ""; // Jika hanya newline, kosongkan
+                }
+                document.querySelector("#soalEdit").value = soalValue;
+            });
+
+
+            formModalEdit2.addEventListener("submit", function(event) {
+                let soalValue = quill3.root.innerHTML;
+                if (soalValue === "<p><br></p>") {
+                    soalValue = ""; // Jika hanya newline, kosongkan
+                }
+                document.querySelector("#soalEdit2").value = soalValue;
+            });
+
+            var modalSoals2 = document.getElementById('staticBackdrop2');
+            modalSoals2.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var dataId = button.getAttribute('data-id');
+                var parsedDataId = JSON.parse(dataId);
+                
+                var siswas = modalSoals2.querySelector('#soalss');
+                siswas.value = parsedDataId.soals;
+
+                var soalsSiswa = modalSoals2.querySelector('#soalEdit');
+                soalsSiswa.value = parsedDataId.soal;
+                quill2.root.innerHTML = parsedDataId.soal || "";
+                quill2.update();
+                var jawaban = modalSoals2.querySelector('#isianEdit');
+                jawaban.value = parsedDataId.jawaban;
+
+            });
+            quill2.on('text-change', function() {
+                document.querySelector("#soalEdit").value = quill2.root.innerHTML;
+            });
+
+            var modalSoals = document.getElementById('staticBackdrop3');
+            modalSoals.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var dataId = button.getAttribute('data-id');
+                var parsedDataId = JSON.parse(dataId);
+                
+                var siswas = modalSoals.querySelector('#soalssEdit2');
+                siswas.value = parsedDataId.soals;
+                
+                var soalsSiswa = modalSoals.querySelector('#soalEdit2');
+                soalsSiswa.value = parsedDataId.soal;
+
+                quill3.root.innerHTML = parsedDataId.soal || "";
+                quill3.update();
+            });
+            quill3.on('text-change', function() {
+                document.querySelector("#soalEdit2").value = quill3.root.innerHTML;
+            });
+        });
+      </script>
 </body>
 
 </html>

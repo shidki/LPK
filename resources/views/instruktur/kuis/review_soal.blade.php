@@ -86,12 +86,12 @@
                             <div class="col-md-12">
                               <div class="form-group focused">
                                 @if ( $soals->type_soal == 'pilgan')
-                                <label class="form-control-label" for="input-username">{{$loop->iteration}}. {{ $soals->pertanyaan }}</label>
+                                <label class="form-control-label" for="input-username">{{$loop->iteration}}. {!! $soals->pertanyaan !!}</label>
                                 @else
                                 <div>
                                   <div style="display: flex; justify-content: space-between;margin-bottom: 10px;">
-                                      <label class="form-control-label" for="input-username">{{$loop->iteration}}. {{ $soals->pertanyaan }}</label>
-                                      <select @if (session('role') == "admin") disabled @endif {{ $status_koreksi == true ? 'disabled' : '' }} onchange="editStatus('{{ $soals->id_soal }}', '{{ $soals->id_kuis }}', '{{ $soals->id_siswa }}', '{{ $type }}')" required style="width: 150px;" class="form-select" aria-label="Default select example" name="status_jawaban_{{$soals->id_soal}}" id="status_jawaban_{{$soals->id_soal}}">
+                                      <label class="form-control-label" for="input-username">{{$loop->iteration}}. {!! $soals->pertanyaan !!}</label>
+                                      <select @if (session('role') == "admin") disabled @endif {{ $status_koreksi == true ? 'disabled' : '' }} onchange="editStatus('{{ $soals->id_soal }}', '{{ $soals->id_kuis }}', '{{ $soals->id_siswa }}', '{{ $type }}')" required style="width: 150px; border-radius: 20px; height: 40px;" class="form-select" aria-label="Default select example" name="status_jawaban_{{$soals->id_soal}}" id="status_jawaban_{{$soals->id_soal}}">
                                           <option  value="">Koreksi</option>
                                           <option {{ $soals->status == 'benar' ? 'selected' : '' }} value="benar">Benar</option>
                                           <option {{ $soals->status == 'salah' ? 'selected' : '' }} value="salah">Salah</option>

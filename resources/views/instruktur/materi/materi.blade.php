@@ -99,11 +99,9 @@
                                                                 <label for="starCheck{{ $mapels->id_mapel }}" class="star-label">♥</label>--}}
                                                                 <label class="form-check-label ms-1 task-title" for="customCheck1"><b>Bab:</b> {{ $mapels->nama_mapel }}</label>
                                                             </div>
-                                                            <div class="checklist form-check font-size-15" >
-                                                                {{--<input type="checkbox" class="star-checkbox" id="starCheck{{ $mapels->id_mapel }}">
-                                                                <label for="starCheck{{ $mapels->id_mapel }}" class="star-label">♥</label>--}}
+                                                            {{--<div class="checklist form-check font-size-15" >
                                                                 <label class="form-check-label ms-1 task-title" for="customCheck1"><b>Tahun:</b> {{ $mapels->thn_akademik }} / {{ $mapels->thn_akademik + 1 }} </label>
-                                                            </div>
+                                                            </div>--}}
                                                         </div>
                                                         <!-- end col -->
                                                         <div class="col-xl-6 col-sm-7">
@@ -250,7 +248,7 @@
                         <div class="form-group" style="margin-top: 20px;">
                             <label for="file1"><b>File Materi 1</b><strong class="text-danger font-weight-bold"> *</strong></label>
                             <input id="materi" type="text" class="form-control" placeholder="Masukkan Nama Judul Materi" required name="judulMateri1">
-                            <input id="file1" accept="application/pdf" style="margin-top: 10px;" type="file" class="form-control" placeholder="Masukkan File Materi" required name="file1">
+                            <input id="file1" accept="application/pdf, application/msword, image/*, audio/*, video/*"  style="margin-top: 10px;" type="file" class="form-control" placeholder="Masukkan File Materi" required name="file1">
                         </div>
                     </div>
                     <div class="modal-footer" style="text-align: center">
@@ -314,7 +312,7 @@
                                 <div class="form-group-{{ $mapels->id_mapel }}" style="margin-top: 20px;">
                                     <label for="file1Edit"><b>File Materi 1</b><strong class="text-danger font-weight-bold"> *</strong></label>
                                     <input id="materi1Edit" type="text" class="form-control" placeholder="Masukkan Nama Judul Materi"  name="judulMateriEdit1">
-                                    <input id="file1Edit" accept="application/pdf" style="margin-top: 10px;" type="file" class="form-control" placeholder="Masukkan File Materi"  name="fileEdit1">
+                                    <input id="file1Edit" accept="application/pdf, application/msword, image/*, audio/*, video/*"style="margin-top: 10px;" type="file" class="form-control" placeholder="Masukkan File Materi"  name="fileEdit1">
                                 </div>
                             </div>
                             <div class="modal-footer" style="text-align: center">
@@ -343,7 +341,7 @@
                                     <div>
                                         <button data-id="{{ json_encode(['id' => $materis->id_materi, 'nama' => $materis->judul_materi,'path' => $materis->dok_materi ]) }}" style="border: none; background-color: transparent;" class="mb-0 text-muted fw-medium" data-bs-toggle="modal" data-bs-target="#modalMateri"><i class="mdi mdi-square-edit-outline font-size-16 align-middle"></i></button>
 
-                                        <a href="/delete/materi/{{$materis->id_materi}}" class="delete-item">
+                                        <a href="/delete/materi/{{$materis->id_materi}}" onclick="deleteMateri(event)" class="delete-item">
                                             <i class="mdi mdi-trash-can-outline align-middle font-size-16 text-danger"></i>
                                         </a>
                                     </div>
@@ -375,7 +373,7 @@
                                 </div>
                                 <div class="form-group" style="margin-top: 10px;">
                                     <label for="filemateriEditModal">File Materi</label>
-                                    <input id="filemateriEditModal" accept="application/pdf" value="" type="file" class="form-control"  name="filemateriEditModal">
+                                    <input id="filemateriEditModal" accept="application/pdf, application/msword, image/*, audio/*, video/*" value="" type="file" class="form-control"  name="filemateriEditModal">
                                 </div>
                             </div>
                             <div class="modal-footer" style="text-align: center">
@@ -399,7 +397,7 @@
             newFileGroup.innerHTML = `
                 <label for="file${fileCount}"><b>File Materi ${fileCount}</b><strong class="text-danger font-weight-bold"> *</strong></label>
                 <input id="materi${fileCount}" type="text" class="form-control" placeholder="Masukkan Nama Judul Materi" required name="judulMateri${fileCount}">
-                <input id="file${fileCount}" accept="application/pdf" type="file" style="margin-top: 10px;" class="form-control" placeholder="Masukkan File Materi" required name="file${fileCount}">
+                <input id="file${fileCount}" accept="application/pdf, application/msword, image/*, audio/*, video/*" type="file" style="margin-top: 10px;" class="form-control" placeholder="Masukkan File Materi" required name="file${fileCount}">
             `;
             
             // Tambahkan form-group baru ke dalam container modal-body
@@ -432,7 +430,7 @@
                 newFileGroup.innerHTML = `
                     <label for="file${fileCountEdit}Edit-${mapelId}"><b>File Materi ${fileCountEdit}</b><strong class="text-danger font-weight-bold"> *</strong></label>
                     <input id="materi${fileCountEdit}Edit-${mapelId}" type="text" class="form-control" placeholder="Masukkan Nama Judul Materi" required name="judulMateriEdit${fileCountEdit}">
-                    <input id="file${fileCountEdit}Edit-${mapelId}" accept="application/pdf" type="file" style="margin-top: 10px;" class="form-control" placeholder="Masukkan File Materi" required name="fileEdit${fileCountEdit}">
+                    <input id="file${fileCountEdit}Edit-${mapelId}" accept="application/pdf, application/msword, image/*, audio/*, video/*" type="file" style="margin-top: 10px;" class="form-control" placeholder="Masukkan File Materi" required name="fileEdit${fileCountEdit}">
                 `;
                 
                 // Tambahkan form-group baru ke dalam container modal-body
@@ -524,15 +522,62 @@
             });
 
 
-            function deleteItem(event) {
-                event.preventDefault(); // Mencegah pengalihan langsung ke URL
-                event.stopPropagation(); // Mencegah event click merambat ke elemen induk
+            //function deleteItem(event) {
+            //    event.preventDefault(); // Mencegah pengalihan langsung ke URL
+            //    event.stopPropagation(); // Mencegah event click merambat ke elemen induk
 
-                // Tambahkan konfirmasi penghapusan atau lakukan aksi yang diperlukan di sini
-                if (confirm("Apakah Anda yakin ingin menghapus item ini?")) {
-                    window.location.href = event.currentTarget.getAttribute('href');
-                }
+            //    // Tambahkan konfirmasi penghapusan atau lakukan aksi yang diperlukan di sini
+            //    if (confirm("Apakah Anda yakin ingin menghapus item ini?")) {
+            //        window.location.href = event.currentTarget.getAttribute('href');
+            //    }
+            //}
+            function deleteItem(event) {
+                event.preventDefault(); // Mencegah navigasi default
+                event.stopImmediatePropagation(); // Menghentikan propagasi event ke elemen induk
+
+                // Ambil URL dari elemen yang diklik
+                const url = event.currentTarget.getAttribute("href");
+
+                // Tampilkan SweetAlert
+                Swal.fire({
+                    title: "Anda yakin menghapus bab ini?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Hapus",
+                    cancelButtonText: "Batal",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Jika user mengonfirmasi, arahkan ke URL
+                        window.location.href = url;
+                    }
+                });
             }
+            function deleteMateri(event) {
+                event.preventDefault(); // Mencegah navigasi default
+                event.stopImmediatePropagation(); // Menghentikan propagasi event ke elemen induk
+
+                // Ambil URL dari elemen yang diklik
+                const url = event.currentTarget.getAttribute("href");
+
+                // Tampilkan SweetAlert
+                Swal.fire({
+                    title: "Anda yakin menghapus materi ini?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Hapus",
+                    cancelButtonText: "Batal",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Jika user mengonfirmasi, arahkan ke URL
+                        window.location.href = url;
+                    }
+                });
+            }
+
     </script>
     @if (session('error_add'))
     <script>

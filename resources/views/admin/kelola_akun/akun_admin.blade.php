@@ -256,10 +256,12 @@
                                                 </div>
                                             </td>
                                             <td class="text-center">
+                                                @if (session("email") === "lpk.ciptakerja01@gmail.com" && session("role") === "admin")
                                                 <button data-id="{{ json_encode(['id' => $akuns->id_akun,'email' => $akuns->email,'status' => $akuns->status_akun]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
                                                 <a href="/delete/akun/admin/{{ $akuns->id_akun }}" class="btn btn-danger btn-circle btn-sm">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
+                                                @endif
                                             </td>
                                         </tr>
                                        @endforeach

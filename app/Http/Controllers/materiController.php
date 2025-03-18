@@ -29,17 +29,26 @@ class materiController extends Controller
             return back()->with(["error_add" => "Judul bab sudah tersedia"]);
         }
 
+
+
         // Hitung jumlah mapel yang ada untuk id_mapel
-        $cekCountMapel = mapel::count();
+        $lastMapelId = mapel::select(DB::raw('CAST(SUBSTRING(id_mapel, 6) AS UNSIGNED) AS angka'))
+            ->orderBy('angka', 'desc')
+            ->first();
+
+        // Ambil hanya angka dari ID terakhir (jika ada)
+        $lastNumber = $lastMapelId ? $lastMapelId->angka : 0;
+        
 
         // Insert mapel ke database (dilakukan sekali saja)
         $insertMapel = DB::table("mapels")->insert([
-            "id_mapel" => "BJP00" . ($cekCountMapel + 1),
+            "id_mapel" => "BJP00" . ($lastNumber + 1),
             "nama_mapel" => $mapel,
             "thn_akademik" => $tahun,
         ]);
 
         if ($insertMapel == true) {
+            $getMapel = mapel::where("nama_mapel",'=',$mapel)->first();
             // Ambil id_mapel yang baru dimasukkan
             $getIdMapel = DB::table("mapels")->where("nama_mapel", '=', $mapel)->first();
 
@@ -66,17 +75,16 @@ class materiController extends Controller
                         $file_materi = $request->file("file" . $fileCount);
 
                         // Validasi file untuk memastikan hanya PDF yang diizinkan
-                        $validatedData = $request->validate([
-                            "file" . $fileCount => 'mimes:pdf|max:100240', // max 10MB
-                        ]);
+                        
 
                         // Pastikan file adalah PDF
-                        if ($file_materi->getClientOriginalExtension() !== 'pdf') {
-                            return back()->with(["error_add" => "!"]);
-                        }
+                        // if ($file_materi->getClientOriginalExtension() !== 'pdf') {
+                        //     return back()->with(["error_add" => "!"]);
+                        // }
 
                         // Menyimpan file PDF dengan nama yang sesuai
-                        $nama_file_materi = 'file_materi_' . $judulMateri . '.pdf';
+                        $nama_file_materi = 'file_materi_' . $judulMateri ."." . $file_materi->getClientOriginalExtension();
+                        // dd($nama_file_materi);
                         $file_materi->move('file/materi', $nama_file_materi);
                         $nama_file_materi_pembelajaran = 'file/materi/' . $nama_file_materi;
 
@@ -84,8 +92,23 @@ class materiController extends Controller
                         // get data mapel/bab yang udah ditambah sebelumnya
                         $getMapel = mapel::where("nama_mapel",'=',$mapel)->first();
                         $cekCountMateri = materi::where('id_mapel','=',$getMapel->id_mapel)->count();
+
+                        $idMapel = $getMapel->id_mapel; // Ambil id_mapel yang sudah disimpan
+                        $lastMateriId = materi::select(DB::raw("
+                            CAST(SUBSTRING(
+                                id_materi, 
+                                LOCATE('$idMapel', id_materi) + LENGTH('$idMapel') 
+                            ) AS UNSIGNED) AS angka
+                        "))
+                        ->where('id_mapel', '=', $idMapel)
+                        ->orderBy('angka', 'desc')
+                        ->first();
+            
+                    // Ambil hanya angka dari ID terakhir (jika ada)
+                        $lastNumber = $lastMateriId ? $lastMateriId->angka : 0;
+
                         $insertMateri = DB::table("materis")->insert([
-                            "id_materi" => "MBJP00" . $getMapel->id_mapel .($cekCountMateri + 1),
+                            "id_materi" => "MBJP00" . $getMapel->id_mapel .($lastNumber + 1),
                             "judul_materi" => $judulMateri,
                             "dok_materi" => $nama_file_materi_pembelajaran,
                             "tgl_unggah" => now(),
@@ -118,12 +141,14 @@ class materiController extends Controller
         if($cekKuis == true){
             return back()->with(["error_delete" => "Hapus kuis terlebih dahulu"]);
         }
-        if(!isEmpty($getMateri)){
+
+        if((!$getMateri->isEmpty())){
+            //dd(5);
             $deleteMateriStatus = false; // status materi berhasil dihapus atau engga
             foreach ($getMateri as $materi) {
                 $dokMateriPath = $materi->dok_materi;
                 $deleteFile = File::delete($dokMateriPath);    
-                if ($deleteFile) {                
+                if ($deleteFile == true) {                
                     $deleteMateri = DB::table("materis")->where("id_materi", '=', $materi->id_materi)->delete();
                     if($deleteMateri == true){
                         $deleteMateriStatus = true;
@@ -132,7 +157,9 @@ class materiController extends Controller
                     }
                 }
             }
+            //dd($deleteMateriStatus);
             if($deleteMateriStatus == true){
+                //dd(7);
                 //menghapus kuis yang terhubung dengan mapel
                 $getKuis = kuis::where("id_mapel",'=',$id)->first();
                 if($getKuis == true){
@@ -178,11 +205,10 @@ class materiController extends Controller
                 }
             }else{
                 return back()->with(["error_delete" => "Gagal menghapus bab dan materi"]);
-                
             }
         }else{
             //dd(5);
-
+            //dd(1);
             $getKuis = kuis::where("id_mapel",'=',$id)->first();
             if($getKuis == true){
                 $getSoal = soal::where("id_kuis",'=',$getKuis->id_kuis)->get();
@@ -290,23 +316,38 @@ class materiController extends Controller
     
                             // Validasi file untuk memastikan hanya PDF yang diizinkan
                             $validatedData = $request->validate([
-                                "file" . $fileCount => 'mimes:pdf|max:100240', // max 10MB
+                                "file" . $fileCount => '|max:100240', // max 10MB
                             ]);
     
                             // Pastikan file adalah PDF
-                            if ($file_materi->getClientOriginalExtension() !== 'pdf') {
-                                return back()->with(["error_add" => "Hanya file PDF yang diperbolehkan!"]);
-                            }
+                            // if ($file_materi->getClientOriginalExtension() !== 'pdf') {
+                            //     return back()->with(["error_add" => "Hanya file PDF yang diperbolehkan!"]);
+                            // }
     
                             // Menyimpan file PDF dengan nama yang sesuai
-                            $nama_file_materi = 'file_materi_' . $judulMateri . '.pdf';
+                            $nama_file_materi = 'file_materi_' . $judulMateri . '.' . $file_materi->getClientOriginalExtension();
                             $file_materi->move('file/materi', $nama_file_materi);
                             $nama_file_materi_pembelajaran = 'file/materi/' . $nama_file_materi;
     
                             // Insert materi ke database
                             $cekCountMateri = materi::count();
+                            $idMapel = $getMapel->id_mapel;
+                            $lastMateriId = materi::select(DB::raw("
+                            CAST(SUBSTRING(
+                                id_materi, 
+                                LOCATE('$idMapel', id_materi) + LENGTH('$idMapel') 
+                            ) AS UNSIGNED) AS angka
+                        "))
+                        ->where('id_mapel', '=', $idMapel)
+                        ->orderBy('angka', 'desc')
+                        ->first();
+                        
+                
+                        // Ambil hanya angka dari ID terakhir (jika ada)
+                            $lastNumber = $lastMateriId ? $lastMateriId->angka : 0;
+                            
                             $insertMateri = DB::table("materis")->insert([
-                                "id_materi" => "MBJP00" . ($cekCountMateri + 1),
+                                "id_materi" => "MBJP00" . $getMapel->id_mapel .($lastNumber + 1),
                                 "judul_materi" => $judulMateri,
                                 "dok_materi" => $nama_file_materi_pembelajaran,
                                 "tgl_unggah" => now(),
@@ -321,7 +362,6 @@ class materiController extends Controller
                             return back()->with(["error_add" => "File materi tidak ditemukan!"]);
                         }
                     }
-    
                     // Lanjutkan ke file berikutnya
                     $fileCount++;
                 }
@@ -353,25 +393,36 @@ class materiController extends Controller
                     if ($request->hasFile("fileEdit" . $fileCount)) {
                         $file_materi = $request->file("fileEdit" . $fileCount);
 
-                        // Validasi file untuk memastikan hanya PDF yang diizinkan
-                        $validatedData = $request->validate([
-                            "file" . $fileCount => 'mimes:pdf|max:100240', // max 10MB
-                        ]);
+
 
                         // Pastikan file adalah PDF
-                        if ($file_materi->getClientOriginalExtension() !== 'pdf') {
-                            return back()->with(["error_add" => "!"]);
-                        }
+                        // if ($file_materi->getClientOriginalExtension() !== 'pdf') {
+                        //     return back()->with(["error_add" => "!"]);
+                        // }
 
                         // Menyimpan file PDF dengan nama yang sesuai
-                        $nama_file_materi = 'file_materi_' . $judulMateri . '.pdf';
+                        $nama_file_materi = 'file_materi_' . $judulMateri . '.' . $file_materi->getClientOriginalExtension();
+                        
                         $file_materi->move('file/materi', $nama_file_materi);
                         $nama_file_materi_pembelajaran = 'file/materi/' . $nama_file_materi;
 
                         // Insert materi ke database
-                        $cekCountMateri = materi::count();
+                        $idMapel = $getMapel->id_mapel;
+                        $lastMateriId = materi::select(DB::raw("
+                            CAST(SUBSTRING(
+                                id_materi, 
+                                LOCATE('$idMapel', id_materi) + LENGTH('$idMapel') 
+                            ) AS UNSIGNED) AS angka
+                        "))
+                        ->where('id_mapel', '=', $idMapel)
+                        ->orderBy('angka', 'desc')
+                        ->first();
+                        $lastNumber = $lastMateriId ? $lastMateriId->angka : 0;
+                        //dd($lastNumber);
+
                         $insertMateri = DB::table("materis")->insert([
-                            "id_materi" => "MBJP00" . ($cekCountMateri + 1),
+                            "id_materi" => "MBJP00" . $getMapel->id_mapel .($lastNumber + 1),
+
                             "judul_materi" => $judulMateri,
                             "dok_materi" => $nama_file_materi_pembelajaran,
                             "tgl_unggah" => now(),
@@ -451,6 +502,7 @@ class materiController extends Controller
 
         // Ambil file dari request
         $file = $request->file('filemateriEditModal'); // Pastikan nama input file di form adalah 'filemateriEditModal'
+        // dd($file->getClientOriginalExtension());
         //dd($file);
         // Cek apakah judul materi sudah ada
         $cekMateri = materi::where("judul_materi", '=', $nama)
@@ -487,11 +539,13 @@ class materiController extends Controller
             
             // Validasi file untuk memastikan hanya PDF yang diizinkan
             $validatedData = $request->validate([
-                'filemateriEditModal' => 'required|mimes:pdf|max:10240', // max 10MB
+                'filemateriEditModal' => 'required|max:10240', // max 10MB
             ]);
             
             // Menyimpan file PDF dengan nama yang sesuai
-            $nama_file_materi = 'file_materi_' . $nama . '.pdf';
+            $nama_file_materi = 'file_materi_' . $nama . '.' . $file->getClientOriginalExtension();
+            // $nama_file_materi = $request->file('filemateriEditModal')->getClientOriginalExtension();
+            
             $file->move(public_path('file/materi'), $nama_file_materi);
             $nama_file_materi_pembelajaran = 'file/materi/' . $nama_file_materi;
             //dd($nama_file_materi_pembelajaran);

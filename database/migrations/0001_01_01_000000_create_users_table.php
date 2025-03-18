@@ -11,30 +11,30 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('akuns', function (Blueprint $table) {
-            $table->string('id_akun')->primary();
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('role');
-            $table->string('status_akun');
+        Schema::create('users', function (Blueprint $table) {
+            $table->integer('id_akun')->autoIncrement()->primary();
+            $table->string('email',50)->unique();
+            $table->text('password');
+            $table->string('role',15);
+            $table->string('status_akun',15)->default("tidak_aktif");
             $table->rememberToken();
             $table->timestamps();
         });
 
-        // Schema::create('password_reset_tokens', function (Blueprint $table) {
-        //     $table->string('email')->primary();
-        //     $table->string('token');
-        //     $table->timestamp('created_at')->nullable();
-        // });
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
 
-        // Schema::create('sessions', function (Blueprint $table) {
-        //     $table->string('id')->primary();
-        //     $table->foreignId('user_id')->nullable()->index();
-        //     $table->string('ip_address', 45)->nullable();
-        //     $table->text('user_agent')->nullable();
-        //     $table->longText('payload');
-        //     $table->integer('last_activity')->index();
-        // });
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
+            $table->longText('payload');
+            $table->integer('last_activity')->index();
+        });
     }
 
     /**

@@ -85,6 +85,7 @@
                         <div class="tab-pane active show" id="tasks-tab" role="tabpanel">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
                                 <h4 class="card-title mb-4"><a href="/halamanDashboard" style="text-decoration: none;">Menu  </a>\ Riwayat Presensi</h4>
+                                <a class="btn btn-success btn-icon-split mb-3 ml-3" href="/scan/absen/qr">Scan Absen</a>
                             </div>
                             <div class="row">
                                 <div class="col-xl-12">
@@ -308,6 +309,24 @@
               icon: "error"
           });
         console.log("Error reset message:", "{{ session('error_edit') }}");
+    </script>
+    @endif
+    @if ($sukses_absen)
+    <script>
+        Swal.fire({
+            title: "{{ $sukses_absen }}",
+            icon: "success"
+        });
+        console.log("Pesan:", "{{ $sukses_absen }}");
+    </script>
+    @endif
+    @if ($error_absen)
+    <script>
+        Swal.fire({
+            title: "{{ $error_absen }}",
+            icon: "error"
+        });
+        console.log("Pesan:", "{{ $error_absen }}");
     </script>
     @endif
     @if (session('sukses_edit'))

@@ -262,10 +262,12 @@
                                             <td>{{ \Carbon\Carbon::parse($admins->tgl_masuk_adm)->locale('id')->isoFormat('D MMM YYYY') }}</td>
 
                                             <td  style="display: flex; flex-direction: row;justify-content: center; align-content: center; border: none;">
-                                                <button data-id="{{ json_encode(['tglMasuk' => $admins->tgl_masuk_adm,'id' => $admins->id_adm,'nama' => $admins->nama_adm,'email' => $admins->email_adm, 'no_hp' => $admins->no_hp_adm,'alamat' => $admins->alamat_adm]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
-                                                <a href="/delete/admin/{{ $admins->id_adm }}" class="btn btn-danger btn-circle btn-sm" style="margin-left: 10px;" >
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
+                                                @if (session("email") === "lpk.ciptakerja01@gmail.com" && session("role") === "admin")
+                                                    <button data-id="{{ json_encode(['tglMasuk' => $admins->tgl_masuk_adm,'id' => $admins->id_adm,'nama' => $admins->nama_adm,'email' => $admins->email_adm, 'no_hp' => $admins->no_hp_adm,'alamat' => $admins->alamat_adm]) }}" data-bs-toggle="modal"  data-bs-target="#staticBackdrop2" type="submit" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-pen"></i></button>
+                                                    <a href="/delete/admin/{{ $admins->id_adm }}" class="btn btn-danger btn-circle btn-sm" style="margin-left: 10px;" >
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach

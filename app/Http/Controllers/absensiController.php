@@ -9,8 +9,11 @@ use App\Models\kelas;
 use App\Models\siswa;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\WithStyles;
@@ -18,6 +21,8 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 class absensiController extends Controller
 {
     //
@@ -28,6 +33,7 @@ class absensiController extends Controller
         if($role != "instruktur"){
             return abort(403);
         }
+
         $getKelas = kelas::select("k.id_kelas")
         ->from("kelas as k")
         ->join("instrukturs as i",'i.id_ins','=','k.id_ins')
@@ -63,7 +69,7 @@ class absensiController extends Controller
         ->join("kelas as k", "k.id_kelas", "=", "s.id_kelas")
         ->where("k.id_ins", "=", $getId->id_ins)
         ->get();
-    
+
         // Ambil daftar hadir berdasarkan tanggal pelaksanaan
         $getDaftarHadir = daftar_hadir::select('d.id_siswa', 'd.status_presensi')
             ->from("daftar_hadirs as d")
@@ -298,5 +304,75 @@ class absensiController extends Controller
                 ];
             }
         }, 'laporan_kehadiran_bulanan_' . $bulan . '_' . $tahun . '.xlsx');
+    }
+    public function generate_absen(Request $request){
+        $email = session('email');
+        $getIns = instruktur::where("email_ins", '=', $email)->first();
+        $getKelas = kelas::where("id_ins", '=', $getIns->id_ins)->first();
+        $getJadwal = jadwal::where("id_kelas",'=',$getKelas->id_kelas)->whereDate('tanggal_pelaksanaan', Carbon::now()->toDateString())->first();
+        $encJadwal = Crypt::encryptString($getJadwal->id_jadwal);
+    
+        $safeEncJadwal = base64_encode($encJadwal);
+        $url = url("scan/qr-code/absen/{$safeEncJadwal}");
+        
+        $uid = Carbon::now()->format('dmy');
+        $nameFile = 'Qrcode_' . $getKelas->nama_kelas . '_' . $uid . '.svg';
+
+
+        $qr = QrCode::format('svg')->size(300)->generate($url);
+        $path = 'qrcode/absenQR/' . $nameFile;
+        $moveStorage = file_put_contents(public_path('qrcode/absenQR/' . $nameFile), $qr);
+
+        if($moveStorage){
+            $updateQr = DB::table("jadwals")
+            ->where("id_kelas",'=',$getKelas->id_kelas)
+            ->whereDate('tanggal_pelaksanaan', Carbon::now()->toDateString())
+            ->update([
+                "qrcode_path" => "qrcode/absenQR/".$nameFile,
+                "qrExpired_at" => Carbon::now()->addMinutes(15)->seconds(0)
+            ]);
+            if($updateQr == true){
+                return back()->with(["sukses_generate" => "Berhasil membuat absensi QR"]);
+            }else{
+                File::delete(public_path($path));
+                return back()->with(["eror_generate" => "Gagal membuat absensi QR"]);
+            }
+        }else{
+            return back()->with(["eror_generate" => "Gagal membuat absensi QR"]);
+        }
+    }
+
+    public function scan_absen($jadwal){
+        $role = session("role");
+        $email = session("email");
+        if($role != "siswa"){
+            return abort(403);
+        }
+        
+        $siswa = Siswa::where("email", $email)->first();
+        if (!$siswa) {
+            return abort(404, "Siswa tidak ditemukan");
+        }
+        $decodedJadwal = base64_decode($jadwal);
+        $id_jadwal = Crypt::decryptString($decodedJadwal);
+        
+        // cek apakah sudah absen
+        $getabsen = daftar_hadir::where("id_siswa",'=',$siswa->id_siswa)->where('id_jadwal','=',$id_jadwal)->first();
+
+        if($getabsen == false){
+            $insertAbsen = DB::table("daftar_hadirs")->insert([
+                "id_siswa" => $siswa->id_siswa,
+                "status_presensi" => "hadir",
+                "id_jadwal" => $id_jadwal
+            ]);
+    
+            if($insertAbsen == true){
+                return redirect('/view/absensi/siswa/'.$siswa->id_siswa)->with(["sukses_absen"=> "Absen Berhasil"]);
+            }else{
+                return redirect('/view/absensi/siswa/'.$siswa->id_siswa)->with(["error_absen"=> "Absen Gagal"]);
+            }
+        }else{
+            return redirect('/view/absensi/siswa/'.$siswa->id_siswa)->with(["error_absen"=> "Telah Melakukan Absen"]);
+        }
     }
 }

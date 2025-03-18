@@ -81,7 +81,7 @@
                           <div class="row">
                             <div class="col-md-12">
                               <div class="form-group focused">
-                                <label class="form-control-label" for="input-username">{{$loop->iteration}}. {{ $soals->pertanyaan }}</label>
+                                <label class="form-control-label" for="input-username">{{$loop->iteration}}. {!! $soals->pertanyaan !!}</label>
                                 @if (($soals->type_soal == "isian" || $soals->type_soal == "uraian") && $soals->status == "benar")
                                   <span style="margin-left: 10px;color: green; font-weight: bold">&#x2713;</span>
                                 @elseif(($soals->type_soal == "isian" || $soals->type_soal == "uraian") && $soals->status == "salah")

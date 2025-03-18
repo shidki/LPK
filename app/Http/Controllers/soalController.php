@@ -14,6 +14,7 @@ use App\Models\soal;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class soalController extends Controller
 {
@@ -22,18 +23,25 @@ class soalController extends Controller
 
         $idKuis = $request->kuiss;
         $soal = $request->soal;
+        $gambar = $request->gambar;
+        $audio = $request->audio;
         $tipe_soal = $request->tipe_soal;
         //$isian = $request->isian;
         $opsiA = $request->opsiA;
         $opsiB = $request->opsiB;
         $opsiC = $request->opsiC;
         $opsiD = $request->opsiD;
+        // dd($request->all());
         if (trim($soal) === '') {
             return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);
         }
         $jawabanBenar = $request->checkOpsi;
 
         // cek dlu kuis nya udah dikerjain apa blom
+        $cekKuis2 = log_kuis::where("id_kuis",'=',$idKuis)->first();
+        if($cekKuis2 == true){
+            return back()->with(["error_delete" => "Kuis Telah Dikerjakan Siswa"]);
+        }
         $cekKuis = nilai_kuis::where("id_kuis",'=',$idKuis)->first();
         if($cekKuis == true){
             return back()->with(['error_add' => "Kuis telah dikerjakan!"]);
@@ -54,11 +62,35 @@ class soalController extends Controller
             }
         }
 
-        $insertSoal = DB::table("soals")->insert([
+        $gambarPath = null;
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $namaFile = "gambar_kuis_" . $idKuis . (soal::where("id_kuis", $idKuis)->max("id_soal") + 1) . "." . $file->getClientOriginalExtension();
+            
+            // Simpan langsung di folder public/file/gambar_soal
+            $gambarPath = 'file/gambar_soal/' . $namaFile;
+            $file->move(public_path('file/gambar_soal'), $namaFile);
+        }
+        $audioPath = null;
+        if ($request->hasFile('audio')) {
+            $file = $request->file('audio');
+            $namaFile = "audio_kuis_" . $idKuis . (soal::where("id_kuis", $idKuis)->max("id_soal") + 1) . "." . $file->getClientOriginalExtension();
+            
+            // Simpan langsung di folder public/file/audio_soal
+            $audioPath = 'file/audio/' . $namaFile;
+            $file->move(public_path('file/audio'), $namaFile);
+        }
+
+
+        // Simpan soal ke database
+        $insertSoal = soal::create([
             "pertanyaan" => $soal,
+            "gambar_path" => $gambarPath,
+            "audio_path" => $audioPath,
             "type_soal" => $tipe_soal,
             "id_kuis" => $idKuis
         ]);
+
         if($insertSoal == true){
             $getSoal = soal::where("pertanyaan",'=',$soal)->where("id_kuis",'=',$idKuis)->first();
             
@@ -207,10 +239,24 @@ class soalController extends Controller
     public function delete_soal($id){
         $getDataSoal = soal::where("id_soal",'=',$id)->first();
         // jika soal udah dikerjain oleh siswa ( udah ada yang ngerjain soal ini, brarti gabisa dihapus )
+        //get id kuis dlu
+        $getKuis = soal::where("id_soal",'=',$id)->first();
+        $cekKuis2 = log_kuis::where("id_kuis",'=',$getKuis->id_kuis)->first();
+        if($cekKuis2 == true){
+            return back()->with(["error_delete" => "Kuis Telah Dikerjakan Siswa"]);
+        }
         $cekSoal = riwayat_pengerjaan::where('id_soal','=',$id)->first();
         if($cekSoal == true ){
             return back()->with(['error_delete' => "Soal telah dikerjakan siswa!"]);
         }
+
+
+
+        // cek path gambar soal
+        $getPathGambar = $getKuis->gambar_path;
+        $getPathaudio = $getKuis->audio_path;
+
+
         if($getDataSoal->type_soal == "pilgan"){
             $deleteJawaban = DB::table("jawabans")->where("id_soal",'=',$id)->delete();
             if($deleteJawaban == true){
@@ -218,7 +264,17 @@ class soalController extends Controller
                 if($deleteOpsi == true){
                     $deleteSoal= DB::table("soals")->where("id_soal",'=',$id)->delete();
                     if($deleteSoal == true){
-                        return back()->with(['sukses_delete' => "Berhasil Menghapus Soal!"]);
+                        if($getPathGambar !== null){
+                            $hapusGambar = File::delete($getPathGambar);
+                        }
+                        if($getPathaudio !== null){
+                            $hapusAudio = File::delete($getPathaudio);
+                        }
+                        if($hapusGambar ){
+                            return back()->with(['sukses_delete' => "Berhasil Menghapus Soal!"]);
+                        }else{
+                            return back()->with(['sukses_delete' => "Berhasil Menghapus Soal! ( gagal menghapus gambar atau audio soal ) "]);
+                        }
                     }else{
                         return back()->with(['error_delete' => "Gagal Menghapus Soal!"]);
                     }
@@ -231,7 +287,34 @@ class soalController extends Controller
         }else{
             $deleteSoal= DB::table("soals")->where("id_soal",'=',$id)->delete();
             if($deleteSoal == true){
-                return back()->with(['sukses_delete' => "Berhasil Menghapus Soal!"]);
+                if($getPathGambar !== null){
+                    $hapusGambar = File::delete($getPathGambar);
+                    if($hapusGambar ){
+                        if($getPathaudio !== null){
+                            $hapusAudio = File::delete($getPathaudio);
+                            if($hapusAudio == true){
+                                return back()->with(['sukses_delete' => "Berhasil Menghapus Soal!"]);
+                            }else{
+                                return back()->with(['sukses_delete' => "Berhasil Menghapus Soal! ( gagal menghapus audio ) "]);
+                            }
+                        }else{
+                            return back()->with(['sukses_delete' => "Berhasil Menghapus Soal!"]);
+                        }
+                    }else{
+                        return back()->with(['sukses_delete' => "Berhasil Menghapus Soal! ( gagal menghapus gambar ) "]);
+                    }
+                }
+                if($getPathaudio !== null){
+                    $hapusAudio = File::delete($getPathaudio);
+                    if($hapusAudio == true){
+                        return back()->with(['sukses_delete' => "Berhasil Menghapus Soal!"]);
+                    }else{
+                        return back()->with(['sukses_delete' => "Berhasil Menghapus Soal! ( gagal menghapus audio ) "]);
+                    }
+                }else{
+                    return back()->with(['sukses_delete' => "Berhasil Menghapus Soal!"]);
+                }
+                
             }else{
                 return back()->with(['error_delete' => "Gagal Menghapus Soal!"]);
             }
@@ -242,7 +325,13 @@ class soalController extends Controller
         $idSoal = $request->soalss;
         $soal = $request->soal;
         $isian = $request->isian;
+        // dd($request->all());
         // cek soal udah dikerjain apa belom
+        $getKuis = soal::where("id_soal",'=',$idSoal)->first();
+        $cekKuis2 = log_kuis::where("id_kuis",'=',$getKuis->id_kuis)->first();
+        if($cekKuis2 == true){
+            return back()->with(["error_delete" => "Kuis Telah Dikerjakan Siswa"]);
+        }
         $cekKerjain = riwayat_pengerjaan::where("id_soal",'=',$idSoal)->first();
         if($cekKerjain == true){
             return back()->with(["error_add" => "Soal telah dikerjakan oleh siswa!"]);
@@ -271,6 +360,11 @@ class soalController extends Controller
         $trimNewopsi = str_replace(' ', '', $Newopsi);
         $OldOpsi = $request->oldOpsi;
         $idsoal = $request->soal;
+        $getKuis = soal::where("id_soal",'=',$idsoal)->first();
+        $cekKuis2 = log_kuis::where("id_kuis",'=',$getKuis->id_kuis)->first();
+        if($cekKuis2 == true){
+            return back()->with(["error_delete" => "Kuis Telah Dikerjakan Siswa"]);
+        }
         if (trim($Newopsi) === '') {
             return back()->with(["error_add" => "Input tidak boleh kosong atau hanya berisi spasi!"]);
         }

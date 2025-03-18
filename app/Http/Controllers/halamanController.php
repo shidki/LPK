@@ -66,19 +66,36 @@ class halamanController extends Controller
         $siswa = siswa::count();
         $siswaLulus = siswa::where("status",'=',"lulus")->count();
         $instruktur = instruktur::count();
-        $bidang = bidang_minat::select('b.*', DB::raw('COUNT(s.id_siswa) as jumlah_siswa'))
-        ->from('bidang_minats as b')
-        ->leftJoin('siswas as s', 's.id_bidang', '=', 'b.id_bidang')
-        ->groupBy('b.id_bidang', 'b.nama_bidang') // Tambahkan 'b.nama_bidang' ke GROUP BY
-        ->get();
-        foreach ($bidang as $item) {
-            if ($item->jumlah_siswa > 0 && $siswa > 0) {
-                // Menghitung persentase siswa di bidang tersebut
-                $item->persentase_siswa = ($item->jumlah_siswa / $siswa) * 100;
-            } else {
-                $item->persentase_siswa = 0;
+
+        $cekBidang = DB::table('bidang_minats')->count();
+
+        if ($cekBidang > 0) {
+            $bidang = DB::table('bidang_minats as b')
+                ->select(
+                    'b.id_bidang', 
+                    'b.nama_bidang', 
+                    DB::raw('COUNT(s.id_siswa) as jumlah_siswa')
+                )
+                ->leftJoin('siswas as s', 's.id_bidang', '=', 'b.id_bidang')
+                ->groupBy('b.id_bidang', 'b.nama_bidang')
+                ->get();
+        } else {
+            $bidang = collect([]); // Kosongkan collection biar tetap bisa di-loop tanpa error
+        }
+        
+
+
+        if($bidang) {
+            foreach ($bidang as $item) {
+                if ($item->jumlah_siswa > 0 && $siswa > 0) {
+                    // Menghitung persentase siswa di bidang tersebut
+                    $item->persentase_siswa = ($item->jumlah_siswa / $siswa) * 100;
+                } else {
+                    $item->persentase_siswa = 0;
+                }
             }
         }
+
         if ($siswa > 0) {
             $persentaseLulus = ($siswaLulus / $siswa) * 100; // Persentase siswa lulus
         } else {
@@ -211,10 +228,9 @@ class halamanController extends Controller
 
 
     // =================== EDIT PROFILE SISWA ================
-    public function edit_profile($id){
+    public function edit_profile_siswa($id){
         $role = session("role");
         $email = session("email");
-        
         if($role != "siswa"){
             return abort(403);
         }
@@ -233,6 +249,47 @@ class halamanController extends Controller
         ->first();
         return view("siswa.edit_profile.edit_profile")->with(["siswa" => $getData]);
     }
+    public function edit_profile_ins($id){
+        $role = session("role");
+        $email = session("email");
+        
+        if($role != "instruktur"){
+            return abort(403);
+        }
+        // counter agar instruktur lain engga mencoba get url dengan id instruktur lain
+        $getEmail = instruktur::select("email_ins")->from("instrukturs")->where("id_ins",'=',$id)->first();
+        // dd($getEmail);
+        if($getEmail->email_ins != $email){
+            return abort(403);
+        }
+
+        // get data instruktur
+        $getData = DB::table("instrukturs as i")->select("i.*", "k.nama_kelas")
+        ->join("kelas as k", 'k.id_ins','=',"i.id_ins")
+        ->where("i.id_ins",'=',$id)->first();
+
+        return view("instruktur.edit_profile.edit_profile")->with(["ins" => $getData]);
+    }
+    public function edit_profile_adm($id){
+        $role = session("role");
+        $email = session("email");
+        
+        if($role != "admin"){
+            return abort(403);
+        }
+        // counter agar admin lain engga mencoba get url dengan id admin lain
+        $getEmail = admin::select("email_adm")->from("admins")->where("id_adm",'=',$id)->first();
+        // dd($getEmail);
+        if($getEmail->email_adm != $email){
+            return abort(403);
+        }
+
+        // get data admin
+        $getData = DB::table("admins as i")->select("i.*")
+        ->where("i.id_adm",'=',$id)->first();
+
+        return view("admin.edit_profile.edit_profile")->with(["adm" => $getData]);
+    }
 
 
     public function materiPembelajaran(){
@@ -245,6 +302,7 @@ class halamanController extends Controller
         
         $getIns = instruktur::where("email_ins",'=',$email)->first();
         $kelas = kelas::where("id_ins",'=',$getIns->id_ins)->first();
+        
         if($kelas == false){
             return back()->with(["error_masuk" => "Instruktur belum terdapat kelas!"]);
         }
@@ -341,6 +399,7 @@ class halamanController extends Controller
             ->whereDate('j.tanggal_pelaksanaan', Carbon::now()->toDateString())
             ->first();
         }
+        // dd($getStatus);
         if($getStatus == false){
             return back()->with(['error_masuk' => "Instruktur belum terdapat kelas"]);
         }
@@ -397,7 +456,18 @@ class halamanController extends Controller
                 $statusPresensi = $getDaftarHadir->where('id_siswa', $siswas->id_siswa)->first();
                 $siswas->status_presensi = $statusPresensi ? $statusPresensi->status_presensi : 'Belum Absen';
             }
-            return view("instruktur.absensi.absensi")->with(["siswa" => null,"siswa2" => $siswa, 'status' => $getStatus->status,'tglJadwal' => $getTglJadwal, 'tanggal_selected_format' => session('tanggal_selected_format'), 'tanggal_selected' => session('tanggal_selected'),'id_jadwal' => $getStatus->id_jadwal]);
+
+            $getQr = jadwal::select("qrcode_path")->where("id_jadwal",'=', $getStatus->id_jadwal)->first();
+            return view("instruktur.absensi.absensi")->with([
+                "siswa" => null,
+                "siswa2" => $siswa, 
+                'status' => $getStatus->status,
+                'tglJadwal' => $getTglJadwal, 
+                'tanggal_selected_format' => session('tanggal_selected_format'), 
+                'tanggal_selected' => session('tanggal_selected'),
+                'id_jadwal' => $getStatus->id_jadwal,
+                "qrcode" => $getQr->qrcode_path
+            ]);
         }
     }
 
@@ -405,7 +475,9 @@ class halamanController extends Controller
 
         $role = session("role");
         $email = session("email");
-        
+        $sukses_absen = session()->get('sukses_absen');
+        $error_absen = session()->get('error_absen');
+        // dd($sessionAbsen);
         if($role != "siswa"){
             return abort(403);
         }
@@ -426,7 +498,7 @@ class halamanController extends Controller
         });
         //dd($id);
 
-        return view('siswa.absensi.absensi')->with(["absen" => $absen,'siswa' => $getID]);
+        return view('siswa.absensi.absensi')->with(["absen" => $absen,'siswa' => $getID, 'error_absen' => $error_absen, 'sukses_absen' => $sukses_absen]);
     }
 
     public function viewMateri(){
@@ -732,10 +804,28 @@ class halamanController extends Controller
     }
 
     public function halamanLaporanBulanan(){
+        $role = session("role");
+        $email = session("email");
+        
+        if($role != "admin"){
+            return abort(403);
+        }
         $kelas = kelas::get();
         return view('admin.presensi.laporan_bulanan.laporanBulanan')
             ->with(['tanggal_selected' => null,'kelas' => $kelas,'tglJadwal' => null,
         ]);
     }
 
+
+    public function halaman_scan(){
+        $role = session("role");
+        $email = session("email");
+        
+        if($role != "siswa"){
+            return abort(403);
+        }
+        $getId = siswa::where("email",'=',$email)->first();
+        return view('siswa.absensi.scanQR')->with(["id" => $getId->id_siswa]);
+
+    }
 }

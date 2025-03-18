@@ -77,7 +77,27 @@
                           <div class="row">
                             <div class="col-md-12">
                               <div class="form-group focused">
-                                <label class="form-control-label" for="input-username">{{$loop->iteration}}. {{ $soals->pertanyaan }}</label>
+                                <label class="form-control-label" for="input-username"><strong>{{$loop->iteration}}. </strong>
+                                  @if ($soals->gambar_path == null && $soals->audio_path == null)
+                                    {!! $soals->pertanyaan !!}
+                                  @else
+                                    @if ($soals->gambar_path !== null)
+                                    <div style="margin-bottom: 20px">
+                                      <img src="{{ asset($soals->gambar_path) }}" width="500px" height="300px" alt="Gambar {{$loop->iteration}}">
+                                    </div>
+                                    @endif
+                                    @if ($soals->audio_path !== null)
+                                    <div style="margin-bottom: 10px; margin-top: 20px;">
+                                      <strong>Perhatikan audio dibawah !!</strong>
+                                    </div>
+                                    <audio controls >
+                                      <source src="{{ asset($soals->audio_path) }}" type="audio/mpeg">
+                                      Browser Anda tidak mendukung tag audio.
+                                    </audio>
+                                    @endif
+                                    {!! $soals->pertanyaan !!}
+                                  @endif
+                                </label>
                                 <input type="hidden" value="{{$soals->id_soal}}" name="id_soal_{{$soals->id_soal}}" id="">
                                 <input type="hidden" value="{{$soals->type_soal}}" name="type_{{$soals->id_soal}}" id="">
                                 <input type="hidden" name="jawaban_{{ $soals->id_soal }}" value=""> 
